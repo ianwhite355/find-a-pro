@@ -1,0 +1,478 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Euclid Circular A", Poppins;
+  color: white;
+  background-image: url("bg.webp");
+  background-size: 400%;
+  background-repeat: no-repeat;
+  background-position: 0% 10%;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.dropping,
+.menu {
+  position: fixed;
+}
+
+.dropping {
+  z-index: 3;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  background-image: url("https://www.svgrepo.com/download/12219/menu.svg");
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+body.open .dropping {
+  background-image: url("close.svg");
+}
+
+.menu {
+  z-index: 2;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 400px;
+  height: calc(100% - 20px);
+  background: rgb(76, 184, 219);
+  translate: -100% 0;
+  transition: translate 0.375s cubic-bezier(0.175, 0.885, 0.32, 1);
+}
+
+.menu nav {
+  opacity: 0;
+}
+
+@keyframes menu-in {
+  0% {
+    clip-path: ellipse(60% 60% at 0% 50%);
+  }
+  100% {
+    clip-path: ellipse(120% 120% at 0% 50%);
+  }
+}
+
+body.open .menu {
+  opacity: 1;
+  visibility: visible;
+  translate: 0;
+  animation: menu-in 0.375s;
+}
+
+body.open .menu nav {
+  opacity: 1;
+}
+
+.menu nav:hover a {
+  opacity: 0.25;
+}
+
+.menu nav a:hover {
+  opacity: 1;
+}
+
+.menu nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu a {
+  position: relative;
+  color: white;
+  font-size: 32px;
+  font-family: "Euclid Circular A";
+  padding: 20px 0;
+  width: 300px;
+  text-decoration: none;
+  transition: 0.4s;
+}
+
+.menu a::before,
+.menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  transition: 0.4s;
+}
+
+.menu a::before {
+  opacity: 0;
+  background: rgb(255 255 255 / 20%);
+}
+
+.menu a::after {
+  transform: scaleX(0);
+  transform-origin: 0% 50%;
+  background: white;
+}
+
+.menu a:hover::before {
+  opacity: 1;
+}
+
+.menu a:hover::after {
+  transform: scaleX(1);
+}
+
+body.open .menu a {
+  animation: appear 0.25s backwards;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    translate: -30px 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.firstlocation {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  text-align: center;
+  height: 100px;
+  transform: translate(-50%, -50%);
+}
+
+hr.line-one {
+  border: 2px solid red;
+  position: absolute;
+  top: 350px;
+  left: 250px;
+}
+
+hr.line-two {
+  border: 2px solid red;
+  position: absolute;
+  top: 750px;
+  left: 250px;
+}
+
+hr.line-three {
+  border: 2px solid red;
+  position: absolute;
+  top: 1150px;
+  left: 250px;
+}
+
+.search-spot {
+  height: 4%;
+  width: 15%;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  border: 2px;
+  border-color: black;
+}
+
+.search-box {
+  position: absolute;
+  top: 20%;
+  left: 62%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 40px;
+  box-shadow: inset 0 0 0 0 red;
+  color: red;
+  margin: 0 -0.25rem;
+  padding: 0 0.25rem;
+  transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.search-box:hover {
+  box-shadow: inset 100px 0 0 0 red;
+  color: white;
+}
+
+.postal-search {
+  height: 4%;
+  width: 15%;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  border: 2px;
+  border-color: black;
+}
+
+.postal-box {
+  position: absolute;
+  top: 25%;
+  left: 62%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 40px;
+  box-shadow: inset 0 0 0 0 red;
+  color: red;
+  margin: 0 -0.25rem;
+  padding: 0 0.25rem;
+  transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.postal-box:hover {
+  box-shadow: inset 100px 0 0 0 red;
+  color: white;
+}
+
+.repeat {
+  background-repeat: space;
+}
+
+.body-details {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.spring-clean {
+  position: absolute;
+  top: 300px;
+  left: 13%;
+}
+
+.all-summer {
+  position: absolute;
+  top: 700px;
+  left: 13%;
+}
+
+.small-jobs {
+  position: absolute;
+  top: 1100px;
+  left: 13%;
+} 
+
+.imgspot {
+  background-image: url(https://www.solidbackgrounds.com/images/website/950x534/950x534-blue-abstract-noise-free-website-background-image.jpg);
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  height: 20%;
+  width: 80%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.firstrow {
+  display: inline-block;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.firstcontainer {
+  display: flex;
+  position: absolute;
+  top: 450px;
+  left: 400px;
+}
+
+
+.portal {
+  max-width: 250px;
+  max-height: 350px;
+  text-align: center;
+  display: inline-block;
+  text-align: center;
+  padding: 0px;
+  border: 2px solid lightgrey;
+  border-radius: 10px;
+  margin-right:100px;
+}
+.portal img {
+  width: 250px;
+  height: 150px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.portal:hover {
+  filter: brightness(105%);
+}
+
+.portaltwo {
+  max-width: 250px;
+  max-height: 350px;
+  text-align: center;
+  display: inline-block;
+  text-align: center;
+  padding: 0px;
+  border: 2px solid lightgrey;
+  border-radius: 10px;
+  margin-right:100px;
+}
+
+.portaltwo img {
+  width: 250px;
+  height: 150px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.portaltwo:hover {
+  filter: brightness(105%);
+}
+
+.portalthree {
+  max-width: 250px;
+  max-height: 350px;
+  text-align: center;
+  display: inline-block;
+  text-align: center;
+  padding: 0px;
+  border: 2px solid lightgrey;
+  border-radius: 10px;
+  margin-right:100px;
+  }
+
+
+.portalthree img {
+  width: 250px;
+  height: 150px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.portalthree:hover {
+  filter: brightness(105%);
+}
+
+.secondcontainer {
+  display: flex;
+  position: absolute;
+  top: 850px;
+  left:400px;
+}
+
+.portalfour {
+  max-width: 250px;
+  max-height: 350px;
+  text-align: center;
+  display: inline-block;
+  text-align: center;
+  padding: 0px;
+  border: 2px solid lightgrey;
+  border-radius: 10px;
+  margin-right:100px;
+}
+
+.portalfour img {
+  width: 250px;
+  height: 150px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.portalfour:hover {
+  filter: brightness(105%);
+}
+
+.portalfive {
+  max-width: 250px;
+  max-height: 350px;
+  text-align: center;
+  display: inline-block;
+  text-align: center;
+  padding: 0px;
+  border: 2px solid lightgrey;
+  border-radius: 10px;
+  margin-right:100px;
+}
+
+.portalfive img {
+  width: 250px;
+  height: 150px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.portalfive:hover {
+  filter: brightness(105%);
+}
+
+.thirdcontainer {
+  display: flex;
+  position: absolute;
+  top: 1250px;
+  left:400px;
+}
+
+.portalsix {
+  max-width: 250px;
+  max-height: 350px;
+  text-align: center;
+  display: inline-block;
+  text-align: center;
+  padding: 0px;
+  border: 2px solid lightgrey;
+  border-radius: 10px;
+  margin-right:100px;
+}
+
+.portalsix img {
+  width: 250px;
+  height: 150px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.portalsix:hover {
+  filter: brightness(105%);
+}
+
+.portalseven {
+  max-width: 250px;
+  max-height: 350px;
+  text-align: center;
+  display: inline-block;
+  text-align: center;
+  padding: 0px;
+  border: 2px solid lightgrey;
+  border-radius: 10px;
+  margin-right:100px;
+}
+
+.portalseven img {
+  width: 250px;
+  height: 150px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.portalseven:hover {
+  filter: brightness(105%);
+}
