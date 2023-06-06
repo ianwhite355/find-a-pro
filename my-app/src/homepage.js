@@ -1,19 +1,20 @@
-import { windowWashing } from "./tempdata"
+import { windowWashing } from "./datatemp"
 import styled from "styled-components"
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { poolCleaning } from "./datatemp";
 
 const HomePage = () => {
     const [searchValue, setSearchValue] = useState('');
 
     const handleInputChange = (event) => {
-      setSearchValue(event.target.value);
+        setSearchValue(event.target.value);
     };
-  
+
     const handleSubmit = (event) => {
-      event.preventDefault();
+        event.preventDefault();
       // Perform search or other actions with searchValue
-      console.log('Search value:', searchValue);
+        console.log('Search value:', searchValue);
     };
 
     return (
@@ -26,8 +27,8 @@ const HomePage = () => {
         </MainBar>
         <Background>
             <MyProjects>
-                <Title>Window Washing</Title>
-                <Projects>
+                <WindowTitle>Window Washing</WindowTitle>
+                <Window>
                 {windowWashing.map((user) => (
                     <ADiv key={user.id}>
                         <ProjectName>{user.name}</ProjectName>
@@ -35,7 +36,19 @@ const HomePage = () => {
                         <ProjectImg src={user.image}/>
                     </ADiv>
                 ))}
-                </Projects>
+                </Window>
+            </MyProjects>
+            <MyProjects>
+                <PoolTitle>Pool Cleaning</PoolTitle>
+                <Pool>
+                {poolCleaning.map((user) => (
+                    <ADiv key={user.id}>
+                        <ProjectName>{user.name}</ProjectName>
+                        <ProjectBook>Book Now!</ProjectBook>
+                        <ProjectImg src={user.image}/>
+                    </ADiv>
+                ))}
+                </Pool>
             </MyProjects>
         </Background>
         </div>
@@ -87,7 +100,14 @@ const Background = styled.div`
 `
 
 
-const Title = styled.p`
+const MyProjects = styled.div`
+    align-items: center;
+    height: 100%;
+    
+
+`
+
+const WindowTitle = styled.p`
     font-size:3em;
     text-align: center;
     color: white;
@@ -97,16 +117,7 @@ const Title = styled.p`
     color: black;
 `
 
-
-const MyProjects = styled.div`
-    align-items: center;
-    height: 100%;
-    
-
-`
-
-
-const Projects = styled.div`
+const Window = styled.div`
     display: flex;
     flex-wrap: nowrap;
     position: absolute;
@@ -138,6 +149,51 @@ const Projects = styled.div`
         border-radius: 4px;
     }
 `;
+
+const PoolTitle = styled.p`
+    font-size:3em;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    position: relative;
+    top: 500px;
+    color: black;
+`
+
+const Pool = styled.div`
+    display: flex;
+    flex-wrap: nowrap;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: white;
+    background-color: rgba(73, 77, 95, 0.9);
+    width: 80%;
+    border-radius: 15px;
+    height: 300px;
+    overflow-x: scroll;
+
+    scrollbar-width: thin;
+    scrollbar-color: #888888 #f4f4f4;
+    scrollbar-track-color: #f4f4f4;
+    scrollbar-face-color: #888888;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #f4f4f4;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #888888;
+        border-radius: 4px;
+    }
+`;
+
+
 
 const ADiv = styled.div`
     position: relative;
@@ -192,9 +248,6 @@ const ProjectBook = styled.p`
     opacity: 1;
     }
 `;
-
-
-
 
 
 
