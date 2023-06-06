@@ -1,31 +1,26 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 
 
 export const Header = () => {
 
-    const navigate = useNavigate()
+    const location = useLocation()
 
-    const handleAbout = () => {
-        navigate("/about")
-    }
 
     return (
         <Heading>
 
                 <Headertext>Ian White</Headertext>
                 
-                <div>
-                    <About onClick={handleAbout}>About</About>
-                </div>
+                <MiddleHeader>
+                    <AboutLink to="/">Home</AboutLink>
+                    <HomeLink to="/projects">About</HomeLink>
+                </MiddleHeader>
 
                 <div>
-                    <Link to="https://www.linkedin.com/in/ian-white-1b652622b/" target="blank">
-                        <HeaderLogo/>
-                    </Link>
+                    <ImageHome>temp</ImageHome>
                 </div>
-
 
         </Heading>
         
@@ -36,16 +31,17 @@ const Heading = styled.div`
     position:relative;
     top:0%;
     color:white;
-    font-size: 1.2em;
-    background-color: #494D5F;
+    font-size: 1em;
+    background-color: rgba(73, 77, 95, 0.8);
     display: flex;
     justify-content: space-between;
-    height: 100px;
+    height: 75px;
 `
 
 
-const About = styled.h1`
-    transform: translate(-50%);
+const MiddleHeader = styled.div`
+    display:flex;
+    transform: translate(-12.5%);
     &:hover {
         cursor: pointer;
     }
@@ -55,17 +51,95 @@ const About = styled.h1`
     }
 `
 
+const HomeLink = styled(Link)`
+    padding: 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 1.8em;
+    font-weight: bold;
+    position: relative;
+
+    &::before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 2px;
+    bottom: 20px;
+    left: 0;
+    background-color: white;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    }
+
+    &:hover::before {
+    transform: scaleX(1);
+    }
+`;
+
+const AboutLink = styled(Link)`
+    padding: 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 1.8em;
+    font-weight: bold;
+    position: relative;
+
+    &::before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 2px;
+    bottom: 20px;
+    left: 0;
+    background-color: white;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    }
+
+    &:hover::before {
+    transform: scaleX(1);
+    }
+`;
+
+const ContactLink = styled(Link)`
+    padding: 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 1.8em;
+    font-weight: bold;
+    position: relative;
+
+    &::before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 2px;
+    bottom: 20px;
+    left: 0;
+    background-color: white;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    }
+
+    &:hover::before {
+    transform: scaleX(1);
+    }
+`;
+
 const Headertext = styled.h1`
+position: relative;
+bottom: 5px;
     padding-left: 25px;
     color: white;
 `
 
-const HeaderLogo = styled.img`
-    padding-right: 25px;
-    position:relative;
-    top: 20px;
-    width:75px;
-    height:auto;
+const ImageHome = styled.p`
+
 `
+
+
 
 export default Header
