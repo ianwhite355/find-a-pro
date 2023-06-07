@@ -1,8 +1,7 @@
-import { windowWashing } from "./datatemp"
+import { windowWashing, poolCleaning } from "./datatemp"
 import styled from "styled-components"
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { poolCleaning } from "./datatemp";
 
 const HomePage = () => {
     const [searchValue, setSearchValue] = useState('');
@@ -113,7 +112,7 @@ const WindowTitle = styled.p`
     color: white;
     font-weight: bold;
     position: relative;
-    top: 180px;
+    top: 250px;
     color: black;
 `
 
@@ -121,7 +120,7 @@ const Window = styled.div`
     display: flex;
     flex-wrap: nowrap;
     position: absolute;
-    top: 58%;
+    top: 600px;
     left: 50%;
     transform: translate(-50%,-50%);
     color: white;
@@ -156,7 +155,7 @@ const PoolTitle = styled.p`
     color: white;
     font-weight: bold;
     position: relative;
-    top: 500px;
+    top: 550px;
     color: black;
 `
 
@@ -164,7 +163,7 @@ const Pool = styled.div`
     display: flex;
     flex-wrap: nowrap;
     position: absolute;
-    top: 100%;
+    top:1000px;
     left: 50%;
     transform: translate(-50%,-50%);
     color: white;
