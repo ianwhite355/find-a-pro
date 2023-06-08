@@ -36,6 +36,11 @@ const Heading = styled.div`
     display: flex;
     justify-content: space-between;
     height: 75px;
+
+    /* @media (min-width: 700px) and (max-width: 1200px) {
+        height: 75px;
+    } */
+
 `
 
 

@@ -1,6 +1,6 @@
 import windowWash from "./images/windowWashing.png"
 import poolclean from "./images/poolcleaning.avif"
-
+import carclean from "./images/cardetailing.webp"
 
 export const windowWashing = [
     {
@@ -91,6 +91,52 @@ export const poolCleaning = [
     },
 
 ];
+
+export const carCleaning = [
+    {
+        id: 'carCleaning',
+        name: 'Car Detailing',
+        image: carclean
+    },
+
+    {
+        id: 'RandomCompany1',
+        name: 'RandomCompany1',
+        image: carclean
+    },
+
+    {
+        id: 'RandomCompany2',
+        name: 'RandomCompany2',
+        image: carclean
+    },
+
+    {
+        id: 'RandomCompany3',
+        name: 'RandomCompany3',
+        image: carclean
+    },
+
+    {
+        id: 'RandomCompany4',
+        name: 'RandomCompany4',
+        image: carclean
+    },
+
+    {
+        id: 'RandomCompany5',
+        name: 'RandomCompany5',
+        image: carclean
+    },
+
+    {
+        id: 'RandomCompany6',
+        name: 'RandomCompany6',
+        image: carclean
+    },
+
+];
+
 
 
 

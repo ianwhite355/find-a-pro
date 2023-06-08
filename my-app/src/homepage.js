@@ -1,4 +1,4 @@
-import { windowWashing, poolCleaning } from "./datatemp"
+import { windowWashing, poolCleaning, carCleaning } from "./datatemp"
 import styled from "styled-components"
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -25,6 +25,7 @@ const HomePage = () => {
             </SearchBar>
         </MainBar>
         <Background>
+
             <MyProjects>
                 <WindowTitle>Window Washing</WindowTitle>
                 <Window>
@@ -37,6 +38,7 @@ const HomePage = () => {
                 ))}
                 </Window>
             </MyProjects>
+
             <MyProjects>
                 <PoolTitle>Pool Cleaning</PoolTitle>
                 <Pool>
@@ -49,6 +51,20 @@ const HomePage = () => {
                 ))}
                 </Pool>
             </MyProjects>
+
+            <MyProjects>
+                <CarTitle>Car Detailing</CarTitle>
+                <Car>
+                {carCleaning.map((user) => (
+                    <ADiv key={user.id}>
+                        <ProjectName>{user.name}</ProjectName>
+                        <ProjectBook>Book Now!</ProjectBook>
+                        <ProjectImg src={user.image}/>
+                    </ADiv>
+                ))}
+                </Car>
+            </MyProjects>
+
         </Background>
         </div>
     )
@@ -120,12 +136,12 @@ const Window = styled.div`
     display: flex;
     flex-wrap: nowrap;
     position: absolute;
-    top: 600px;
+    top: 650px;
     left: 50%;
     transform: translate(-50%,-50%);
     color: white;
     background-color: rgba(73, 77, 95, 0.9);
-    width: 80%;
+    width: 70%;
     border-radius: 15px;
     height: 300px;
     overflow-x: scroll;
@@ -134,6 +150,14 @@ const Window = styled.div`
     scrollbar-color: #888888 #f4f4f4;
     scrollbar-track-color: #f4f4f4;
     scrollbar-face-color: #888888;
+
+    @media (min-width: 700px) and (max-width: 1200px) {
+        height: 225px;
+    }
+
+    @media (min-width: 1922px) and (max-width: 2562px) {
+        height: 350px;
+    }
 
     &::-webkit-scrollbar {
         width: 8px;
@@ -155,20 +179,22 @@ const PoolTitle = styled.p`
     color: white;
     font-weight: bold;
     position: relative;
-    top: 550px;
+    top: 650px;
     color: black;
 `
 
 const Pool = styled.div`
+
+
     display: flex;
     flex-wrap: nowrap;
     position: absolute;
-    top:1000px;
+    top: 1150px;
     left: 50%;
     transform: translate(-50%,-50%);
     color: white;
     background-color: rgba(73, 77, 95, 0.9);
-    width: 80%;
+    width: 70%;
     border-radius: 15px;
     height: 300px;
     overflow-x: scroll;
@@ -177,6 +203,65 @@ const Pool = styled.div`
     scrollbar-color: #888888 #f4f4f4;
     scrollbar-track-color: #f4f4f4;
     scrollbar-face-color: #888888;
+
+    @media (min-width: 700px) and (max-width: 1200px) {
+        height: 225px;
+    }
+
+    @media (min-width: 1922px) and (max-width: 2562px) {
+        height: 350px;
+    }
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #f4f4f4;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #888888;
+        border-radius: 4px;
+    }
+`;
+
+const CarTitle = styled.p`
+    font-size:3em;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    position: relative;
+    top: 1050px;
+    color: black;
+`
+
+const Car = styled.div`
+    display: flex;
+    flex-wrap: nowrap;
+    position: absolute;
+    top: 1650px;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: white;
+    background-color: rgba(73, 77, 95, 0.9);
+    width: 70%;
+    border-radius: 15px;
+    height: 300px;
+    overflow-x: scroll;
+
+    scrollbar-width: thin;
+    scrollbar-color: #888888 #f4f4f4;
+    scrollbar-track-color: #f4f4f4;
+    scrollbar-face-color: #888888;
+
+    @media (min-width: 700px) and (max-width: 1200px) {
+        height: 225px;
+    }
+
+    @media (min-width: 1922px) and (max-width: 2562px) {
+        height: 350px;
+    }
 
     &::-webkit-scrollbar {
         width: 8px;
@@ -196,7 +281,7 @@ const Pool = styled.div`
 
 const ADiv = styled.div`
     position: relative;
-    margin:15px;
+    margin:15px; 
     height: 100px;
     width: 100px;
     width: 22%;
@@ -209,6 +294,17 @@ const ProjectImg = styled.img`
     object-fit: cover;
     opacity: 1;
     transition: opacity 0.3s ease;
+
+    @media (min-width: 700px) and (max-width: 1200px) {
+        width: 175px;
+        height: 175px;
+    }
+
+    @media (min-width: 1922px) and (max-width: 2562px) {
+        width: 300px;
+        height: 300px;
+    }
+
     ${ADiv}:hover & {
         opacity: 0.5;
     }
