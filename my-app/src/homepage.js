@@ -384,6 +384,7 @@ const ProjectBook = styled.p`
     z-index: 1;
 
     @media (min-width: 200px) and (max-width: 700px) {
+        top: 80%;
         width: 85px;
         font-size: 0.8em;
         margin-left: 37.5px;
