@@ -17,7 +17,7 @@ const HomePage = () => {
     };
 
     return (
-        <div>
+        <DisFlex>
         <MainBar>
             <SearchBar>
                 <SearchInput type="text" placeholder="Search" value={searchValue} onChange={handleInputChange}/>
@@ -66,10 +66,14 @@ const HomePage = () => {
             </MyProjects>
 
         </Background>
-        </div>
+        </DisFlex>
     )
 
 }
+
+const DisFlex = styled.div`
+    
+`
 
 const MainBar = styled.div`
     background-color:blue;
@@ -80,6 +84,11 @@ const MainBar = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius:10px;
+
+    @media (min-width: 200px) and (max-width: 700px) {
+        width: 80%;
+    }
+
 `;
 
 const SearchBar = styled.form`
@@ -130,6 +139,11 @@ const WindowTitle = styled.p`
     position: relative;
     top: 250px;
     color: black;
+
+    @media (min-width: 200px) and (max-width: 700px) {
+        font-size: 2.2em;
+    }
+    
 `
 
 const Window = styled.div`
@@ -145,14 +159,16 @@ const Window = styled.div`
     border-radius: 15px;
     height: 300px;
     overflow-x: scroll;
+    overflow-y: hidden;
 
     scrollbar-width: thin;
     scrollbar-color: #888888 #f4f4f4;
     scrollbar-track-color: #f4f4f4;
     scrollbar-face-color: #888888;
 
-    @media (min-width: 700px) and (max-width: 1200px) {
+    @media (min-width: 200px) and (max-width: 1200px) {
         height: 225px;
+        top: 550px;
     }
 
     @media (min-width: 1922px) and (max-width: 2562px) {
@@ -181,11 +197,15 @@ const PoolTitle = styled.p`
     position: relative;
     top: 650px;
     color: black;
+
+    @media (min-width: 200px) and (max-width: 700px) {
+        font-size: 2.5em;
+        top: 550px;
+    }
+
 `
 
 const Pool = styled.div`
-
-
     display: flex;
     flex-wrap: nowrap;
     position: absolute;
@@ -198,14 +218,16 @@ const Pool = styled.div`
     border-radius: 15px;
     height: 300px;
     overflow-x: scroll;
+    overflow-y: hidden;
 
     scrollbar-width: thin;
     scrollbar-color: #888888 #f4f4f4;
     scrollbar-track-color: #f4f4f4;
     scrollbar-face-color: #888888;
 
-    @media (min-width: 700px) and (max-width: 1200px) {
+    @media (min-width: 200px) and (max-width: 600px) {
         height: 225px;
+        top: 950px;
     }
 
     @media (min-width: 1922px) and (max-width: 2562px) {
@@ -234,6 +256,12 @@ const CarTitle = styled.p`
     position: relative;
     top: 1050px;
     color: black;
+
+    @media (min-width: 200px) and (max-width: 700px) {
+        font-size: 2.5em;
+        top: 850px;
+    }
+
 `
 
 const Car = styled.div`
@@ -249,14 +277,16 @@ const Car = styled.div`
     border-radius: 15px;
     height: 300px;
     overflow-x: scroll;
+    overflow-y: hidden;
 
     scrollbar-width: thin;
     scrollbar-color: #888888 #f4f4f4;
     scrollbar-track-color: #f4f4f4;
     scrollbar-face-color: #888888;
 
-    @media (min-width: 700px) and (max-width: 1200px) {
+    @media (min-width: 200px) and (max-width: 1200px) {
         height: 225px;
+        top: 1350px;
     }
 
     @media (min-width: 1922px) and (max-width: 2562px) {
@@ -281,10 +311,17 @@ const Car = styled.div`
 
 const ADiv = styled.div`
     position: relative;
-    margin:15px; 
+    margin:15px;
     height: 100px;
     width: 100px;
     width: 22%;
+    
+    @media (min-width: 200px) and (max-width: 700px) {
+        margin-right: 75px; 
+        width: 100px;
+        height: 100px;
+    }
+    
 `;
 
 const ProjectImg = styled.img`
@@ -294,10 +331,12 @@ const ProjectImg = styled.img`
     object-fit: cover;
     opacity: 1;
     transition: opacity 0.3s ease;
+    margin: 10px;
 
-    @media (min-width: 700px) and (max-width: 1200px) {
-        width: 175px;
-        height: 175px;
+    @media (min-width: 200px) and (max-width: 700px) {
+        width: 160px;
+        height: 160px;
+        flex-shrink: 0;
     }
 
     @media (min-width: 1922px) and (max-width: 2562px) {
@@ -321,9 +360,13 @@ const ProjectName = styled.p`
     transition: opacity 0.3s ease;
     text-align: center;
     z-index: 1;
-    /* ${ADiv}:hover & {
-    opacity: 1;
-    } */
+
+    @media (min-width: 200px) and (max-width: 700px) {
+        width: 85px;
+        font-size: 0.8em;
+        margin-left: 37.5px; /* Half of the width */
+    }
+
 `;
 
 const ProjectBook = styled.p`
@@ -339,6 +382,13 @@ const ProjectBook = styled.p`
     transition: opacity 0.3s ease;
     text-align: center;
     z-index: 1;
+
+    @media (min-width: 200px) and (max-width: 700px) {
+        width: 85px;
+        font-size: 0.8em;
+        margin-left: 37.5px;
+    }
+
     ${ADiv}:hover & {
     opacity: 1;
     }
@@ -347,3 +397,5 @@ const ProjectBook = styled.p`
 
 
 export default HomePage
+
+

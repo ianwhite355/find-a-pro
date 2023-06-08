@@ -37,9 +37,10 @@ const Heading = styled.div`
     justify-content: space-between;
     height: 75px;
 
-    /* @media (min-width: 700px) and (max-width: 1200px) {
-        height: 75px;
-    } */
+    @media (min-width: 200px) and (max-width: 700px) {
+        height: 60px;
+        font-size: .5em;
+    }
 
 `
 
@@ -135,10 +136,13 @@ const ContactLink = styled(Link)`
 `;
 
 const Headertext = styled.h1`
-position: relative;
-bottom: 5px;
+    position: relative;
+    bottom: 5px;
     padding-left: 25px;
     color: white;
+    @media (min-width: 200px) and (max-width: 700px) {
+        margin-top: 25px;
+    }
 `
 
 const ImageHome = styled.p`
