@@ -10,6 +10,10 @@ const HomePage = () => {
         setSearchValue(event.target.value);
     };
 
+
+    
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
       // Perform search or other actions with searchValue
@@ -32,7 +36,7 @@ const HomePage = () => {
                 {windowWashing.map((user) => (
                     <ADiv key={user.id}>
                         <ProjectName>{user.name}</ProjectName>
-                        <ProjectBook>Book Now!</ProjectBook>
+                        <ProjectBook to={`/company/${user.id}`}>Book Now!</ProjectBook>
                         <ProjectImg src={user.image}/>
                     </ADiv>
                 ))}
@@ -45,7 +49,7 @@ const HomePage = () => {
                 {poolCleaning.map((user) => (
                     <ADiv key={user.id}>
                         <ProjectName>{user.name}</ProjectName>
-                        <ProjectBook>Book Now!</ProjectBook>
+                        <ProjectBook to={`/company/${user.id}`}>Book Now!</ProjectBook>
                         <ProjectImg src={user.image}/>
                     </ADiv>
                 ))}
@@ -58,7 +62,7 @@ const HomePage = () => {
                 {carCleaning.map((user) => (
                     <ADiv key={user.id}>
                         <ProjectName>{user.name}</ProjectName>
-                        <ProjectBook>Book Now!</ProjectBook>
+                        <ProjectBook to={`/company/${user.id}`}>Book Now!</ProjectBook>
                         <ProjectImg src={user.image}/>
                     </ADiv>
                 ))}
@@ -369,13 +373,14 @@ const ProjectName = styled.p`
 
 `;
 
-const ProjectBook = styled.p`
+const ProjectBook = styled(Link)`
+    color: white;
     background-color: rgba(73, 77, 95, 0.8);
     width:200px;
     padding: 10px;
     font-weight: bold;
     position: absolute;
-    top: 100%;
+    top: 160%;
     left: 50%;
     transform: translate(-50%, 100%);
     opacity: 0;
