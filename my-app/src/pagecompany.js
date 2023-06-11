@@ -13,9 +13,6 @@ const CompanyPage = () => {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
 
-
-
-
     useEffect(() => {
         const allData = [...windowWashing, ...poolCleaning, ...carCleaning]
         const filteredData = allData.find((company) => company.id === companyId)
@@ -29,18 +26,19 @@ const CompanyPage = () => {
 
     return (
         <Container>
-            <MainImage src={data.image}/>
+            <Name>{data.name}</Name>
         </Container>
     )
 }
 
 const Container = styled.div`
+
 `
 
-const MainImage = styled.div`
-    width: 100%;
-    height: 0;
-    
+const MainImage = styled.img`
+`
+
+const Name = styled.p`
 `
 export default CompanyPage
 
