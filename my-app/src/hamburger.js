@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import styled, { keyframes, createGlobalStyle } from 'styled-components';
-import menusvg from "./images/menusvg.png"
+import styled, { keyframes } from 'styled-components';
+import menusvgclose from "./images/menusvgclose.png"
+import menusvgopen from "./images/menusvgopen.png"
 import { Link } from 'react-router-dom';
 
 
@@ -21,7 +22,7 @@ const Burger = styled(MenuButton)`
     place-items: center;
     width: 50px;
     height: 50px;
-    background-image: url(${menusvg});
+    background-image: url(${menusvgclose});
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100%;
@@ -29,8 +30,9 @@ const Burger = styled(MenuButton)`
     ${({ isOpen }) =>
         isOpen &&
         `
-        background-image: url(${menusvg});
-    ` }
+            background-size: 110%;
+            background-image: url(${menusvgopen});
+    `}
 `;
 
 const Menu = styled.div`
@@ -146,4 +148,4 @@ const Hamburger = () => {
     );
 };
 
-export default Hamburger;
+export default Hamburger
