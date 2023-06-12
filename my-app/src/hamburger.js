@@ -51,7 +51,7 @@ const Menu = styled.div`
     visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
     transition: transform 0.375s cubic-bezier(0.175, 0.885, 0.32, 1);
     animation: ${({ isOpen }) => (isOpen ? menuInAnimation : '')} 0.375s;
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         width: 100vw;
     }
 `;

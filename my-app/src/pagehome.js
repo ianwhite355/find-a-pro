@@ -89,7 +89,7 @@ const MainBar = styled.div`
     transform: translate(-50%, -50%);
     border-radius:10px;
 
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         width: 80%;
     }
 
@@ -144,7 +144,7 @@ const WindowTitle = styled.p`
     top: 250px;
     color: black;
 
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         font-size: 2.2em;
     }
     
@@ -202,7 +202,7 @@ const PoolTitle = styled.p`
     top: 650px;
     color: black;
 
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         font-size: 2.5em;
         top: 550px;
     }
@@ -261,7 +261,7 @@ const CarTitle = styled.p`
     top: 1050px;
     color: black;
 
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         font-size: 2.5em;
         top: 850px;
     }
@@ -320,7 +320,7 @@ const ADiv = styled.div`
     width: 100px;
     width: 22%;
     
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         margin-right: 75px; 
         width: 100px;
         height: 100px;
@@ -337,7 +337,7 @@ const ProjectImg = styled.img`
     transition: opacity 0.3s ease;
     margin: 10px;
 
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         width: 160px;
         height: 160px;
         flex-shrink: 0;
@@ -365,7 +365,7 @@ const ProjectName = styled.p`
     text-align: center;
     z-index: 1;
 
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         width: 85px;
         font-size: 0.8em;
         margin-left: 37.5px; /* Half of the width */
@@ -388,7 +388,7 @@ const ProjectBook = styled(Link)`
     text-align: center;
     z-index: 1;
 
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         top: 80%;
         width: 85px;
         font-size: 0.8em;
