@@ -10,7 +10,7 @@ export const windowWashing = [
     },
 
     {
-        id: 'RandomCompany1',
+        id: 'Magic Cleaning',
         name: 'RandomCompany1',
         image: windowWash
     },
@@ -139,5 +139,5 @@ export const carCleaning = [
 
 
 export const pageData = [
-    
+
 ]

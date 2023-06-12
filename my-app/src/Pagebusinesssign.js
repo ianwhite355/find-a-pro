@@ -8,19 +8,28 @@ const BusinessSignUp  = () => {
         <>
             <Title>Want to sign up for Find-Your-Pro</Title>
             <Form>
-                <Label>
-                    Business Name:
-                    <Input type="text" name="businessName"/>
-                </Label>
-                <Label>
-                    Owner's Name:
-                    <Input type="text" name="ownerName"/>
-                </Label>
-                <Label>
-                    Email:
-                    <Input type="email" name="email"/>
-                </Label>
+                <DifferentNames>
+                    <Label>
+                        Business Name:
+                        <Input type="text" name="businessName"/>
+                    </Label>
+                    <Label>
+                        Owner's Name:
+                        <Input type="text" name="ownerName"/>
+                    </Label>
+                </DifferentNames>
+                <DifferentNames>
+                    <Label>
+                        Email:
+                        <Input type="email" name="email"/>
+                    </Label>
+                    <Label>
+                        Phone Number:
+                        <Input type="number" name="phoneNumber"/>
+                    </Label>
+                </DifferentNames>
                 <Services>What services Do you offer?</Services>
+                <ThereServices>
                 <label>
                     <input type="checkbox" name="windowWashing" value="windowWashing" />
                     Window Washing
@@ -33,6 +42,7 @@ const BusinessSignUp  = () => {
                     <input type="checkbox" name="carDetailing" value="carDetailing" />
                     Car Detailing
                 </label>
+                </ThereServices>
                 <Button type="submit">Sign Up</Button>
             </Form>
         </>
@@ -41,6 +51,7 @@ const BusinessSignUp  = () => {
 
 const Title = styled.h1`
     text-align:center;
+    font-size: 2em;
 `
 
 const Form = styled.form`
@@ -49,10 +60,15 @@ const Form = styled.form`
     align-items: center;
 `;
 
+const DifferentNames = styled.div`
+    display: flex;
+`
+
 const Label = styled.label`
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    width: 300px;
+    margin: 10px;
     font-size:2em;
 `;
 
@@ -60,6 +76,10 @@ const Input = styled.input`
     padding: 5px;
     margin-top: 5px;
 `;
+
+const ThereServices = styled.div`
+`
+
 
 const Services = styled.p`
     font-size: 2em;

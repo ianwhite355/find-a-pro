@@ -51,6 +51,9 @@ const Menu = styled.div`
     visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
     transition: transform 0.375s cubic-bezier(0.175, 0.885, 0.32, 1);
     animation: ${({ isOpen }) => (isOpen ? menuInAnimation : '')} 0.375s;
+    @media (min-width: 200px) and (max-width: 700px) {
+        width: 100vw;
+    }
 `;
 
 const menuInAnimation = keyframes`
@@ -136,7 +139,7 @@ const Hamburger = () => {
     return (
     <>
         <Burger isOpen={isOpen} onClick={toggleMenu} />
-        <Menu isOpen={isOpen}>
+        <Menu isOpen={isOpen} onClick={toggleMenu}>
             <Nav isOpen={isOpen}>
                 <NavLink href="#" style={{ animationDelay: '0.2s' }} to="/">Home</NavLink>
                 <NavLink href="#" style={{ animationDelay: '0.3s' }} to="/businessSignUp">Sign up your business</NavLink>
