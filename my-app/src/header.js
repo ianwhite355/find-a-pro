@@ -1,12 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Hamburger from "./hamburger";
 
 export const Header = () => {
-
-    const location = useLocation()
-
 
     return (
         <Heading>
@@ -35,16 +32,6 @@ const Heading = styled.div`
 `
 
 
-const MiddleHeader = styled.div`
-    &:hover {
-        cursor: pointer;
-    }
-
-    & + div {
-        cursor: pointer;
-    }
-`
-
 const HomeLink = styled(Link)`
     position: relative;
     left: 50%;
@@ -70,6 +57,11 @@ const HomeLink = styled(Link)`
 
     &:hover::before {
     transform: scaleX(1);
+        cursor: pointer;
+    }
+
+    & + div {
+        cursor: pointer;
     }
 `;
 
@@ -82,10 +74,6 @@ const Sign = styled.h1`
     @media (min-width: 200px) and (max-width: 700px) {
         bottom: 0px;
     }
-`
-
-const ImageHome = styled.p`
-
 `
 
 
