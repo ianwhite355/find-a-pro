@@ -14,7 +14,7 @@ const MenuButton = styled.button`
 
 const Burger = styled(MenuButton)`
     margin: 10px;
-    position: fixed;
+    position: absolute;
     z-index: 3;
     top: 0;
     left: 0;
