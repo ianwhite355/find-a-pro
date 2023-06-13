@@ -1,24 +1,57 @@
-import { windowWashing, poolCleaning, carCleaning } from "./datatemp"
+// import { windowWashing, poolCleaning, carCleaning } from "./datatemp"
 import styled from "styled-components"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const HomePage = () => {
     const [searchValue, setSearchValue] = useState('');
+    const [windowWashing, setWindowWashing] = useState([]);
+    const [poolCleaning, setPoolCleaning] = useState([]);
+    const [carCleaning, setCarCleaning] = useState([]);
+
 
     const handleInputChange = (event) => {
         setSearchValue(event.target.value);
     };
-
-
-    
-
 
     const handleSubmit = (event) => {
         event.preventDefault();
       // Perform search or other actions with searchValue
         console.log('Search value:', searchValue);
     };
+
+    
+    useEffect(() => {
+        fetch("/api/windowWashing")
+        .then((response) => response.json())
+        .then((parse) => {
+            setWindowWashing(parse.data);
+        })
+        .catch((error) => {
+            console.error('Error fetching window washing data:', error);
+        });
+
+        fetch('/api/poolCleaning')
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("testting")
+            setPoolCleaning(data);
+        })
+        .catch((error) => {
+            console.error('Error fetching pool cleaning data:', error);
+        });
+
+        fetch('/api/carCleaning')
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("testting")
+            setCarCleaning(data);
+        })
+        .catch((error) => {
+            console.error('Error fetching car cleaning data:', error);
+        });
+    }, []);
+
 
     return (
         <DisFlex>

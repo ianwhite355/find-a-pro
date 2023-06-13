@@ -33,6 +33,10 @@ const Burger = styled(MenuButton)`
             background-size: 110%;
             background-image: url(${menusvgopen});
     `}
+    @media (min-width: 200px) and (max-width:850px){
+        width: 30px;
+        height: 30px;
+    }
 `;
 
 const Menu = styled.div`

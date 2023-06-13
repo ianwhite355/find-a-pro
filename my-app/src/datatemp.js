@@ -6,31 +6,31 @@ export const windowWashing = [
     {
         id: 'clearChoiceCleaning',
         name: 'Clear Choice Cleaning',
-        image: windowWash
+        image: 'https://empire-s3-production.bobvila.com/articles/wp-content/uploads/2021/08/Window-Cleaning-Cost.jpg'
     },
 
     {
         id: 'Magic Cleaning',
         name: 'Magic Cleaning',
-        image: windowWash
+        image: 'https://dudecrew.ca/wp-content/uploads/2021/07/Website-highlight-size-section-1-DC-2.png'
     },
 
     {
         id: 'RandomCompany2',
         name: 'Random Company2',
-        image: windowWash
+        image: 'https://empire-s3-production.bobvila.com/articles/wp-content/uploads/2021/08/Window-Cleaning-Cost.jpg'
     },
 
     {
         id: 'RandomCompany3',
         name: 'Random Company3',
-        image: windowWash
+        image: 'https://empire-s3-production.bobvila.com/articles/wp-content/uploads/2021/08/Window-Cleaning-Cost.jpg'
     },
 
     {
         id: 'RandomCompany4',
         name: 'Random Company4',
-        image: windowWash
+        image: 'https://empire-s3-production.bobvila.com/articles/wp-content/uploads/2021/08/Window-Cleaning-Cost.jpg'
     },
 
     {
@@ -42,7 +42,7 @@ export const windowWashing = [
     {
         id: 'RandomCompany6',
         name: 'Random Company6',
-        image: windowWash
+        image: 'https://empire-s3-production.bobvila.com/articles/wp-content/uploads/2021/08/Window-Cleaning-Cost.jpg'
     },
 
 ];

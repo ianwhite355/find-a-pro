@@ -9,7 +9,7 @@ export const Header = () => {
         <Heading>
             <Hamburger/>
             <HomeLink>logo here</HomeLink>
-            <Sign>Sign in</Sign>
+            <Sign to="/signin">Sign in</Sign>
         </Heading>
         
     )
@@ -66,13 +66,16 @@ const HomeLink = styled(Link)`
 `;
 
 
-const Sign = styled.h1`
+const Sign = styled(Link)`
+    /* text-decoration:none; */
+    padding: 20px;
+    font-size:2em;
     position: relative;
     right: 10px;
     bottom:10px;
     color:black;
     @media (min-width: 200px) and (max-width: 700px) {
-        bottom: 0px;
+        bottom: 10px;
     }
 `
 

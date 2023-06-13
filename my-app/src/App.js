@@ -5,6 +5,8 @@ import Header from "./header";
 import HomePage from "./pagehome";
 import CompanyPage from "./pagecompany";
 import BusinessSignUp from "./Pagebusinesssign";
+import SignIn from "./pagesignin";
+
 
 const App = () => {
   return (
@@ -15,6 +17,7 @@ const App = () => {
                 <Route path="/company/:companyId" element={<CompanyPage/>}/>
                 {/* <Route path="/about" element={<About/>} /> */}
                 <Route path="/businessSignUp" element={<BusinessSignUp/>}/>
+                <Route path="/signin" element={<SignIn/>} />
             </Routes>
         </BrowserRouter>
   );
