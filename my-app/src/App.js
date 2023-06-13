@@ -6,7 +6,7 @@ import HomePage from "./pagehome";
 import CompanyPage from "./pagecompany";
 import BusinessSignUp from "./Pagebusinesssign";
 import SignIn from "./pagesignin";
-
+import UserSignUp from "./pageusersignup";
 
 const App = () => {
   return (
@@ -18,6 +18,7 @@ const App = () => {
                 {/* <Route path="/about" element={<About/>} /> */}
                 <Route path="/businessSignUp" element={<BusinessSignUp/>}/>
                 <Route path="/signin" element={<SignIn/>} />
+                <Route path="/usersignup" element={<UserSignUp/>}/>
             </Routes>
         </BrowserRouter>
   );
