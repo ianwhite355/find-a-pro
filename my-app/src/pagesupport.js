@@ -40,11 +40,11 @@ const Support = () => {
                     <DifferentNames>
                         <Label>
                             message
-                            <Input type="text" name="message"/>
+                            <InputMessage type="text" name="message"/>
                         </Label>
                     </DifferentNames>
 
-                    <Button type="submit">Sign Up</Button>
+                    <Button type="submit">Submit</Button>
                 </Form>
                 <ContactShortly>We will respond to you as soon as we can through your email</ContactShortly>
             </Container>
@@ -59,7 +59,10 @@ const Container = styled.div`
     left:50%;
     transform: translate(-50%);
     width: 800px;
-    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;@media (min-width: 200px) and (max-width: 850px) {
+        width: 80%;
+        padding: 20px;
+    }
 `
 
 const Title = styled.h1`
@@ -94,6 +97,13 @@ const Input = styled.input`
     margin-top: 5px;
 `;
 
+const InputMessage = styled.textarea`
+    padding: 5px;
+    margin-top: 5px;
+    height: 100px;
+    resize: vertical;
+    overflow-y: auto;
+`;
 
 
 

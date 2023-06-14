@@ -24,7 +24,7 @@ const Heading = styled.div`
     justify-content: space-between;
     height: 75px;
 
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         height: 60px;
         font-size: .5em;
     }
@@ -74,7 +74,7 @@ const Sign = styled(Link)`
     right: 10px;
     bottom:10px;
     color:black;
-    @media (min-width: 200px) and (max-width: 700px) {
+    @media (min-width: 200px) and (max-width: 850px) {
         bottom: 10px;
     }
 `
