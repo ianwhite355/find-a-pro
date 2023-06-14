@@ -1,5 +1,4 @@
 
-
 const windowWashing = [
     {
         id: 'clearChoiceCleaning',

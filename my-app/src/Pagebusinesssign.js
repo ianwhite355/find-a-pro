@@ -31,7 +31,7 @@ const BusinessSignUp  = () => {
         emailjs.sendForm('service_f2jwoos', 'template_wrachpx', form.current, 'EEwDD0w5lZNfVQ4V3')
         .then((result) => {
             console.log(result.text);
-            setSuccessMessage("Message sent");
+            setSuccessMessage("Thank you!");
             setShowSuccessMessage(true);
         })
         .catch((error) => {
@@ -40,7 +40,7 @@ const BusinessSignUp  = () => {
     };
 
     return (
-        <>
+        <Container>
             <Title>Want to sign up for Find-Your-Pro</Title>
             <Form ref={form} onSubmit={sendEmail}>
                 <DifferentNames>
@@ -89,9 +89,18 @@ const BusinessSignUp  = () => {
                     )}
                 </SuccessContainer>
             <ContactShortly>We will respond to you as soon as we can through your email</ContactShortly>
-        </>
+        </Container>
     )
 }
+
+const Container = styled.div`
+    position: relative;
+    padding: 10px;
+    left:50%;
+    transform: translate(-50%);
+    width: 800px;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+`
 
 const Title = styled.h1`
     text-align:center;

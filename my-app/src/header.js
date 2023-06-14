@@ -8,7 +8,7 @@ export const Header = () => {
     return (
         <Heading>
             <Hamburger/>
-            <HomeLink>logo here</HomeLink>
+            <HomeLink to="/">logo here</HomeLink>
             <Sign to="/signin">Sign in</Sign>
         </Heading>
         

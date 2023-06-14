@@ -1,13 +1,15 @@
-// import { windowWashing, poolCleaning, carCleaning } from "./datatemp"
+
 import styled from "styled-components"
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Calendar from 'react-calendar'
 
 const HomePage = () => {
     const [searchValue, setSearchValue] = useState('');
     const [windowWashing, setWindowWashing] = useState([]);
     const [poolCleaning, setPoolCleaning] = useState([]);
     const [carCleaning, setCarCleaning] = useState([]);
+    // const [value, onChange] = useState(new Date());
 
 
     const handleInputChange = (event) => {
@@ -21,6 +23,9 @@ const HomePage = () => {
     };
 
     
+
+    // console.log(value)
+
     useEffect(() => {
         fetch("/api/windowWashing")
         .then((response) => response.json())
@@ -33,9 +38,9 @@ const HomePage = () => {
 
         fetch('/api/poolCleaning')
         .then((response) => response.json())
-        .then((data) => {
+        .then((parse) => {
             console.log("testting")
-            setPoolCleaning(data);
+            setPoolCleaning(parse.data);
         })
         .catch((error) => {
             console.error('Error fetching pool cleaning data:', error);
@@ -43,9 +48,9 @@ const HomePage = () => {
 
         fetch('/api/carCleaning')
         .then((response) => response.json())
-        .then((data) => {
+        .then((parse) => {
             console.log("testting")
-            setCarCleaning(data);
+            setCarCleaning(parse.data);
         })
         .catch((error) => {
             console.error('Error fetching car cleaning data:', error);
@@ -55,6 +60,7 @@ const HomePage = () => {
 
     return (
         <DisFlex>
+        {/* <Calendar onChange={onChange} value={value}/> */}
         <MainBar>
             <SearchBar>
                 <SearchInput type="text" placeholder="Search" value={searchValue} onChange={handleInputChange}/>

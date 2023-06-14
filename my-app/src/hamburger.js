@@ -147,8 +147,7 @@ const Hamburger = () => {
             <Nav isOpen={isOpen}>
                 <NavLink href="#" style={{ animationDelay: '0.2s' }} to="/">Home</NavLink>
                 <NavLink href="#" style={{ animationDelay: '0.3s' }} to="/businessSignUp">Sign up your business</NavLink>
-                <NavLink href="#" style={{ animationDelay: '0.4s' }}>temp 2</NavLink>
-                <NavLink href="#" style={{ animationDelay: '0.5s' }}>temp 3</NavLink>
+                <NavLink href="#" style={{ animationDelay: '0.4s' }} to="/support">Contact support</NavLink>
             </Nav>
         </Menu>
     </>
