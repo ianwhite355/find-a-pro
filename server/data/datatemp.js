@@ -1,7 +1,7 @@
 
 const windowWashing = [
     {
-        id: 'clearChoiceCleaning',
+        _id: 'clearChoiceCleaning',
         name: 'Clear Choice Cleaning',
         image: 'https://empire-s3-production.bobvila.com/articles/wp-content/uploads/2021/08/Window-Cleaning-Cost.jpg'
     },

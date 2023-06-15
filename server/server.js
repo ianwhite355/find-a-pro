@@ -2,7 +2,9 @@
 
 const express = require("express");
 const morgan = require("morgan");
-const { windowWashing, poolCleaning, carCleaning } = require("./data/datatemp");
+// const { windowWashing, poolCleaning, carCleaning } = require("./data/datatemp");
+const { windowWashingGet, windowWashingPost } = require("./data/windowwashing");
+const { poolCleaningGet, poolCleaningPost } = require("./data/poolcleaning");
 
 const app = express();
 const PORT = 8000;
@@ -23,17 +25,12 @@ app.use(express.json());
 // });
 
 
-app.get("/api/windowWashing", (req, res) => {
-    res.status(200).json({ status: 200, data: windowWashing });
-});
+app.get("/api/windowWashing", windowWashingGet)
 
-app.get("/api/poolCleaning", (req, res) => {
-    res.status(200).json({ status: 200, data: poolCleaning });
-});
+app.post("/api/windowWashing", windowWashingPost)
 
-app.get("/api/carCleaning", (req, res) => {
-    res.status(200).json({ status: 200, data: carCleaning });
-});
+app.get("/api/poolCleaning", poolCleaningGet)
 
+app.post("/api/poolCleaning", poolCleaningPost)
 
 app.listen(PORT, () => {console.log(`Server listening on port ${PORT}`);});

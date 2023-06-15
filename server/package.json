@@ -6,13 +6,13 @@
     "scripts": {
         "start": "node server.js",
         "start:server": "nodemon server.js"
-        
     },
     "author": "Scott Morin <scott@journeyedu.co>",
     "license": "MIT",
     "dependencies": {
         "express": "^4.17.1",
         "moment": "^2.24.0",
+        "mongod": "^2.0.0",
         "morgan": "^1.9.1",
         "nodemon": "^2.0.2"
     }
