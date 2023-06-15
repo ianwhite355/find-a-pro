@@ -10,7 +10,7 @@ const options ={
     useUnifiedTopology: true,
 }
 
-const poolCleaningGet = async (req, res) => {
+const paintingGet = async (req, res) => {
     try {
         const client = new MongoClient(MONGO_URI, options);
     
@@ -18,7 +18,7 @@ const poolCleaningGet = async (req, res) => {
     
         const db = client.db("companies");
     
-        const collection = db.collection("poolCleaning");
+        const collection = db.collection("painting");
     
         const documents = await collection.find().toArray();
     
@@ -32,14 +32,14 @@ const poolCleaningGet = async (req, res) => {
     }
 }
 
-const poolCleaningPost = async (req, res) => {
+const paintingPost = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
 
     try {
         await client.connect();
         const db = client.db("companies");
 
-        const collection = db.collection("poolCleaning");
+        const collection = db.collection("painting");
 
         const newDocument = req.body;
 
@@ -55,6 +55,6 @@ const poolCleaningPost = async (req, res) => {
 }
 
 module.exports = {
-    poolCleaningGet,
-    poolCleaningPost,
+    paintingGet,
+    paintingPost,
 };

@@ -1,5 +1,5 @@
 {
-  "proxy":"http://localhost:8000",
+  "proxy": "http://localhost:8000",
   "name": "my-app-name",
   "version": "0.1.0",
   "private": true,
@@ -9,6 +9,7 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "react": "^18.2.0",
+    "react-calendar": "^4.3.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",

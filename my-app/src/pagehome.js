@@ -2,14 +2,13 @@
 import styled from "styled-components"
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Calendar from 'react-calendar'
+
 
 const HomePage = () => {
     const [searchValue, setSearchValue] = useState('');
     const [windowWashing, setWindowWashing] = useState([]);
     const [poolCleaning, setPoolCleaning] = useState([]);
-    const [carCleaning, setCarCleaning] = useState([]);
-    // const [value, onChange] = useState(new Date());
+    const [painting, setPainting] = useState([]);
 
 
     const handleInputChange = (event) => {
@@ -39,18 +38,16 @@ const HomePage = () => {
         fetch('/api/poolCleaning')
         .then((response) => response.json())
         .then((parse) => {
-            console.log("testting")
             setPoolCleaning(parse.data);
         })
         .catch((error) => {
             console.error('Error fetching pool cleaning data:', error);
         });
 
-        fetch('/api/carCleaning')
+        fetch('/api/painting')
         .then((response) => response.json())
         .then((parse) => {
-            console.log("testting")
-            setCarCleaning(parse.data);
+            setPainting(parse.data);
         })
         .catch((error) => {
             console.error('Error fetching car cleaning data:', error);
@@ -60,7 +57,6 @@ const HomePage = () => {
 
     return (
         <DisFlex>
-        {/* <Calendar onChange={onChange} value={value}/> */}
         <MainBar>
             <SearchBar>
                 <SearchInput type="text" placeholder="Search" value={searchValue} onChange={handleInputChange}/>
@@ -73,9 +69,9 @@ const HomePage = () => {
                 <WindowTitle>Window Washing</WindowTitle>
                 <Window>
                 {windowWashing.map((user) => (
-                    <ADiv key={user.id}>
+                    <ADiv key={user._id}>
                         <ProjectName>{user.name}</ProjectName>
-                        <ProjectBook to={`/company/${user.id}`}>Book Now!</ProjectBook>
+                        <ProjectBook to={`/company/${user._id}`}>Book Now!</ProjectBook>
                         <ProjectImg src={user.image}/>
                     </ADiv>
                 ))}
@@ -86,9 +82,9 @@ const HomePage = () => {
                 <PoolTitle>Pool Cleaning</PoolTitle>
                 <Pool>
                 {poolCleaning.map((user) => (
-                    <ADiv key={user.id}>
+                    <ADiv key={user._id}>
                         <ProjectName>{user.name}</ProjectName>
-                        <ProjectBook to={`/company/${user.id}`}>Book Now!</ProjectBook>
+                        <ProjectBook to={`/company/${user._id}`}>Book Now!</ProjectBook>
                         <ProjectImg src={user.image}/>
                     </ADiv>
                 ))}
@@ -96,16 +92,16 @@ const HomePage = () => {
             </MyProjects>
 
             <MyProjects>
-                <CarTitle>Car Detailing</CarTitle>
-                <Car>
-                {carCleaning.map((user) => (
-                    <ADiv key={user.id}>
+                <PaintingTitle>Painting</PaintingTitle>
+                <Painting>
+                {painting.map((user) => (
+                    <ADiv key={user._id}>
                         <ProjectName>{user.name}</ProjectName>
-                        <ProjectBook to={`/company/${user.id}`}>Book Now!</ProjectBook>
+                        <ProjectBook to={`/company/${user._id}`}>Book Now!</ProjectBook>
                         <ProjectImg src={user.image}/>
                     </ADiv>
                 ))}
-                </Car>
+                </Painting>
             </MyProjects>
 
         </Background>
@@ -291,7 +287,7 @@ const Pool = styled.div`
     }
 `;
 
-const CarTitle = styled.p`
+const PaintingTitle = styled.p`
     font-size:3em;
     text-align: center;
     color: white;
@@ -307,7 +303,7 @@ const CarTitle = styled.p`
 
 `
 
-const Car = styled.div`
+const Painting = styled.div`
     display: flex;
     flex-wrap: nowrap;
     position: absolute;
@@ -354,6 +350,7 @@ const Car = styled.div`
 
 const ADiv = styled.div`
     position: relative;
+    bottom: 6px;
     margin:15px;
     height: 100px;
     width: 100px;
@@ -398,7 +395,7 @@ const ProjectName = styled.p`
     padding: 10px;
     font-weight: bold;
     position: absolute;
-    left: 50%;
+    left: 47%;
     transform: translate(-50%);
     transition: opacity 0.3s ease;
     text-align: center;
@@ -420,7 +417,7 @@ const ProjectBook = styled(Link)`
     font-weight: bold;
     position: absolute;
     top: 160%;
-    left: 50%;
+    left: 47%;
     transform: translate(-50%, 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
