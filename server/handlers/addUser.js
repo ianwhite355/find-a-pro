@@ -31,14 +31,14 @@ const addUser = async (request, response) => {
 
 
     let _id = uuidv4();
-    let isDuplicate = resultGet.find(reservation => reservation._id === _id)
+    let isDuplicate = resultGet.find(users => users._id === _id)
     while(isDuplicate){
       _id = uuidv4()
-      isDuplicate = resultGet.find(reservation => reservation._id === _id)
+      isDuplicate = resultGet.find(users => users._id === _id)
     }
 
 
-    const isEmailDuplicate = resultGet.some(reservation => reservation.email === email);
+    const isEmailDuplicate = resultGet.some(users => users.email === email);
 
     let data = null;
     if(!isEmailDuplicate){

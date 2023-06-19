@@ -66,8 +66,10 @@ const SignIn = () => {
                 </TogglePasswordButton>
             </PassWordContainer>
 
-            <input type="checkbox" checked={staySignedIn} onChange={handleStaySignedInChange} />
-
+            <form>
+                <input type="checkbox" checked={staySignedIn} onChange={handleStaySignedInChange} />
+                Stay logged in
+            </form>
             <SignInButton onClick={handleSignIn}>Sign in!</SignInButton>
             <SignUp to="/usersignup">Don't have an account yet, sign up!</SignUp>
         </Container>

@@ -5,10 +5,11 @@ import hideImage from "./images/hide.png"
 import viewImage from "./images/view.png"
 import passwordIcon from "./images/passwordicon.png"
 
-///api/add-user
+
 const UserSignUp = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleTogglePassword = () => {
         setShowPassword(!showPassword);
@@ -47,12 +48,23 @@ const UserSignUp = () => {
         },
         body: JSON.stringify(allData),
         })
-            .then((response) => response.json())
+            // .then((response) => response.json())
+            .then((response) => {
+                if (response.status === 201) {
+                    navigate("/");
+                    response.json()
+                } else if (response.status === 409) {
+                    setErrorMessage("Email is already taken. Please choose a different email.");
+                } else {
+                    setErrorMessage("An unknown error occurred during sign up, please contact support.");
+                    throw new Error("An unknown error occurred during sign up, please contact support.");
+                }
+            })
             .catch((error) => {
                 console.error(error);
             });
 
-        navigate("/");
+
     };
 
     return (
@@ -79,6 +91,8 @@ const UserSignUp = () => {
                         <ToggleIcon src={showPassword ? hideImage : viewImage} alt={showPassword ? "Hide" : "Show"} />
                     </TogglePasswordButton>
                 </PassWordContainer>
+
+                {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
                 <Button type="submit">Submit</Button>
             </FormContainer>
@@ -171,5 +185,8 @@ const ToggleIcon = styled.img`
     width: 20px;
     height: 20px;
 `;
+
+const ErrorMessage = styled.p`
+`
 
 export default UserSignUp;
