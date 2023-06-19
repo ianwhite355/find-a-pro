@@ -1,15 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Hamburger from "./hamburger";
 
+
+
 export const Header = () => {
+
+    const navigate = useNavigate()
+
+    const storedUserData = localStorage.getItem("userData");
+    const userData = JSON.parse(storedUserData)
+    const isLoggedIn = userData && userData.firstName
+
+    const key = 'userData';
+
+    const handleSignOut = (event) => {
+
+        localStorage.removeItem(key);
+        navigate("/")
+    }
 
     return (
         <Heading>
             <Hamburger/>
             <HomeLink to="/">logo here</HomeLink>
-            <Sign to="/signin">Sign in</Sign>
+            {isLoggedIn ? (
+                <AlreadyIn>
+                    <Welcome>{`Welcome, ${userData.firstName}`}</Welcome>
+                    <SignOut onClick={handleSignOut}>Sign Out</SignOut>
+                </AlreadyIn>
+            ) : (
+                <Sign to="/signin">Sign in</Sign>
+            )}
         </Heading>
         
     )
@@ -65,6 +88,34 @@ const HomeLink = styled(Link)`
     }
 `;
 
+
+const AlreadyIn = styled.div`
+    display:flex;
+    position: relative;
+    right: 10px;
+    bottom:10px;
+    align-items: center;
+`
+
+const Welcome = styled.div`
+    padding:20px;
+    font-size:2em;
+    
+    color:black;
+    @media (min-width: 200px) and (max-width: 850px) {
+        bottom: 10px;
+    }
+`;
+
+const SignOut = styled.p`
+    text-decoration: underline;
+    font-size:2em;
+    
+    color:black;
+    @media (min-width: 200px) and (max-width: 850px) {
+        bottom: 10px;
+    }
+`
 
 const Sign = styled(Link)`
     /* text-decoration:none; */

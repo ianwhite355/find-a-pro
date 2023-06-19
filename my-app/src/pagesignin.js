@@ -4,36 +4,71 @@ import hideImage from "./images/hide.png"
 import viewImage from "./images/view.png"
 import emailIcon from "./images/emailicon.png"
 import passwordIcon from "./images/passwordicon.png"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const SignIn = () => {
-    const [signIn, setSignIn] = useState(null)
+    const [signIn, setSignIn] = useState({ email: '', password: '' })
     const [showPassword, setShowPassword] = useState(false)
+    const [staySignedIn, setStaySignedIn] = useState(false);
+
+    const navigate = useNavigate()
+
+    const handleStaySignedInChange = (event) => {
+        setStaySignedIn(event.target.checked);
+    };
 
     const handleChange = (key,value) => {
-        setSignIn(value)
+        setSignIn({ ...signIn, [key]: value })
     }
 
     const handleTogglePassword = () => {
         setShowPassword(!showPassword);
     };
 
+
+    const handleSignIn = () => {
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(signIn)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Login successful') {
+                const userData = data.userData;
+                userData.staySignedIn = staySignedIn;
+                localStorage.setItem('userData', JSON.stringify(userData));
+                navigate("/")
+            } else {
+                console.log('Login failed');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    };
+
+
     return (
         <Container>
             <Title>Log in!</Title>
             
             <EmailContainer>
-                <EmailInput type="email" placeholder={`email`} onChange={(event) => handleChange("name", event.target.value)}></EmailInput>
+                <EmailInput type="email" placeholder={`email`} value={signIn.email} onChange={(event) => handleChange("email", event.target.value)}></EmailInput>
             </EmailContainer>
             
             <PassWordContainer>
-                <PasswordInput type={showPassword ? "text" : "password"} placeholder="password" onChange={(event) => handleChange("name", event.target.value)}></PasswordInput>
+                <PasswordInput type={showPassword ? "text" : "password"} placeholder="password" value={signIn.password} onChange={(event) => handleChange("password", event.target.value)}></PasswordInput>
                 <TogglePasswordButton onClick={handleTogglePassword}>
                     <ToggleIcon src={showPassword ? hideImage : viewImage} alt={showPassword ? "Hide" : "Show"}/>
                 </TogglePasswordButton>
             </PassWordContainer>
 
-            <SignInButton>Sign in!</SignInButton>
+            <input type="checkbox" checked={staySignedIn} onChange={handleStaySignedInChange} />
+
+            <SignInButton onClick={handleSignIn}>Sign in!</SignInButton>
             <SignUp to="/usersignup">Don't have an account yet, sign up!</SignUp>
         </Container>
     )

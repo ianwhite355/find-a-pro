@@ -136,21 +136,44 @@ const appearAnimation = keyframes`
 const Hamburger = () => {
     const [isOpen, setIsOpen] = useState(false);
 
+    const storedUserData = localStorage.getItem("userData");
+    const userData = JSON.parse(storedUserData)
+    const isLoggedIn = userData && userData.firstName
+
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
     return (
-    <>
-        <Burger isOpen={isOpen} onClick={toggleMenu} />
-        <Menu isOpen={isOpen} onClick={toggleMenu}>
-            <Nav isOpen={isOpen}>
-                <NavLink href="#" style={{ animationDelay: '0.2s' }} to="/">Home</NavLink>
-                <NavLink href="#" style={{ animationDelay: '0.3s' }} to="/businessSignUp">Sign up your business</NavLink>
-                <NavLink href="#" style={{ animationDelay: '0.4s' }} to="/support">Contact support</NavLink>
-            </Nav>
-        </Menu>
-    </>
+        <>
+            {isLoggedIn ? (
+                <>
+                    <Burger isOpen={isOpen} onClick={toggleMenu} />
+                    <Menu isOpen={isOpen} onClick={toggleMenu}>
+                        <Nav isOpen={isOpen}>
+                            <NavLink href="#" style={{ animationDelay: '0.2s' }} to="/">Home</NavLink>
+                            <NavLink href="#" style={{ animationDelay: '0.3s' }} to="/usersjobs">Your jobs</NavLink>
+                            <NavLink href="#" style={{ animationDelay: '0.4s' }} to="/businessSignUp">Sign up your business</NavLink>
+                            <NavLink href="#" style={{ animationDelay: '0.5s' }} to="/support">Contact support</NavLink>
+                        </Nav>
+                    </Menu>
+                </>
+            ) : (
+                <>
+                    <Burger isOpen={isOpen} onClick={toggleMenu} />
+                    <Menu isOpen={isOpen} onClick={toggleMenu}>
+                        <Nav isOpen={isOpen}>
+                            <NavLink href="#" style={{ animationDelay: '0.2s' }} to="/">Home</NavLink>
+                            <NavLink href="#" style={{ animationDelay: '0.3s' }} to="/businessSignUp">Sign up your business</NavLink>
+                            <NavLink href="#" style={{ animationDelay: '0.4s' }} to="/support">Contact support</NavLink>
+                        </Nav>
+                    </Menu>
+                </>
+            )}
+        </>
+    
+    
+
     );
 };
 

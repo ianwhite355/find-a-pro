@@ -11,6 +11,11 @@ const HomePage = () => {
     const [painting, setPainting] = useState([]);
 
 
+    //for future use to get the users info
+    // const storedUserData = localStorage.getItem("userData");
+    // const userData = JSON.parse(storedUserData)
+
+
     const handleInputChange = (event) => {
         setSearchValue(event.target.value);
     };
@@ -18,12 +23,9 @@ const HomePage = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
       // Perform search or other actions with searchValue
-        console.log('Search value:', searchValue);
+
     };
 
-    
-
-    // console.log(value)
 
     useEffect(() => {
         fetch("/api/windowWashing")
@@ -70,9 +72,11 @@ const HomePage = () => {
                 <Window>
                 {windowWashing.map((user) => (
                     <ADiv key={user._id}>
-                        <ProjectName>{user.name}</ProjectName>
-                        <ProjectBook to={`/company/${user._id}`}>Book Now!</ProjectBook>
                         <ProjectImg src={user.image}/>
+                            
+                            <ProjectName>{user.name}</ProjectName>
+                            <p>reviews here at a later date</p>
+                            <ProjectBook to={`/company/${user._id}`}>Book Now!</ProjectBook>
                     </ADiv>
                 ))}
                 </Window>
@@ -83,9 +87,11 @@ const HomePage = () => {
                 <Pool>
                 {poolCleaning.map((user) => (
                     <ADiv key={user._id}>
-                        <ProjectName>{user.name}</ProjectName>
-                        <ProjectBook to={`/company/${user._id}`}>Book Now!</ProjectBook>
                         <ProjectImg src={user.image}/>
+                        <AnotherOne>
+                            <ProjectName>{user.name}</ProjectName>
+                            <ProjectBook to={`/company/${user._id}`}>Book Now!</ProjectBook>
+                        </AnotherOne>
                     </ADiv>
                 ))}
                 </Pool>
@@ -109,6 +115,9 @@ const HomePage = () => {
     )
 
 }
+
+
+
 
 const DisFlex = styled.div`
     
@@ -193,10 +202,11 @@ const Window = styled.div`
     left: 50%;
     transform: translate(-50%,-50%);
     color: white;
-    background-color: rgba(73, 77, 95, 0.9);
+
+    /* background-color: rgba(73, 77, 95, 0.9); */
     width: 70%;
     border-radius: 15px;
-    height: 300px;
+    height: 350px;
     overflow-x: scroll;
     overflow-y: hidden;
 
@@ -351,10 +361,20 @@ const Painting = styled.div`
 const ADiv = styled.div`
     position: relative;
     bottom: 6px;
+    display: inline-block;
+    position: relative;
+    margin: 10px;
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+    border-left: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    border-radius: 11px;
+    overflow: hidden;
     margin:15px;
-    height: 100px;
-    width: 100px;
-    width: 22%;
+    /* height: 100px;
+    width: 100px; */
+    /* width: 22%; */
+    
     
     @media (min-width: 200px) and (max-width: 850px) {
         margin-right: 75px; 
@@ -364,14 +384,18 @@ const ADiv = styled.div`
     
 `;
 
+
+
+const AnotherOne = styled.div`
+`
+
 const ProjectImg = styled.img`
-    border-radius: 15px;
-    width: 250px;
-    height: 250px;
+    width: 275px;
+    height: 150px;
     object-fit: cover;
     opacity: 1;
-    transition: opacity 0.3s ease;
-    margin: 10px;
+    transition: transform 0.3s ease-in-out;
+
 
     @media (min-width: 200px) and (max-width: 850px) {
         width: 160px;
@@ -385,21 +409,23 @@ const ProjectImg = styled.img`
     }
 
     ${ADiv}:hover & {
-        opacity: 0.5;
+        transform: scale(1.1)
     }
 `;
 
 const ProjectName = styled.p`
-    background-color: rgba(73, 77, 95, 0.8);
-    width:200px;
-    padding: 10px;
+    width:250px;
+    padding: 0px;
     font-weight: bold;
-    position: absolute;
+    position: relative;
+    bottom: 15px;
     left: 47%;
     transform: translate(-50%);
     transition: opacity 0.3s ease;
     text-align: center;
     z-index: 1;
+    color:black;
+    font-size: 1.3em;
 
     @media (min-width: 200px) and (max-width: 850px) {
         width: 85px;
@@ -410,19 +436,17 @@ const ProjectName = styled.p`
 `;
 
 const ProjectBook = styled(Link)`
-    color: white;
-    background-color: rgba(73, 77, 95, 0.8);
-    width:200px;
+    font-size:1.3em;
     padding: 10px;
     font-weight: bold;
-    position: absolute;
-    top: 160%;
-    left: 47%;
-    transform: translate(-50%, 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    position: relative;
+    bottom: 20px;
+    left: 25%;
+    /* transform: translate(-50%); */
     text-align: center;
     z-index: 1;
+    opacity: 1;
+    color: black;
 
     @media (min-width: 200px) and (max-width: 850px) {
         top: 80%;
@@ -431,9 +455,7 @@ const ProjectBook = styled(Link)`
         margin-left: 37.5px;
     }
 
-    ${ADiv}:hover & {
-    opacity: 1;
-    }
+    
 `;
 
 

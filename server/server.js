@@ -3,11 +3,12 @@
 const express = require("express");
 const morgan = require("morgan");
 // const { windowWashing, poolCleaning, carCleaning } = require("./data/datatemp");
-const { windowWashingGet, windowWashingPost } = require("./data/windowwashing");
-const { poolCleaningGet, poolCleaningPost } = require("./data/poolcleaning");
-const { paintingGet, paintingPost } = require("./data/painting");
-
-const { allDataGet } = require("./data/alldata");
+const { windowWashingGet, windowWashingPost } = require("./handlers/windowwashing");
+const { poolCleaningGet, poolCleaningPost } = require("./handlers/poolcleaning");
+const { paintingGet, paintingPost } = require("./handlers/painting");
+const { addUser } = require("./handlers/addUser")
+const { allDataGet } = require("./handlers/alldata");
+const { login } = require("./handlers/login");
 
 const app = express();
 const PORT = 8000;
@@ -40,9 +41,11 @@ app.get("/api/painting", paintingGet)
 
 app.post("/api/painting", paintingPost)
 
-
-
-
 app.get("/api/alldata", allDataGet)
+
+app.post("/api/add-user", addUser)
+
+app.post('/login', login);
+
 
 app.listen(PORT, () => {console.log(`Server listening on port ${PORT}`);});

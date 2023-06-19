@@ -30,7 +30,6 @@ const BusinessSignUp  = () => {
 
         emailjs.sendForm('service_f2jwoos', 'template_wrachpx', form.current, 'EEwDD0w5lZNfVQ4V3')
         .then((result) => {
-            console.log(result.text);
             setSuccessMessage("Thank you!");
             setShowSuccessMessage(true);
         })

@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
 
@@ -12,9 +12,6 @@ const Support = () => {
         e.preventDefault();
 
         emailjs.sendForm('service_pli7r2q', 'template_sj5nnmo', form.current, 'EEwDD0w5lZNfVQ4V3')
-        .then((result) => {
-            console.log(result.text);
-        })
         .catch((error) => {
             console.log(error.text);
         });
