@@ -118,6 +118,12 @@ const EmailInput = styled.input`
         height: 30px;
         width:250px;
     }
+    @media (min-width: 200px) and (max-width:320px){
+        top:200px;
+        height: 30px;
+        width:150px;
+        font-size: 1em;
+    }
 `
 
 
@@ -139,10 +145,17 @@ const PasswordInput = styled.input`
     background-position: 10px center;
     background-size: 30px;
 
-    @media (min-width: 200px) and (max-width:850px){
+    @media (min-width: 321px) and (max-width:850px){
         top:200px;
         height: 30px;
         width:250px;
+        font-size:1.3;
+    }
+    @media (min-width: 200px) and (max-width:320px){
+        top:200px;
+        height: 30px;
+        width:150px;
+        font-size: 1.1em;
     }
 
 `

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import DateTimePicker from 'react-datetime-picker'
 import 'react-calendar/dist/Calendar.css';
-import 'react-clock/dist/Clock.css';
+// import 'react-clock/dist/Clock.css';
 import emailjs from '@emailjs/browser';
 
 
@@ -82,7 +82,6 @@ const CompanyPage = () => {
     }
 
     console.log(calendar)
-
 
 
     return (

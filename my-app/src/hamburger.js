@@ -55,7 +55,7 @@ const Menu = styled.div`
     visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
     transition: transform 0.375s cubic-bezier(0.175, 0.885, 0.32, 1);
     animation: ${({ isOpen }) => (isOpen ? menuInAnimation : '')} 0.375s;
-    @media (min-width: 200px) and (max-width: 850px) {
+    @media (min-width: 200px) and (max-width: 500px) {
         width: 100vw;
     }
 `;
@@ -121,6 +121,11 @@ const NavLink = styled(Link)`
     `
         animation: ${appearAnimation} 0.25s backwards;
     `}
+    
+    @media (min-width: 200px) and (max-width:320px){
+        margin-left:15px;
+        font-size: 3.2em;
+    }
 `;
 
 const appearAnimation = keyframes`
