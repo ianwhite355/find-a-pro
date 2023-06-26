@@ -1,8 +1,8 @@
 
 import styled, { keyframes } from "styled-components";
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import DateTimePicker from 'react-datetime-picker'
+import { useAsyncValue, useParams } from 'react-router-dom';
+import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 // import 'react-clock/dist/Clock.css';
 import emailjs from '@emailjs/browser';
@@ -17,13 +17,26 @@ const progressBarAnimation = keyframes`
 const CompanyPage = () => {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [calendar, setCalendar] = useState('')
+    const [calendar, setCalendar] = useState(new Date())
     const { companyId } = useParams();
     const form = useRef();
     const [successMessage, setSuccessMessage] = useState("");
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [selectedTime, setSelectedTime] = useState('');
+    const [timeSlots, setTimeSlots] = useState([])
 
-    const handleDateTimeChange = (date) => {
+    const handleDropdownToggle = () => {
+        setDropdownOpen(!dropdownOpen);
+    };
+    
+    const handleTimeSlotSelection = (time) => {
+        setSelectedTime(time);
+        setDropdownOpen(false);
+    };
+
+
+    const handleCalendarChange = (date) => {
         
         setCalendar(date)
     }
@@ -39,7 +52,6 @@ const CompanyPage = () => {
 
         emailjs.sendForm('service_giwexjs', 'template_7ri4ars', form.current, 'EEwDD0w5lZNfVQ4V3')
         .then((result) => {
-            console.log(calendar);
             setSuccessMessage("Thank you!");
             setShowSuccessMessage(true);
         })
@@ -67,33 +79,49 @@ const CompanyPage = () => {
             const filteredData = parse.data.find((company) => company._id.toString() === companyId);
             setData(filteredData);
             setLoading(false);
+            setTimeSlots(filteredData.timeSlots)
         })
         .catch((error) => {
             console.error('Error fetching data:', error);
         });
     }, [companyId]);
 
-    
-
 
     if (loading) {
-        console.log(data)
         return <div>Loading...</div>;
     }
-
-    console.log(calendar)
-
 
     return (
         <Container>
             
             <Name>{data.name}</Name>
             <BottomBar></BottomBar>
-            <StyledDateTimePicker onChange={handleDateTimeChange} value={calendar} />
-            
+            <BookingSelection>
+
+                <StyledCalendar onChange={handleCalendarChange} value={calendar} />
+
+                <DropdownContainer>
+                    <DropdownButton onClick={handleDropdownToggle}>Select a Time</DropdownButton>
+                    <DropdownMenu open={dropdownOpen}>
+
+                    {Object.entries(timeSlots).map(([key, value]) => {
+                        const time = value.time;
+                        const availablePeople = value.availablePeople;
+                        if (availablePeople) {
+                            return (
+                            <TimeSlotButton key={key} onClick={() => handleTimeSlotSelection(time)}>{time}</TimeSlotButton>
+                        );
+                        }
+                    })}
+
+                    </DropdownMenu>
+                    {selectedTime && <p>Selected Time: {selectedTime}</p>}
+                </DropdownContainer>
+
+            </BookingSelection>
 
             <form ref={form} onSubmit={sendEmail}>
-                <input type="hidden" name="calendar" value={calendar || 'date was not selected'}/>
+                <input type="hidden" name="calendar" value={calendar || 'date was not selected'} />
                 <input type="hidden" name="data_email" value={data.email} />
                 <SubmitBook  type="submit">Book it!</SubmitBook>
             </form>
@@ -130,11 +158,13 @@ const BottomBar = styled.div`
 `
 // box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 
+const BookingSelection = styled.div`
+    display: flex;
+`
 
 
-
-const StyledDateTimePicker = styled(DateTimePicker)`
-    width: 850px;
+const StyledCalendar = styled(Calendar)`
+    width: 400px;
     max-width: 100%;
     background-color: #fff;
     color: #222;
@@ -143,62 +173,10 @@ const StyledDateTimePicker = styled(DateTimePicker)`
     line-height: 1.125em;
     padding: 10px;
     box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
-    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+        rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     visibility: visible;
-
-    .react-datetime-picker__inputGroup__leadingZero {
-        visibility: hidden;
-    }
-
-    .react-datetime-picker__inputGroup__day,
-    .react-datetime-picker__inputGroup__year,
-    .react-datetime-picker__inputGroup__month,
-    .react-datetime-picker__inputGroup__minute,
-    .react-datetime-picker__inputGroup__hour{
-        width: 60px !important;
-    }
-
-    .react-datetime-picker__button {
-    // Styles for the button to open the calendar dropdown
-        padding: 8px 12px;
-        background-color: #6f48eb;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-size: 16px;
-        margin: 10px;
-        
-    }
-
-    .react-datetime-picker__inputGroup__input {
-    // Styles for the input field displaying the date
-        width: 100px;
-        padding: 10px 20px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-        background-color: #fff;
-        color: #222;
-    }
-
-    
-
-    .react-datetime-picker__inputGroup__hour,
-    .react-datetime-picker__inputGroup__minute {
-    // Styles for the hour and minute inputs
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-        background-color: #fff;
-        color: #222;
-    }
-
-    .react-datetime-picker__inputGroup__divider {
-    // Styles for the colon separator between the hour and minute inputs
-        margin: 20px;
-    }
+    margin-right:10px;
 
     .react-calendar__navigation button {
         color: #6f48eb;
@@ -206,16 +184,15 @@ const StyledDateTimePicker = styled(DateTimePicker)`
         background: none;
         font-size: 16px;
         margin-top: 8px;
-    
 
-    &:enabled:hover,
-    &:enabled:focus {
-        background-color: #f8f8fa;
-    }
+        &:enabled:hover,
+        &:enabled:focus {
+            background-color: #f8f8fa;
+        }
 
-    &[disabled] {
-        background-color: #f0f0f0;
-    }
+        &[disabled] {
+            background-color: #f0f0f0;
+        }
     }
 
     abbr[title] {
@@ -236,7 +213,6 @@ const StyledDateTimePicker = styled(DateTimePicker)`
         border-radius: 6px;
         font-weight: bold;
         color: #6f48eb;
-    
 
         &:enabled:hover,
         &:enabled:focus {
@@ -260,9 +236,9 @@ const StyledDateTimePicker = styled(DateTimePicker)`
 
         &:enabled:hover,
         &:enabled:focus {
-        background: #6f48eb;
-        color: white;
-    }
+            background: #6f48eb;
+            color: white;
+        }
     }
 
     .react-calendar--selectRange .react-calendar__tile--hover {
@@ -292,9 +268,45 @@ const StyledDateTimePicker = styled(DateTimePicker)`
         background: #6f48eb;
         color: white;
     }
-
+    
 `;
 
+
+const DropdownContainer = styled.div`
+    position: relative;
+    display: inline-block;
+    `;
+
+    const DropdownButton = styled.button`
+    /* Add your button styles here */
+    `;
+
+    const DropdownMenu = styled.div`
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    display: ${({ open }) => (open ? 'block' : 'none')};
+    `;
+
+    const TimeSlotButton = styled.button`
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 4px;
+    background-color: #f8f8f8;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #ebebeb;
+    }
+`;
 
 
 const SubmitBook = styled.button`

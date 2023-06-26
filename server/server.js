@@ -16,19 +16,6 @@ const PORT = 8000;
 app.use(morgan("dev"));
 app.use(express.json());
 
-// app.get("/api/:id", (req, res) => {
-//     const id = req.params.id;
-//     const data = getDataForId(id);
-
-//     if (data) {
-//         res.json(data);
-//     } else {
-//         res.status(404).json({ error: "Data not found" });
-//     }
-
-// });
-
-
 app.get("/api/windowWashing", windowWashingGet)
 
 app.post("/api/windowWashing", windowWashingPost)
