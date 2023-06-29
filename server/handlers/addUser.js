@@ -11,13 +11,12 @@ const options = {
 };
 
 const addUser = async (request, response) => {
-	const { firstName, lastName, email, password, address, phoneNumber } = request.body;
+	const { firstName, lastName, email, password, phoneNumber } = request.body;
 
-	if (!address || !firstName || !lastName || !email) {
+	if (!firstName || !lastName || !email) {
 		return response.status(400).json({
 			status: 400,
 			data: {
-				address: address || "Missing address",
 				firstName: firstName || "Missing first name",
 				lastName: lastName || "Missing last name",
 				email: email || "Missing email",
@@ -31,7 +30,7 @@ const addUser = async (request, response) => {
 
 	try {
 		await client.connect();
-		const db = client.db("Users");
+		const db = client.db("findyourpro");
 
 		const resultGet = await db.collection("users").find().toArray();
 
@@ -46,7 +45,7 @@ const addUser = async (request, response) => {
 
 		let data = null;
 		if (!isEmailDuplicate) {
-			data = { _id: _id, firstName: firstName, lastName: lastName, email: email, address: address, phoneNumber: phoneNumber, password: password };
+			data = { _id: _id, firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, password: password };
 		} else {
 			response.status(409).json({ status: 409, message: "There is already am account with this email" });
 		}

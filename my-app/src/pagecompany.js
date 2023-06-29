@@ -15,16 +15,29 @@ const progressBarAnimation = keyframes`
 
 
 const CompanyPage = () => {
+    //every single useState, useParams that sort of stuff
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [calendar, setCalendar] = useState(new Date())
     const { companyId } = useParams();
-    const form = useRef();
     const [successMessage, setSuccessMessage] = useState("");
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [selectedTime, setSelectedTime] = useState('');
     const [timeSlots, setTimeSlots] = useState([])
+
+
+    //this is to format the data to {day: 21, month: 7, year: 2023} instead of Fri Jul 21 2023 00:00:00 GMT-0400 (Eastern Daylight Time), makes it easier to change
+    const formattedDate = {
+        day: calendar.getDate(),
+        month: calendar.getMonth() + 1,
+        year: calendar.getFullYear(),
+        time: selectedTime
+    };
+
+    //all the following is on clicks and stuff
+
+    const stringFormattedDate = JSON.stringify(formattedDate)
 
     const handleDropdownToggle = () => {
         setDropdownOpen(!dropdownOpen);
@@ -42,15 +55,22 @@ const CompanyPage = () => {
     }
 
     const sendEmail = (e) => {
-        e.preventDefault();
+        e.preventDefault()
+        console.log("test")
 
         if (!calendar) {
             // Date not selected, display an error message or take necessary action
+            console.log("this is where")
             return;
         }
 
+        const emailData = {
+            calendar: stringFormattedDate || 'date was not selected',
+            data_email: data.email
+            
+        };
 
-        emailjs.sendForm('service_giwexjs', 'template_7ri4ars', form.current, 'EEwDD0w5lZNfVQ4V3')
+        emailjs.send('service_giwexjs', 'template_7ri4ars', emailData, 'EEwDD0w5lZNfVQ4V3')
         .then((result) => {
             setSuccessMessage("Thank you!");
             setShowSuccessMessage(true);
@@ -91,6 +111,8 @@ const CompanyPage = () => {
         return <div>Loading...</div>;
     }
 
+    
+
     return (
         <Container>
             
@@ -120,11 +142,12 @@ const CompanyPage = () => {
 
             </BookingSelection>
 
-            <form ref={form} onSubmit={sendEmail}>
-                <input type="hidden" name="calendar" value={calendar || 'date was not selected'} />
+            {/* <form ref={form} onSubmit={sendEmail}>
+                <input type="hidden" name="calendar" value={formattedDate || 'date was not selected'} />
                 <input type="hidden" name="data_email" value={data.email} />
                 <SubmitBook  type="submit">Book it!</SubmitBook>
-            </form>
+            </form> */}
+            <SubmitBook onClick={sendEmail}>Book it!</SubmitBook>
             
             <SuccessContainer>
                     {showSuccessMessage && (
