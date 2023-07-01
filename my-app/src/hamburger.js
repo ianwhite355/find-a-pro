@@ -143,7 +143,7 @@ const Hamburger = () => {
 
     const storedUserData = localStorage.getItem("userData");
     const userData = JSON.parse(storedUserData)
-    const isLoggedIn = userData && userData.firstName
+    const isLoggedIn = userData
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -169,8 +169,9 @@ const Hamburger = () => {
                     <Menu isOpen={isOpen} onClick={toggleMenu}>
                         <Nav isOpen={isOpen}>
                             <NavLink href="#" style={{ animationDelay: '0.2s' }} to="/">Home</NavLink>
-                            <NavLink href="#" style={{ animationDelay: '0.3s' }} to="/businessSignUp">Sign up your business</NavLink>
-                            <NavLink href="#" style={{ animationDelay: '0.4s' }} to="/support">Contact support</NavLink>
+                            <NavLink href="#" style={{ animationDelay: '0.3s' }} to="/businesssignin">Business login</NavLink>
+                            <NavLink href="#" style={{ animationDelay: '0.4s' }} to="/businessSignUp">Sign up your business</NavLink>
+                            <NavLink href="#" style={{ animationDelay: '0.5s' }} to="/support">Contact support</NavLink>
                         </Nav>
                     </Menu>
                 </>

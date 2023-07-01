@@ -4,11 +4,13 @@ import React, { useEffect } from 'react';
 import Header from "./header";
 import HomePage from "./pagehome";
 import CompanyPage from "./pagecompany";
-import BusinessSignUp from "./Pagebusinesssign";
+import BusinessSignUp from "./Pagebusinesssignup";
 import SignIn from "./pagesignin";
 import UserSignUp from "./pageusersignup";
 import Support from "./pagesupport";
 import UsersJobs from "./pageuserjobs";
+import BusinessSignIn from "./pagebusinesssignin";
+import BusinessPage from "./pagebusiness";
 
 
 const App = () => {
@@ -45,7 +47,9 @@ const App = () => {
                 <Route path="/company/:companyId" element={<CompanyPage/>}/>
                 <Route path="/usersjobs" element={<UsersJobs/>}/>
                 <Route path="/businessSignUp" element={<BusinessSignUp/>}/>
-                <Route path="/signin" element={<SignIn/>} />
+                <Route path="/businesssignin" element={<BusinessSignIn/>}/>
+                <Route path="/businesspage" element={<BusinessPage/>}/>
+                <Route path="/usersignin" element={<SignIn/>} />
                 <Route path="/usersignup" element={<UserSignUp/>}/>
                 <Route path="/support" element={<Support/>}/>
             </Routes>

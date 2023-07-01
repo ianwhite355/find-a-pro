@@ -35,14 +35,15 @@ const companyGet = async (request, response) => {
 };
 
 const companyPost = async (request, response) => {
-	const { email, number, name, services, estimateProviders, ownersName } = request.body;
+	const { email, password, number, name, services, estimateProviders, ownersName, image } = request.body;
 
 	if (!number || !name || !email) {
 		return responseponse.status(400).json({
 			status: 400,
 			data: {
-				name: name || "Missing first name",
+				name: name || "Missing name",
 				email: email || "Missing email",
+                password: password || "Missing password",
 				number: number || "Missing phone-number",
 			},
 		});
@@ -63,7 +64,7 @@ const companyPost = async (request, response) => {
 		let data = null;
 
 		if (!isEmailDuplicate) {
-			data = { _id: newId, email: email, number: number, name: name, ownersName: ownersName, services: services, estimateProviders: estimateProviders };
+			data = { _id: newId, email: email, password: password, number: number, name: name, ownersName: ownersName, services: services, estimateProviders: estimateProviders, image: image };
 		} else {
 			response.status(409).json({ status: 409, message: "There is already am account with this email" });
 			return;

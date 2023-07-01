@@ -6,7 +6,7 @@ import emailIcon from "./images/emailicon.png"
 import passwordIcon from "./images/passwordicon.png"
 import { Link, useNavigate } from "react-router-dom"
 
-const UserSignIn = () => {
+const BusinessSignIn = () => {
     const [signIn, setSignIn] = useState({ email: '', password: '' })
     const [showPassword, setShowPassword] = useState(false)
     const [staySignedIn, setStaySignedIn] = useState(false);
@@ -27,7 +27,7 @@ const UserSignIn = () => {
 
 
     const handleSignIn = () => {
-        fetch('/login/user', {
+        fetch('/login/business', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ const UserSignIn = () => {
                 const userData = data.userData;
                 userData.staySignedIn = staySignedIn;
                 localStorage.setItem('userData', JSON.stringify(userData._id));
-                navigate("/")
+                navigate("/businesspage")
             } else {
                 console.log('Login failed');
             }
@@ -205,4 +205,4 @@ const SignUp = styled(Link)`
     }
 `
 
-export default UserSignIn
+export default BusinessSignIn

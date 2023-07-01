@@ -21,8 +21,6 @@ const getEstimatesByCompany = async (request, response) => {
 
 		const estimate = await db.collection("estimates").findOne({ companyId: companyId });
 
-		console.log(estimate);
-
 		if (estimate) {
 			response.status(200).json({ status: 200, data: estimate });
 		} else {
@@ -46,8 +44,6 @@ const getEstimatesByUser = async (request, response) => {
 		const db = client.db("findyourpro");
 
 		const estimate = await db.collection("estimates").findOne({ userId: userId });
-
-		console.log(estimate);
 
 		if (estimate) {
 			response.status(200).json({ status: 200, data: estimate });

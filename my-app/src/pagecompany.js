@@ -56,8 +56,7 @@ const CompanyPage = () => {
 
     const sendEmail = (e) => {
         e.preventDefault()
-        console.log("test")
-
+        
         if (!calendar) {
             // Date not selected, display an error message or take necessary action
             console.log("this is where")

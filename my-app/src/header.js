@@ -4,14 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import Hamburger from "./hamburger";
 
 
-
 export const Header = () => {
 
     const navigate = useNavigate()
 
     const storedUserData = localStorage.getItem("userData");
     const userData = JSON.parse(storedUserData)
-    const isLoggedIn = userData && userData.firstName
+    const isLoggedIn = userData
 
     const key = 'userData';
 
@@ -27,11 +26,10 @@ export const Header = () => {
             <HomeLink to="/">logo here</HomeLink>
             {isLoggedIn ? (
                 <AlreadyIn>
-                    <Welcome>{`Welcome, ${userData.firstName}`}</Welcome>
                     <SignOut onClick={handleSignOut}>Sign Out</SignOut>
                 </AlreadyIn>
             ) : (
-                <Sign to="/signin">Sign in</Sign>
+                <Sign to="/usersignin">Sign in</Sign>
             )}
         </Heading>
         

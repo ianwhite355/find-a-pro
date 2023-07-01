@@ -5,8 +5,8 @@ const morgan = require("morgan");
 const { companyGet, companyPost } = require("./handlers/companies");
 const { addUser } = require("./handlers/addUser")
 const { allDataGet } = require("./handlers/alldata");
-const { login } = require("./handlers/login");
-const { getEstimates, getEstimatesByUser, getEstimatesByCompany } = require("./handlers/getestimates");
+const { loginForUser, loginForBusiness } = require("./handlers/login");
+const { getEstimatesByUser, getEstimatesByCompany } = require("./handlers/getestimates");
 const { createEstimate } = require("./handlers/createestimate");
 
 const app = express();
@@ -23,7 +23,9 @@ app.get("/api/alldata", allDataGet)
 
 app.post("/api/add-user", addUser)
 
-app.post('/login', login);
+app.post('/login/user', loginForUser);
+
+app.post("/login/business", loginForBusiness)
 
 app.post("/api/estimate", createEstimate)
 
