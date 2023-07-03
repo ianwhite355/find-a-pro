@@ -11,7 +11,7 @@ const options = {
 };
 
 const companyGet = async (request, response) => {
-	const _id = Number(request.params._id);
+	const _id = request.params._id;
 
 	const client = new MongoClient(MONGO_URI, options);
 
@@ -34,6 +34,33 @@ const companyGet = async (request, response) => {
 	}
 };
 
+const timeSlotsGet = async (request, response) => {
+	const _id = request.params._id;
+
+	const client = new MongoClient(MONGO_URI, options);
+
+	try {
+		await client.connect();
+
+		const db = client.db("findyourpro");
+
+		const times = await db.collection("times").findOne({ _id });
+
+		console.log(times);
+
+		if (times) {
+			response.status(200).json({ status: 200, data: times });
+		} else {
+			response.status(404).json({ status: 404, message: "time slots not found" });
+		}
+	} catch (error) {
+		console.error(`Internal error: ${error.stack}`);
+		response.status(500).json({ status: 500, error: error.message });
+	} finally {
+		client.close();
+	}
+};
+
 const companyPost = async (request, response) => {
 	const { email, password, number, name, services, estimateProviders, ownersName, image } = request.body;
 
@@ -43,7 +70,7 @@ const companyPost = async (request, response) => {
 			data: {
 				name: name || "Missing name",
 				email: email || "Missing email",
-                password: password || "Missing password",
+				password: password || "Missing password",
 				number: number || "Missing phone-number",
 			},
 		});
@@ -61,18 +88,35 @@ const companyPost = async (request, response) => {
 
 		const isEmailDuplicate = companiesList.some((companies) => companies.email === email);
 
-		let data = null;
+		let companyData = null;
+		let timeData = null;
 
 		if (!isEmailDuplicate) {
-			data = { _id: newId, email: email, password: password, number: number, name: name, ownersName: ownersName, services: services, estimateProviders: estimateProviders, image: image };
+			companyData = {
+				_id: newId,
+				email: email,
+				password: password,
+				number: number,
+				name: name,
+				ownersName: ownersName,
+				services: services,
+				estimateProviders: estimateProviders,
+				image: image,
+			};
+			timeData = {
+				_id: newId,
+				available: { monday: ["9:00 AM", "10:00 AM"], tuesday: ["9:00 AM", "11:00 AM"] },
+				exclusions: [{ day: 25, month: 11, time: "11:00am" }],
+			};
 		} else {
 			response.status(409).json({ status: 409, message: "There is already am account with this email" });
 			return;
 		}
 
-		const collection = await db.collection("companies").insertOne(data);
+		const companyCollection = await db.collection("companies").insertOne(companyData);
+		const timeCollection = await db.collection("times").insertOne(timeData);
 
-		response.status(200).json({ status: 200, data: data });
+		response.status(200).json({ status: 200, data: companyData });
 	} catch (error) {
 		console.error(`Internal error: ${error.stack}`);
 		response.status(500).json({ status: 500, error: error.message });
@@ -84,4 +128,5 @@ const companyPost = async (request, response) => {
 module.exports = {
 	companyGet,
 	companyPost,
+	timeSlotsGet,
 };

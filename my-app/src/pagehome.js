@@ -208,7 +208,7 @@ const ADiv = styled.div`
 	margin: 15px;
 	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 	min-width: 275px;
-    cursor: pointer;
+	cursor: pointer;
 
 	@media (min-width: 200px) and (max-width: 850px) {
 		min-width: calc(100vw / 2);

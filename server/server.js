@@ -2,7 +2,7 @@
 
 const express = require("express");
 const morgan = require("morgan");
-const { companyGet, companyPost } = require("./handlers/companies");
+const { companyGet, companyPost, timeSlotsGet } = require("./handlers/companies");
 const { addUser } = require("./handlers/addUser")
 const { allDataGet } = require("./handlers/alldata");
 const { loginForUser, loginForBusiness } = require("./handlers/login");
@@ -15,7 +15,7 @@ const PORT = 8000;
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.get("/api/company/:id", companyGet)
+app.get("/api/company/:_id", companyGet)
 
 app.post("/api/companyposting", companyPost)
 
@@ -32,5 +32,7 @@ app.post("/api/estimate", createEstimate)
 app.get("/api/getestimatesbyuser/:userId", getEstimatesByUser)
 
 app.get("/api/getestimatescompany/:companyId", getEstimatesByCompany)
+
+app.get("/api/timeslots/:_id", timeSlotsGet)
 
 app.listen(PORT, () => {console.log(`Server listening on port ${PORT}`);});
