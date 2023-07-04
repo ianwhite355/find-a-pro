@@ -34,6 +34,59 @@ const companyGet = async (request, response) => {
 	}
 };
 
+
+//this works but needs to be sent a body, will fix it soon so it takes the proper stuff
+const companyGetNoPass = async (request, response) => {
+	const companyIds = request.body
+
+	const client = new MongoClient(MONGO_URI, options);
+
+	try {
+		await client.connect();
+		const db = client.db("findyourpro");
+
+		const companies = await db
+			.collection("companies")
+			.find({ _id:  { $in: companyIds } }, { projection: { password: 0 } })
+			.toArray();
+
+		if (companies.length > 0) {
+			response.status(200).json({ status: 200, data: companies });
+		} else {
+			response.status(404).json({ status: 404, message: "Companies not found" });
+		}
+	} catch (error) {
+		console.error(`Internal error: ${error.stack}`);
+		response.status(500).json({ status: 500, error: error.message });
+	} finally {
+		client.close();
+	}
+};
+
+// const companyGetNoPass = async (request, response) => {
+// 	const _id = request.params._id;
+
+// 	const client = new MongoClient(MONGO_URI, options);
+
+// 	try {
+// 		await client.connect();
+// 		const db = client.db("findyourpro");
+
+// 		const company = await db.collection("companies").findOne({ _id }, { projection: { password: 0 } });
+
+// 		if (company) {
+// 			response.status(200).json({ status: 200, data: company });
+// 		} else {
+// 			response.status(404).json({ status: 404, message: "Company not found" });
+// 		}
+// 	} catch (error) {
+// 		console.error(`Internal error: ${error.stack}`);
+// 		response.status(500).json({ status: 500, error: error.message });
+// 	} finally {
+// 		client.close();
+// 	}
+// };
+
 const timeSlotsGet = async (request, response) => {
 	const _id = request.params._id;
 
@@ -45,8 +98,6 @@ const timeSlotsGet = async (request, response) => {
 		const db = client.db("findyourpro");
 
 		const times = await db.collection("times").findOne({ _id });
-
-		console.log(times);
 
 		if (times) {
 			response.status(200).json({ status: 200, data: times });
@@ -127,6 +178,7 @@ const companyPost = async (request, response) => {
 
 module.exports = {
 	companyGet,
+	companyGetNoPass,
 	companyPost,
 	timeSlotsGet,
 };

@@ -40,6 +40,7 @@ const BusinessSignIn = () => {
                 const userData = data.userData;
                 userData.staySignedIn = staySignedIn;
                 localStorage.setItem('userData', JSON.stringify(userData._id));
+                localStorage.setItem('type', JSON.stringify("business") )
                 navigate("/businesspage")
             } else {
                 console.log('Login failed');

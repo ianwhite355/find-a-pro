@@ -15,11 +15,15 @@ const getEstimatesByCompany = async (request, response) => {
 
 	const client = new MongoClient(MONGO_URI, options);
 
+    // const stringCompanyId = JSON.parse(companyId)
+
+    // console.log(stringCompanyId)
+
 	try {
 		await client.connect();
 		const db = client.db("findyourpro");
 
-		const estimate = await db.collection("estimates").findOne({ companyId: companyId });
+		const estimate = await db.collection("estimates").find({ companyId: companyId }).toArray();
 
 		if (estimate) {
 			response.status(200).json({ status: 200, data: estimate });
@@ -43,7 +47,7 @@ const getEstimatesByUser = async (request, response) => {
 		await client.connect();
 		const db = client.db("findyourpro");
 
-		const estimate = await db.collection("estimates").findOne({ userId: userId });
+		const estimate = await db.collection("estimates").find({ userId: userId }).toArray();
 
 		if (estimate) {
 			response.status(200).json({ status: 200, data: estimate });

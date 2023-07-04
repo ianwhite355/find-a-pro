@@ -5,6 +5,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 // import 'react-clock/dist/Clock.css';
 import emailjs from "@emailjs/browser";
+import Loader from "./Loader";
 
 const progressBarAnimation = keyframes`
     0% { transform: scaleX(1); }
@@ -24,6 +25,7 @@ const CompanyPage = () => {
 	const [timeSlots, setTimeSlots] = useState([]);
 	const [exclusions, setExclusions] = useState([]);
 	const [dayOfWeek, setDayOfWeek] = useState(null);
+    const [ sameTimeValue, setSameTimeValue] = useState(false)
 
 	//this is to format the data to {day: 21, month: 7, year: 2023} instead of Fri Jul 21 2023 00:00:00 GMT-0400 (Eastern Daylight Time), makes it easier to change
 	//also wayyyyyyy easier to work with and gives it a real data structure
@@ -38,10 +40,10 @@ const CompanyPage = () => {
 	//all the following is on clicks and stuff
 
 	const stringFormattedDay = JSON.stringify(formattedDate.day);
-    
-    const stringFormattedMonth = calendar.toLocaleString(undefined, {month: "long"});
 
-    const stringFormattedYear = JSON.stringify(formattedDate.year);
+	const stringFormattedMonth = calendar.toLocaleString(undefined, { month: "long" });
+
+	const stringFormattedYear = JSON.stringify(formattedDate.year);
 
 	const handleDropdownToggle = () => {
 		setDropdownOpen(!dropdownOpen);
@@ -58,7 +60,6 @@ const CompanyPage = () => {
 		setDayOfWeek(selectedDayOfWeek);
 	};
 
-
 	const sendEmail = (e) => {
 		e.preventDefault();
 
@@ -67,11 +68,10 @@ const CompanyPage = () => {
 			return;
 		}
 
-
 		const emailData = {
 			day: stringFormattedDay || "day was not selected",
-            month: stringFormattedMonth || "month was not selected",
-            year: stringFormattedYear || "Years was not selected",
+			month: stringFormattedMonth || "month was not selected",
+			year: stringFormattedYear || "Years was not selected",
 			data_email: data.email,
 		};
 
@@ -97,8 +97,6 @@ const CompanyPage = () => {
 		return () => clearTimeout(timer);
 	}, [showSuccessMessage]);
 
-    console.log(companyId)
-
 	useEffect(() => {
 		Promise.all([
 			fetch(`/api/company/${companyId}`).then((response) => response.json()),
@@ -115,8 +113,16 @@ const CompanyPage = () => {
 			});
 	}, [companyId]);
 
-	if (loading) {
-		return <div>Loading...</div>;
+	if (
+		exclusions.some(
+			(exclusion) =>
+				exclusion.day === formattedDate.day &&
+				exclusion.month === formattedDate.month &&
+				exclusion.year === formattedDate.year &&
+				exclusion.time === formattedDate.time) && 
+                !sameTimeValue
+                ) {
+		setSameTimeValue(true)
 	}
 
 	const getTileContent = ({ date, view }) => {
@@ -142,7 +148,6 @@ const CompanyPage = () => {
 
 	const selectedTimeSlots = timeSlotsForDay ? timeSlotsForDay[1] : [];
 
-	// Render the time slots
 	let timeSlotButtons;
 
 	if (selectedTimeSlots.length > 0) {
@@ -155,6 +160,9 @@ const CompanyPage = () => {
 		timeSlotButtons = <p>Please choose an available day</p>;
 	}
 
+	if (loading) {
+		return <Loader/>
+	}
 
 	return (
 		<Container>
@@ -167,6 +175,7 @@ const CompanyPage = () => {
 					<DropdownButton onClick={handleDropdownToggle}>Select a Time</DropdownButton>
 					<DropdownMenu open={dropdownOpen}>{timeSlotButtons}</DropdownMenu>
 					{selectedTime && <p>Selected Time: {selectedTime}</p>}
+                    {/* {sameTimeValue && <p>please choose an available day</p>} */}
 				</DropdownContainer>
 			</BookingSelection>
 

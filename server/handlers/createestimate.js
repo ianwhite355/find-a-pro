@@ -11,9 +11,11 @@ const options = {
 };
 
 const createEstimate = async (request, response) => {
+	// const { day, month, year, time } = request.body
 	const { companyId, userId, estimateDate, estimateTime } = request.body;
 
 	const client = new MongoClient(MONGO_URI, options);
+
 
 	const newId = uuidv4();
 
@@ -22,6 +24,13 @@ const createEstimate = async (request, response) => {
 		const db = client.db("findyourpro");
 
 		const estimates = await db.collection("estimates").find().toArray();
+
+		const estimateDateTime = { 
+			day: estimateDate.day,
+			month: estimateDate.month,
+			year: estimateDate.year,
+			time: estimateTime,
+		};
 
 		const data = {
 			_id: newId,
@@ -43,6 +52,8 @@ const createEstimate = async (request, response) => {
 		const companyInsert = await db.collection("companies").updateOne({ _id: companyId }, { $push: { estimates: newId } });
 
 		const userInsert = await db.collection("users").updateOne({ _id: userId }, { $push: { estimates: newId } });
+
+		const times = await db.collection("times").updateOne({ _id: companyId }, { $push: { exclusions: estimateDateTime }});
 
 		if (!companyInsert) {
 			response.status(404).json({ status: 404, message: "Company not found" });
