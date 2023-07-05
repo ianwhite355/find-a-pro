@@ -33,8 +33,6 @@ const UserJobs = () => {
 		}
 	}, [estimates, companyIds]);
 
-	console.log(estimates);
-
 	if (loading) {
 		return <Loader/>;
 	}

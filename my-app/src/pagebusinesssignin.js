@@ -42,6 +42,7 @@ const BusinessSignIn = () => {
                 localStorage.setItem('userData', JSON.stringify(userData._id));
                 localStorage.setItem('type', JSON.stringify("business") )
                 navigate("/businesspage")
+                window.location.reload()
             } else {
                 console.log('Login failed');
             }
@@ -72,7 +73,7 @@ const BusinessSignIn = () => {
                 Stay logged in
             </form>
             <SignInButton onClick={handleSignIn}>Sign in!</SignInButton>
-            <SignUp to="/usersignup">Don't have an account yet, sign up!</SignUp>
+            <SignUp to="/businessSignUp">Your business is not registered yet?</SignUp>
         </Container>
     )
 }

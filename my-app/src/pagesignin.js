@@ -40,7 +40,10 @@ const UserSignIn = () => {
                 const userData = data.userData;
                 userData.staySignedIn = staySignedIn;
                 localStorage.setItem('userData', JSON.stringify(userData._id));
+                localStorage.setItem('type', JSON.stringify('user'))
                 navigate("/")
+                window.location.reload()
+                
             } else {
                 console.log('Login failed');
             }

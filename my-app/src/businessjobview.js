@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Loader from "./Loader";
 
 
-const BusinessPage = () => {
+const BusinessJobs = () => {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
     const [estimates, setEstimates] = useState(null)
@@ -12,6 +12,10 @@ const BusinessPage = () => {
     const storedUserId = localStorage.getItem("userData");
 
     const nonStringUserId = JSON.parse(storedUserId)
+
+    const handleCancel = () => {
+        
+    }
 
     useEffect(() => {
         Promise.all([
@@ -36,10 +40,34 @@ const BusinessPage = () => {
 
     return (
         <>
-			<p>really not sure what is gonna go here, some of there jobs, maybe a link for the schedule, not sure what else</p>
+			<Title>Your Jobs</Title>
+			<JobDiv>
+				{estimates.map((user) => (
+					<JobContainer key={user._id}>
+						<CompanyName>Name will go here when it's fixed</CompanyName>
+						<EstimateTime>{user.estimateTime}</EstimateTime>
+						<Status>Status: {user.estimateStatus}</Status>
+						{user.price ? <Price>{user.price}</Price> : <NoPrice>Price not available</NoPrice>}
+						<JobDetails>
+							<JobDetail>
+								Estimate Date: {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at {user.estimateDate.time}
+							</JobDetail>
+							<JobDetail>
+								Booked Date: {user.workDate ? `${user.workDate.month}/${user.workDate.day}/${user.workDate.year}` : "Not booked yet"}
+							</JobDetail>
+							<JobDetail>Deposit: {user.deposit ? `${user.deposit}` : "No deposit yet"}</JobDetail>
+							<JobDetail>Paid: {user.depositPaid ? "Yes" : "No"}</JobDetail>
+							<JobDetail>Work Complete: {user.workComplete ? "Yes" : "No"}</JobDetail>
+						</JobDetails>
+                        <CancelButton onClick={handleCancel}>Cancel Job</CancelButton>
+					</JobContainer>
+				))}
+			</JobDiv>
 		</>
     )
+
 }
+
 
 
 const Title = styled.h1`
@@ -98,5 +126,14 @@ const JobDetail = styled.p`
     padding:5px;
 `;
 
+const CancelButton = styled.button`
+    background-color: red;
+    font-size: 1.2em;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+`
 
-export default BusinessPage
+
+export default BusinessJobs

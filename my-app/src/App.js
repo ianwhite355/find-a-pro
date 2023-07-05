@@ -10,6 +10,8 @@ import Support from "./pagesupport";
 import UsersJobs from "./pageuserjobs";
 import BusinessSignIn from "./pagebusinesssignin";
 import BusinessPage from "./pagebusiness";
+import Confirmation from "./confirmation";
+import BusinessJobs from "./businessjobview";
 
 const App = () => {
 	const key = "userData";
@@ -24,8 +26,6 @@ const App = () => {
             setIsBusinessUser(true);
         }
 	}, []);
-
-	console.log(isBusinessUser);
 
 	const handleBeforeUnload = (event) => {
 		const storedUserData = localStorage.getItem(key);
@@ -61,9 +61,11 @@ const App = () => {
 				<Route path="/businessSignUp" element={<BusinessSignUp />} />
 				<Route path="/businesssignin" element={<BusinessSignIn />} />
 				<Route path="/businesspage" element={<BusinessPage />} />
+                <Route path="/businessjobs" element={<BusinessJobs/>}/>
 				<Route path="/usersignin" element={<SignIn />} />
 				<Route path="/usersignup" element={<UserSignUp />} />
 				<Route path="/support" element={<Support />} />
+                <Route path="/confirmation" element={<Confirmation/>}/>
 			</Routes>
 		</BrowserRouter>
 	);

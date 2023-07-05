@@ -113,7 +113,7 @@ const timeSlotsGet = async (request, response) => {
 };
 
 const companyPost = async (request, response) => {
-	const { email, password, number, name, services, estimateProviders, ownersName, image } = request.body;
+	const { email, password, number, name, services, estimateProviders, ownersName, image, logo, description } = request.body;
 
 	if (!number || !name || !email) {
 		return responseponse.status(400).json({
@@ -153,11 +153,13 @@ const companyPost = async (request, response) => {
 				services: services,
 				estimateProviders: estimateProviders,
 				image: image,
+                logo: logo,
+                description: description
 			};
 			timeData = {
 				_id: newId,
 				available: { monday: ["9:00 AM", "10:00 AM"], tuesday: ["9:00 AM", "11:00 AM"] },
-				exclusions: [{ day: 25, month: 11, time: "11:00am" }],
+				exclusions: [{ day: 10, month: 7, year: 2023, time: "9:00 AM" }],
 			};
 		} else {
 			response.status(409).json({ status: 409, message: "There is already am account with this email" });

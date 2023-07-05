@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 const Hamburger = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isBusinessUser, setIsBusinessUser] = useState(false);
+    const [loading, setLoading] = useState(true)
+
 
 	const type = "type";
 
@@ -14,9 +16,12 @@ const Hamburger = () => {
 		const storedType = localStorage.getItem(type);
 		const parsedType = JSON.parse(storedType);
 
-		if (parsedType && parsedType === "business") {
+		if (parsedType === "business") {
 			setIsBusinessUser(true);
 		}
+
+        setLoading(false);
+
 	}, []);
 
 	const storedUserData = localStorage.getItem("userData");
@@ -27,7 +32,9 @@ const Hamburger = () => {
 		setIsOpen(!isOpen);
 	};
 
-	console.log(isBusinessUser);
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
 	return (
 		<>
@@ -41,7 +48,7 @@ const Hamburger = () => {
 									<NavLink href="#" style={{ animationDelay: "0.2s" }} to="/">
 										Home
 									</NavLink>
-									<NavLink href="#" style={{ animationDelay: "0.3s" }} to="/usersjobs">
+									<NavLink href="#" style={{ animationDelay: "0.3s" }} to="/businessjobs">
 										Your jobs
 									</NavLink>
 									<NavLink href="#" style={{ animationDelay: "0.4s" }} to="/business/schedule">

@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 // import 'react-clock/dist/Clock.css';
@@ -25,10 +25,16 @@ const CompanyPage = () => {
 	const [timeSlots, setTimeSlots] = useState([]);
 	const [exclusions, setExclusions] = useState([]);
 	const [dayOfWeek, setDayOfWeek] = useState(null);
-    const [ sameTimeValue, setSameTimeValue] = useState(false)
+	const [sameTimeValue, setSameTimeValue] = useState(false);
+    const [alreadySent, setAlreadySent] = useState(false)
+
+
+	const navigate = useNavigate();
 
 	//this is to format the data to {day: 21, month: 7, year: 2023} instead of Fri Jul 21 2023 00:00:00 GMT-0400 (Eastern Daylight Time), makes it easier to change
 	//also wayyyyyyy easier to work with and gives it a real data structure
+
+	const storedUserId = localStorage.getItem("userData");
 
 	const formattedDate = {
 		day: calendar.getDate(),
@@ -54,6 +60,8 @@ const CompanyPage = () => {
 		setDropdownOpen(false);
 	};
 
+	
+
 	const handleCalendarChange = (date) => {
 		setCalendar(date);
 		const selectedDayOfWeek = date.toLocaleDateString(undefined, { weekday: "long" });
@@ -64,9 +72,13 @@ const CompanyPage = () => {
 		e.preventDefault();
 
 		if (!calendar) {
-			console.log("this is where an error message may be in the future just incase");
+			console.log("A date was not selected.");
 			return;
 		}
+
+        if (alreadySent) {
+            return;
+        }
 
 		const emailData = {
 			day: stringFormattedDay || "day was not selected",
@@ -75,14 +87,36 @@ const CompanyPage = () => {
 			data_email: data.email,
 		};
 
-		emailjs
-			.send("service_giwexjs", "template_7ri4ars", emailData, "EEwDD0w5lZNfVQ4V3")
-			.then((result) => {
-				setSuccessMessage("Thank you!");
-				setShowSuccessMessage(true);
+        const jsonUserId = JSON.parse(storedUserId)
+
+		const postData = {
+			companyId: companyId,
+			userId: jsonUserId,
+			estimateDate: formattedDate,
+		};
+
+		Promise.all([
+			fetch("/api/estimate", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(postData),
+			}),
+			emailjs.send("service_giwexjs", "template_7ri4ars", emailData, "EEwDD0w5lZNfVQ4V3"),
+		])
+			.then(([estimateResponse, emailResponse]) => {
+				if (estimateResponse.status === 200 && emailResponse.status === 200) {
+                    setAlreadySent(true);
+					setSuccessMessage("Thank you!");
+					setShowSuccessMessage(true);
+					navigate("/confirmation");
+				} else {
+					console.log("Post or email sending failed");
+				}
 			})
 			.catch((error) => {
-				console.log(error.text);
+				console.error("Error:", error);
 			});
 	};
 
@@ -119,41 +153,57 @@ const CompanyPage = () => {
 				exclusion.day === formattedDate.day &&
 				exclusion.month === formattedDate.month &&
 				exclusion.year === formattedDate.year &&
-				exclusion.time === formattedDate.time) && 
-                !sameTimeValue
-                ) {
-		setSameTimeValue(true)
+				exclusion.time === formattedDate.time
+		) &&
+		!sameTimeValue
+	) {
+		setSameTimeValue(true);
 	}
 
 	const getTileContent = ({ date, view }) => {
 		if (view === "month") {
-			// const currentDayOfWeek = new Date().getDay();
-			const selectedDayOfWeek = date.getDay();
-
-			if (selectedDayOfWeek !== 1 && selectedDayOfWeek !== 2) {
-				return <TileNumber>None</TileNumber>;
-			} else {
-				return <TileContent>Open</TileContent>;
-			}
+			// const selectedDayOfWeek = date.getDay();
 		}
 
 		return null;
 	};
 
-	const timeSlotsForDay = dayOfWeek
-		? Object.entries(timeSlots.available).find(([day, slots]) => {
-				return day.toLowerCase() === dayOfWeek.toLowerCase();
-		})
-		: null;
+	// const timeSlotsForDay = dayOfWeek
+	// 	? Object.entries(timeSlots.available).find(([day]) => {
+	// 			return day.toLowerCase() === dayOfWeek.toLowerCase();
+	// 	  })
+	// 	: null;
 
-	const selectedTimeSlots = timeSlotsForDay ? timeSlotsForDay[1] : [];
+	let selectedTimeSlots = [];
+
+	if (dayOfWeek) {
+		const timeAnotherSlot = Object.entries(timeSlots.available).find(([day]) => {
+			return day.toLowerCase() === dayOfWeek.toLowerCase();
+		});
+		if (timeAnotherSlot) {
+			const timeAnotherSlotFormatted = timeAnotherSlot[1].map((time) => {
+				return {
+					day: calendar.getDate(),
+					month: calendar.getMonth() + 1,
+					year: calendar.getFullYear(),
+					time: time,
+				};
+			});
+
+			selectedTimeSlots = timeAnotherSlotFormatted.filter((timeSlot) => {
+				return !exclusions.some((exclusion) => {
+					return JSON.stringify(timeSlot) === JSON.stringify(exclusion);
+				});
+			});
+		}
+	}
 
 	let timeSlotButtons;
 
 	if (selectedTimeSlots.length > 0) {
 		timeSlotButtons = selectedTimeSlots.map((timeSlot, index) => (
-			<TimeSlotButton key={index} onClick={() => handleTimeSlotSelection(timeSlot)}>
-				{timeSlot}
+			<TimeSlotButton key={index} onClick={() => handleTimeSlotSelection(timeSlot.time)}>
+				{timeSlot.time}
 			</TimeSlotButton>
 		));
 	} else {
@@ -161,39 +211,50 @@ const CompanyPage = () => {
 	}
 
 	if (loading) {
-		return <Loader/>
+		return <Loader />;
 	}
+
+	// console.log(selectedTimeSlots)
 
 	return (
 		<Container>
-			<Name>{data.name}</Name>
-			<BottomBar></BottomBar>
-			<BookingSelection>
-				<StyledCalendar onChange={handleCalendarChange} value={calendar} tileContent={getTileContent} />
+			<BackgroundImage src={data.image} />
+			<ContentWrapper>
+				<MainHeader>
+					<Logo src={data.logo} />
+					<div>
+						<Name>{data.name}</Name>
+						<p>reviews here later, on 5 stars</p>
+					</div>
+				</MainHeader>
+				<Description>{data.description}</Description>
+				<BookingSelection>
+					<StyledCalendar onChange={handleCalendarChange} value={calendar} tileContent={getTileContent} />
 
-				<DropdownContainer>
-					<DropdownButton onClick={handleDropdownToggle}>Select a Time</DropdownButton>
-					<DropdownMenu open={dropdownOpen}>{timeSlotButtons}</DropdownMenu>
-					{selectedTime && <p>Selected Time: {selectedTime}</p>}
-                    {/* {sameTimeValue && <p>please choose an available day</p>} */}
-				</DropdownContainer>
-			</BookingSelection>
+					<DropdownContainer>
+						<DropdownButton onClick={handleDropdownToggle}>Select a Time</DropdownButton>
+						<DropdownMenu open={dropdownOpen}>{timeSlotButtons}</DropdownMenu>
+						{selectedTime && <p>Selected Time: {selectedTime}</p>}
+						{/* {sameTimeValue && <p>please choose an available day</p>} */}
+					</DropdownContainer>
+				</BookingSelection>
 
-			{/* <form ref={form} onSubmit={sendEmail}>
+				{/* <form ref={form} onSubmit={sendEmail}>
                 <input type="hidden" name="calendar" value={formattedDate || 'date was not selected'} />
                 <input type="hidden" name="data_email" value={data.email} />
                 <SubmitBook  type="submit">Book it!</SubmitBook>
             </form> */}
-			<SubmitBook onClick={sendEmail}>Book it!</SubmitBook>
+				<SubmitBook onClick={storedUserId ? sendEmail : () => navigate("/usersignin")}>Book it!</SubmitBook>
 
-			<SuccessContainer>
-				{showSuccessMessage && (
-					<SuccessWrapper>
-						<SuccessMessage>{successMessage}</SuccessMessage>
-						<ProgressBar />
-					</SuccessWrapper>
-				)}
-			</SuccessContainer>
+				<SuccessContainer>
+					{showSuccessMessage && (
+						<SuccessWrapper>
+							<SuccessMessage>{successMessage}</SuccessMessage>
+							<ProgressBar />
+						</SuccessWrapper>
+					)}
+				</SuccessContainer>
+			</ContentWrapper>
 		</Container>
 	);
 };
@@ -202,20 +263,60 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+	justify-content: flex-start;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
+    
 	width: 80%;
-	height: 400px;
+	min-height: 100vh;
+	overflow: hidden;
+`;
+
+const BackgroundImage = styled.img`
+	width: 100%;
+	height: 60vh; /* Adjust the height as needed */
+	object-fit: cover;
+`;
+
+const MainHeader = styled.div`
+	display: flex;
+`;
+
+const Logo = styled.img`
+	width: 200px;
+	height: 200px;
+	border-radius: 10px;
+	border: 2px grey solid;
+	margin-right: 15px;
+`;
+
+const ContentWrapper = styled.div`
+	position: relative;
+	top: -50px;
+	background-color: #ffffff;
+	width: 80%;
 	margin: 0 auto;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
+	z-index: 1;
+	min-height: 1000px;
+
+	@media (max-width: 768px) {
+		width: 90%;
+		padding: 10px;
+	}
 `;
 
 const Name = styled.p`
 	font-size: 3em;
 `;
 
-const BottomBar = styled.div``;
-// box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+const Description = styled.p`
+	padding: 50px;
+`;
 
 const BookingSelection = styled.div`
 	display: flex;
@@ -328,9 +429,6 @@ const StyledCalendar = styled(Calendar)`
 	}
 `;
 
-const TileNumber = styled.div``;
-
-const TileContent = styled.div``;
 
 const DropdownContainer = styled.div`
 	position: relative;
@@ -338,12 +436,21 @@ const DropdownContainer = styled.div`
 `;
 
 const DropdownButton = styled.button`
-	/* Add your button styles here */
+	padding: 8px 16px;
+	font-size: 1em;
+	background-color: #f8f8f8;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: #ebebeb;
+	}
 `;
 
 const DropdownMenu = styled.div`
 	position: absolute;
-	top: 100%;
+	top: 10%;
 	left: 0;
 	width: 100%;
 	background-color: #fff;
@@ -370,7 +477,7 @@ const TimeSlotButton = styled.button`
 
 const SubmitBook = styled.button`
 	position: relative;
-	top: 400px;
+	top: 150px;
 `;
 
 const SuccessContainer = styled.div`

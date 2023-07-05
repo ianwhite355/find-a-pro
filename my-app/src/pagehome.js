@@ -3,14 +3,14 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-	const [searchValue, setSearchValue] = useState("");
+	const [query, setQuery] = useState("");
 	const [data, setData] = useState([]);
 
 	const navigate = useNavigate();
 
-	const handleInputChange = (event) => {
-		setSearchValue(event.target.value);
-	};
+	// const handleInputChange = (event) => {
+	// 	setSearchValue(event.target.value);
+	// };
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -25,28 +25,38 @@ const HomePage = () => {
 			});
 	}, []);
 
-
-
 	const windowWashingData = data.filter((company) => company.services.includes("windowwashing"));
 
 	const poolCleaningData = data.filter((company) => company.services.includes("poolcleaning"));
 
 	const paintingData = data.filter((company) => company.services.includes("painting"));
 
-	useEffect(() => {
-		// console.log(windowWashingData);
-		// console.log(poolCleaningData);
-		// console.log(paintingData);
-	}, [data]);
+	// useEffect(() => {
+	// 	console.log(windowWashingData);
+	// 	console.log(poolCleaningData);
+	// 	console.log(paintingData);
+	// }, [data]);
 
 	return (
 		<DisFlex>
 			<MainBar>
 				<SearchBar>
-					<SearchInput type="text" placeholder="Search" value={searchValue} onChange={handleInputChange} />
-					<SubmitButton type="submit" onClick={handleSubmit}>
+                <SearchInput type="text" placeholder="Search" onChange={(event) => setQuery(event.target.value)} />
+					{data.filter((post) => {
+						if (query === "") {
+							return ;
+						} else if (post.name && post.name.toLowerCase().includes(query.toLowerCase())) {
+							return post;
+						}
+					}).map((post, index) => (
+						<Suggestions key={post.name}>
+							<p>{post.name}</p>
+							<p><i>services: {post.services}</i></p>
+						</Suggestions>
+					))}
+					{/* <SubmitButton type="submit" onClick={handleSubmit}>
 						Search
-					</SubmitButton>
+					</SubmitButton> */}
 				</SearchBar>
 			</MainBar>
 
@@ -112,6 +122,19 @@ const SearchBar = styled.form`
 	justify-content: center;
 	position: relative;
 	top: 30px;
+	display: flex;
+	flex-direction: column;
+`;
+
+const Suggestions = styled.div`
+	text-align: left;
+
+	border: black ridge 1px;
+	border-radius: 10px;
+	margin: 3px;
+	width: 20rem;
+	padding-left: 10px;
+    background-color: white;
 `;
 
 const SearchInput = styled.input`

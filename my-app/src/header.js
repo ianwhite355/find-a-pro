@@ -8,6 +8,7 @@ export const Header = () => {
 	const type = "type";
 
 	const [isBusinessUser, setIsBusinessUser] = useState(false);
+    const [loading, setLoading] = useState(true)
 
 	const navigate = useNavigate();
 
@@ -18,7 +19,11 @@ export const Header = () => {
 		if (parsedType === "business") {
 			setIsBusinessUser(true);
 		}
+
+        setLoading(false);
+
 	}, []);
+    
 
 	const storedUserData = localStorage.getItem("userData");
 	const userData = JSON.parse(storedUserData);
@@ -29,6 +34,11 @@ export const Header = () => {
 		localStorage.removeItem(key);
 		navigate("/");
 	};
+
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
 	return (
 		<Heading>
@@ -54,6 +64,7 @@ const Heading = styled.div`
 	display: flex;
 	justify-content: space-between;
 	height: 75px;
+    border-bottom: 3px solid lightgrey;
 
 	@media (min-width: 200px) and (max-width: 850px) {
 		height: 60px;
