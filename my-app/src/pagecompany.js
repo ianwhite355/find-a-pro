@@ -12,7 +12,7 @@ const progressBarAnimation = keyframes`
     100% { transform: scaleX(0); }
 `;
 
-const CompanyPage = () => {
+const CompanyPage = ({ setConfirmationData }) => {
 	//every single useState, useParams that sort of stuff
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -30,6 +30,7 @@ const CompanyPage = () => {
 
 
 	const navigate = useNavigate();
+
 
 	//this is to format the data to {day: 21, month: 7, year: 2023} instead of Fri Jul 21 2023 00:00:00 GMT-0400 (Eastern Daylight Time), makes it easier to change
 	//also wayyyyyyy easier to work with and gives it a real data structure
@@ -70,6 +71,10 @@ const CompanyPage = () => {
 
 	const sendEmail = (e) => {
 		e.preventDefault();
+        setConfirmationData({
+            time: formattedDate,
+            companyName: data.name,
+        })
 
 		if (!calendar) {
 			console.log("A date was not selected.");
@@ -176,6 +181,8 @@ const CompanyPage = () => {
 
 	let selectedTimeSlots = [];
 
+
+
 	if (dayOfWeek) {
 		const timeAnotherSlot = Object.entries(timeSlots.available).find(([day]) => {
 			return day.toLowerCase() === dayOfWeek.toLowerCase();
@@ -190,6 +197,8 @@ const CompanyPage = () => {
 				};
 			});
 
+            //
+
 			selectedTimeSlots = timeAnotherSlotFormatted.filter((timeSlot) => {
 				return !exclusions.some((exclusion) => {
 					return JSON.stringify(timeSlot) === JSON.stringify(exclusion);
@@ -197,6 +206,7 @@ const CompanyPage = () => {
 			});
 		}
 	}
+
 
 	let timeSlotButtons;
 
@@ -213,8 +223,6 @@ const CompanyPage = () => {
 	if (loading) {
 		return <Loader />;
 	}
-
-	// console.log(selectedTimeSlots)
 
 	return (
 		<Container>

@@ -45,7 +45,7 @@ const Hamburger = () => {
 						<Nav isOpen={isOpen}>
 							{isBusinessUser ? (
 								<>
-									<NavLink href="#" style={{ animationDelay: "0.2s" }} to="/">
+									<NavLink href="#" style={{ animationDelay: "0.2s" }} to="/businesspage">
 										Home
 									</NavLink>
 									<NavLink href="#" style={{ animationDelay: "0.3s" }} to="/businessjobs">

@@ -39,9 +39,8 @@ const createEstimate = async (request, response) => {
 			estimateDate: estimateDateTime,
 			workDate: null,
 			estimateStatus: "pending",
-			workComplete: false,
 			price: null,
-			paid: false,
+			paid: "No",
 			deposit: null,
 			depositPaid: false,
 		};

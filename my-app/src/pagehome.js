@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 const HomePage = () => {
 	const [query, setQuery] = useState("");
 	const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true)
+    const [isBusinessUser, setIsBusinessUser] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -12,8 +15,9 @@ const HomePage = () => {
 	// 	setSearchValue(event.target.value);
 	// };
 
-	const handleSubmit = (event) => {
+	const handleClear = (event) => {
 		event.preventDefault();
+        setQuery("")
 		// Perform search or other actions with searchValue
 	};
 
@@ -22,8 +26,23 @@ const HomePage = () => {
 			.then((response) => response.json())
 			.then((parse) => {
 				setData(parse.data);
+                setLoading(false)
 			});
 	}, []);
+
+
+	const type = "type";
+
+    useEffect(() => {
+		const storedType = localStorage.getItem(type);
+		const parsedType = JSON.parse(storedType);
+
+		if (parsedType === "business") {
+			setIsBusinessUser(true);
+		}
+
+	}, []);
+
 
 	const windowWashingData = data.filter((company) => company.services.includes("windowwashing"));
 
@@ -31,32 +50,48 @@ const HomePage = () => {
 
 	const paintingData = data.filter((company) => company.services.includes("painting"));
 
-	// useEffect(() => {
-	// 	console.log(windowWashingData);
-	// 	console.log(poolCleaningData);
-	// 	console.log(paintingData);
-	// }, [data]);
+    if (loading) {
+        return (
+            <Loader/>
+        )
+    }
+
+    if (isBusinessUser) {
+        return (
+            <>
+                <p>this page is restricted to businesses, if you would like to use please make a regular account</p>
+            </>
+        )
+    }
 
 	return (
 		<DisFlex>
 			<MainBar>
 				<SearchBar>
-                <SearchInput type="text" placeholder="Search" onChange={(event) => setQuery(event.target.value)} />
-					{data.filter((post) => {
-						if (query === "") {
-							return ;
-						} else if (post.name && post.name.toLowerCase().includes(query.toLowerCase())) {
-							return post;
-						}
-					}).map((post, index) => (
-						<Suggestions key={post.name}>
-							<p>{post.name}</p>
-							<p><i>services: {post.services}</i></p>
-						</Suggestions>
-					))}
-					{/* <SubmitButton type="submit" onClick={handleSubmit}>
-						Search
-					</SubmitButton> */}
+					<SuggestionDiv>
+                    <SearchInput type="text" placeholder="Search" value={query} onChange={(event) => setQuery(event.target.value)} />
+						{data
+							.filter((post) => {
+								if (query === "") {
+									return;
+								} else if (post.name && post.name.toLowerCase().includes(query.toLowerCase())) {
+									return post;
+								}
+							})
+							.map((post, index) => (
+								<Suggestions key={post.name}>
+                                    <Link to={`/company/${post._id}`}>
+									<p>{post.name}</p>
+									<p>
+										<i>services: {post.services}</i>
+									</p>
+                                    </Link>
+								</Suggestions>
+							))}
+					</SuggestionDiv>
+					<SubmitButton type="submit" onClick={handleClear}>
+						Clear
+					</SubmitButton>
 				</SearchBar>
 			</MainBar>
 
@@ -122,22 +157,26 @@ const SearchBar = styled.form`
 	justify-content: center;
 	position: relative;
 	top: 30px;
-	display: flex;
-	flex-direction: column;
+
 `;
+
+const SuggestionDiv = styled.div`
+    display: inline-block;
+`
 
 const Suggestions = styled.div`
 	text-align: left;
-
+    width:200px;
 	border: black ridge 1px;
 	border-radius: 10px;
 	margin: 3px;
 	width: 20rem;
 	padding-left: 10px;
-    background-color: white;
+	background-color: white;
 `;
 
 const SearchInput = styled.input`
+    width:200px;
 	padding: 8px;
 	border: 1px solid #ccc;
 	border-radius: 4px;

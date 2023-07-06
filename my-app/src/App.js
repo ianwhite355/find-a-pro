@@ -11,12 +11,14 @@ import UsersJobs from "./pageuserjobs";
 import BusinessSignIn from "./pagebusinesssignin";
 import BusinessPage from "./pagebusiness";
 import Confirmation from "./confirmation";
-import BusinessJobs from "./businessjobview";
+import BusinessJobs from "./businessjobs";
 
 const App = () => {
 	const key = "userData";
 	const type = "type";
+
 	const [isBusinessUser, setIsBusinessUser] = useState(false);
+    const [confirmationData, setConfirmationData] = useState()
 
 	useEffect(() => {
 		const storedType = localStorage.getItem("type");
@@ -56,7 +58,7 @@ const App = () => {
             <Header/>
 			<Routes>
 				<Route path="" element={<HomePage />} />
-				<Route path="/company/:companyId" element={<CompanyPage />} />
+				<Route path="/company/:companyId" element={<CompanyPage setConfirmationData={setConfirmationData}/>}  />
 				<Route path="/usersjobs" element={<UsersJobs />} />
 				<Route path="/businessSignUp" element={<BusinessSignUp />} />
 				<Route path="/businesssignin" element={<BusinessSignIn />} />
@@ -65,7 +67,7 @@ const App = () => {
 				<Route path="/usersignin" element={<SignIn />} />
 				<Route path="/usersignup" element={<UserSignUp />} />
 				<Route path="/support" element={<Support />} />
-                <Route path="/confirmation" element={<Confirmation/>}/>
+                <Route path="/confirmation" element={<Confirmation confirmationData={confirmationData}/>} />
 			</Routes>
 		</BrowserRouter>
 	);

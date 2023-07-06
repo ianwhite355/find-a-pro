@@ -10,6 +10,7 @@ const { getEstimatesByUser, getEstimatesByCompany } = require("./handlers/getest
 const { createEstimate } = require("./handlers/createestimate");
 const { exclusionsPost } = require("./handlers/exclusions");
 const { deleteJob } = require("./handlers/canceljob");
+const { modifyEstimate } = require("./handlers/editestimate");
 
 const app = express();
 const PORT = 8000;
@@ -32,6 +33,8 @@ app.post('/login/user', loginForUser);
 app.post("/login/business", loginForBusiness)
 
 app.post("/api/estimate", createEstimate)
+
+app.put("/api/estimatesmodify", modifyEstimate)
 
 app.post("/api/exclusions/:_id", exclusionsPost)
 

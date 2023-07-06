@@ -7,10 +7,45 @@ const UserJobs = () => {
 	const [estimates, setEstimates] = useState(null);
 	const [companyData, setCompanyData] = useState(null);
 	const [companyIds, setCompanyIds] = useState([]);
+    const [companyId, setCompanyId] = useState(null)
 
 	const storedUserId = localStorage.getItem("userData");
 
 	const nonStringUserId = JSON.parse(storedUserId);
+
+    const jsonUserId = JSON.parse(storedUserId)
+
+    
+
+    const handleCancel = (companyId, estimateId) => {
+
+
+        const cancelData = {
+            userId: jsonUserId,
+            companyId: companyId,
+            estimateId: estimateId
+        }
+    
+        fetch("/api/deletejob", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cancelData),
+        })
+            .then((response) => response.json())
+            .then((response) => {
+                if (response.status === 200) {
+                    window.location.reload()
+                } else if (response.status === 404) {
+                    console.log("error cancelling job")
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+    }
 
 	useEffect(() => {
 		fetch(`/api/getestimatesbyuser/${nonStringUserId}`)
@@ -37,9 +72,20 @@ const UserJobs = () => {
 		return <Loader/>;
 	}
 
+
+    if (estimates.length === 0) {
+        return (
+            <>
+                <Title>none, will make this better later</Title>
+            </>
+        )
+    } 
+    
+    
 	return (
 		<>
 			<Title>Your Jobs</Title>
+            
 			<JobDiv>
 				{estimates.map((user) => (
 					<JobContainer key={user._id}>
@@ -58,6 +104,7 @@ const UserJobs = () => {
 							<JobDetail>Paid: {user.depositPaid ? "Yes" : "No"}</JobDetail>
 							<JobDetail>Work Complete: {user.workComplete ? "Yes" : "No"}</JobDetail>
 						</JobDetails>
+                        <CancelButton onClick={() => handleCancel(user.companyId, user._id)}>Cancel Job</CancelButton>
 					</JobContainer>
 				))}
 			</JobDiv>
@@ -115,6 +162,15 @@ const JobDetails = styled.div`
 	margin-top: 10px;
     padding:5px;
 `;
+
+const CancelButton = styled.button`
+    background-color: red;
+    font-size: 1.2em;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+`
 
 const JobDetail = styled.p`
 	margin: 0;
