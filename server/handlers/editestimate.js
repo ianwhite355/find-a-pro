@@ -26,12 +26,32 @@ const modifyEstimate = async (request, response) => {
 			// userId: userId,
 			// estimateDate: estimateDateTime,
 			// workDate: null,
-			estimateStatus: estimateStatus,
-			price: price,
-			paid: paid,
-			deposit: deposit,
-			depositPaid: depositPaid,
+			// estimateStatus: estimateStatus,
+			// price: price,
+			// paid: paid,
+			// deposit: deposit,
+			// depositPaid: depositPaid,
 		};
+
+        if (estimateStatus) {
+            updateData.estimateStatus = estimateStatus;
+        }
+
+        if (price) {
+            updateData.price = price;
+        }
+
+        if (paid) {
+            updateData.paid = paid;
+        }
+
+        if (deposit) {
+            updateData.deposit = deposit;
+        }
+
+        if (depositPaid) {
+            updateData.depositPaid = depositPaid;
+        }
 
 		const collection = await db.collection("estimates").updateOne({ _id: estimateId}, { $set: updateData })
 

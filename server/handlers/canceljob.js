@@ -22,15 +22,15 @@ const deleteJob = async (request, response) => {
 		await client.connect();
 		const db = client.db("findyourpro");
 
-		const userEsimateDelete = await db.collection("users").updateOne({ _id: userId },{ $pull: { estimates: estimateId } });
+		// const userEsimateDelete = await db.collection("users").updateOne({ _id: userId },{ $pull: { estimates: estimateId } });
 
-        const companyEstimateDelete = await db.collection("companies").updateOne({ _id: companyId }, { $pull: { estimates: estimateId }})
+        // const companyEstimateDelete = await db.collection("companies").updateOne({ _id: companyId }, { $pull: { estimates: estimateId }})
 		
-        const deleteEstimate =  await db.collection("estimates").deleteOne({ _id: estimateId });
+        const deleteEstimate =  await db.collection("estimates").updateOne({ _id: estimateId }, { $set: { estimateStatus: "cancelled"}});
 
         //need to delete the exclusion that matches inside of exclusions in the times collection, just wait for now
 
-        if (userEsimateDelete && companyEstimateDelete && deleteEstimate) {
+        if (deleteEstimate) {
             response.status(200).json({ status: 200, message: "estimate has been deleted" })
         } else {
             response.status(404).json({ status: 404, message: "error deleting data" })

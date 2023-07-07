@@ -11,13 +11,17 @@ const options = {
 };
 
 const changeSchedule = async (request, response) => {
-	const {  } = request.body;
+
+    //this will change a good amount really just it will change
+    const { companyId } = request.body;
 
 	const client = new MongoClient(MONGO_URI, options);
 
 	try {
 		await client.connect();
 		const db = client.db("findyourpro");
+
+        const modifySchedule = await db.collection("times").updateOne({ _id: companyId})
 
 		
 	} catch (err) {

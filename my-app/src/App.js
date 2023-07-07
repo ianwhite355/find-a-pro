@@ -12,6 +12,7 @@ import BusinessSignIn from "./pagebusinesssignin";
 import BusinessPage from "./pagebusiness";
 import Confirmation from "./confirmation";
 import BusinessJobs from "./businessjobs";
+import Calendar from "./weeklycalendar";
 
 const App = () => {
 	const key = "userData";
@@ -64,6 +65,7 @@ const App = () => {
 				<Route path="/businesssignin" element={<BusinessSignIn />} />
 				<Route path="/businesspage" element={<BusinessPage />} />
                 <Route path="/businessjobs" element={<BusinessJobs/>}/>
+				<Route path="business/schedule" element={<Calendar/>}/>
 				<Route path="/usersignin" element={<SignIn />} />
 				<Route path="/usersignup" element={<UserSignUp />} />
 				<Route path="/support" element={<Support />} />

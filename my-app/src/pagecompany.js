@@ -26,11 +26,9 @@ const CompanyPage = ({ setConfirmationData }) => {
 	const [exclusions, setExclusions] = useState([]);
 	const [dayOfWeek, setDayOfWeek] = useState(null);
 	const [sameTimeValue, setSameTimeValue] = useState(false);
-    const [alreadySent, setAlreadySent] = useState(false)
-
+	const [alreadySent, setAlreadySent] = useState(false);
 
 	const navigate = useNavigate();
-
 
 	//this is to format the data to {day: 21, month: 7, year: 2023} instead of Fri Jul 21 2023 00:00:00 GMT-0400 (Eastern Daylight Time), makes it easier to change
 	//also wayyyyyyy easier to work with and gives it a real data structure
@@ -61,8 +59,6 @@ const CompanyPage = ({ setConfirmationData }) => {
 		setDropdownOpen(false);
 	};
 
-	
-
 	const handleCalendarChange = (date) => {
 		setCalendar(date);
 		const selectedDayOfWeek = date.toLocaleDateString(undefined, { weekday: "long" });
@@ -71,19 +67,19 @@ const CompanyPage = ({ setConfirmationData }) => {
 
 	const sendEmail = (e) => {
 		e.preventDefault();
-        setConfirmationData({
-            time: formattedDate,
-            companyName: data.name,
-        })
+		setConfirmationData({
+			time: formattedDate,
+			companyName: data.name,
+		});
 
 		if (!calendar) {
 			console.log("A date was not selected.");
 			return;
 		}
 
-        if (alreadySent) {
-            return;
-        }
+		if (alreadySent) {
+			return;
+		}
 
 		const emailData = {
 			day: stringFormattedDay || "day was not selected",
@@ -92,7 +88,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 			data_email: data.email,
 		};
 
-        const jsonUserId = JSON.parse(storedUserId)
+		const jsonUserId = JSON.parse(storedUserId);
 
 		const postData = {
 			companyId: companyId,
@@ -112,7 +108,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 		])
 			.then(([estimateResponse, emailResponse]) => {
 				if (estimateResponse.status === 200 && emailResponse.status === 200) {
-                    setAlreadySent(true);
+					setAlreadySent(true);
 					setSuccessMessage("Thank you!");
 					setShowSuccessMessage(true);
 					navigate("/confirmation");
@@ -173,20 +169,15 @@ const CompanyPage = ({ setConfirmationData }) => {
 		return null;
 	};
 
-	// const timeSlotsForDay = dayOfWeek
-	// 	? Object.entries(timeSlots.available).find(([day]) => {
-	// 			return day.toLowerCase() === dayOfWeek.toLowerCase();
-	// 	  })
-	// 	: null;
-
 	let selectedTimeSlots = [];
 
-
+	//dont even ask about the following mess, It works, not sure how but it works and thats the important part, a mess to say the least
 
 	if (dayOfWeek) {
 		const timeAnotherSlot = Object.entries(timeSlots.available).find(([day]) => {
 			return day.toLowerCase() === dayOfWeek.toLowerCase();
 		});
+
 		if (timeAnotherSlot) {
 			const timeAnotherSlotFormatted = timeAnotherSlot[1].map((time) => {
 				return {
@@ -197,16 +188,51 @@ const CompanyPage = ({ setConfirmationData }) => {
 				};
 			});
 
-            //
+			const uniqueTimeSlots = [];
 
-			selectedTimeSlots = timeAnotherSlotFormatted.filter((timeSlot) => {
-				return !exclusions.some((exclusion) => {
-					return JSON.stringify(timeSlot) === JSON.stringify(exclusion);
+			timeAnotherSlotFormatted.forEach((time) => {
+				const foundTime = uniqueTimeSlots.find((uniqueTimeSlot) => {
+					return time.time === uniqueTimeSlot.time.time;
 				});
+				if (foundTime) {
+					foundTime.adding += 1;
+				} else {
+					uniqueTimeSlots.push({
+						day: calendar.getDate(),
+						month: calendar.getMonth() + 1,
+						year: calendar.getFullYear(),
+						time: time.time,
+						adding: 1,
+					});
+				}
 			});
+
+			const mergedTimeSlots = [];
+			uniqueTimeSlots.forEach((timeSlot) => {
+				const existingSlot = mergedTimeSlots.find((slot) => slot.time === timeSlot.time);
+				if (existingSlot) {
+					existingSlot.adding += timeSlot.adding;
+				} else {
+					mergedTimeSlots.push(timeSlot);
+				}
+			});
+
+			const noAddingMergedTimeSlots = mergedTimeSlots.map(({ adding, ...rest }) => rest);
+
+			selectedTimeSlots = noAddingMergedTimeSlots.filter((timeSlot, index) => {
+				let matchedCount = 0;
+				exclusions.forEach((exclusion) => {
+					if (JSON.stringify(timeSlot) === JSON.stringify(exclusion)) {
+						matchedCount += 1;
+					}
+				});
+
+				console.log(mergedTimeSlots[index].adding)
+				return matchedCount <= mergedTimeSlots[index].adding;
+			});
+
 		}
 	}
-
 
 	let timeSlotButtons;
 
@@ -272,11 +298,11 @@ const Container = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
-    
+	position: relative;
+	left: 50%;
+	transform: translate(-50%);
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
+
 	width: 80%;
 	min-height: 100vh;
 	overflow: hidden;
@@ -436,7 +462,6 @@ const StyledCalendar = styled(Calendar)`
 		color: white;
 	}
 `;
-
 
 const DropdownContainer = styled.div`
 	position: relative;

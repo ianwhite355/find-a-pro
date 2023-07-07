@@ -6,90 +6,97 @@ const BusinessJobs = () => {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState(null);
 	const [estimates, setEstimates] = useState(null);
-	const [jobStatus, setJobStatus] = useState({});
-	const [originalEstimateStatus, setOriginalEstimateStatus] = useState(null);
 	const [editedPrice, setEditedPrice] = useState("");
 	const [deposit, setDeposit] = useState("");
-    const [depositPaid, setDepositPaid] = useState(null)
-	const [paidStatus, setPaidStatus] = useState(null);
+	// const [depositPaid, setDepositPaid] = useState(null);
+	const [paidStatus, setPaidStatus] = useState(false);
 	const [jobId, setJobId] = useState(null);
-    const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState(null);
 	const [editing, setEditing] = useState(false);
-    const [page, setPage] = useState("pending")
+	const [page, setPage] = useState("pending");
+    const [jobStatus, setJobStatus] = useState(false);
 
 	const storedUserId = localStorage.getItem("userData");
 
 	const nonStringUserId = JSON.parse(storedUserId);
 
-
-
 	const handleCancel = () => {
+		setEditing(false);
 
-        setEditing(false)
+		const cancelData = {
+			userId: userId,
+			companyId: nonStringUserId,
+			estimateId: jobId,
+		};
 
-        const cancelData = {
-            userId: userId,
-            companyId: nonStringUserId,
-            estimateId: jobId
-        }
-    
-        fetch("/api/deletejob", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cancelData),
-        })
-            .then((response) => response.json())
-            .then((response) => {
-                if (response.status === 200) {
-                    window.location.reload()
-                } else if (response.status === 404) {
-                    console.log("error cancelling job")
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-
-    }
+		fetch("/api/deletejob", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(cancelData),
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				if (response.status === 200) {
+					window.location.reload();
+				} else if (response.status === 404) {
+					console.log("error cancelling job");
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
 
 	const handleSave = () => {
-
 		const updatedEstimate = {
-            estimateId: jobId,
-            estimateStatus: jobStatus,
-            price: editedPrice,
-            paid: paidStatus,
-            deposit: deposit,
-            // depositPaid: true
-        };
-    
-        fetch("/api/estimatesmodify", {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updatedEstimate),
-        })
-            .then((response) => response.json())
-            .then((response) => {
-                if (response.status === 200) {
-                    window.location.reload();
+			estimateId: jobId,
+			// estimateStatus: jobStatus,
+			// price: editedPrice,
+            // paid: paidStatus,
+            // deposit: deposit
+			// depositPaid: true
+		};
 
-                } else {
-                    console.log("error changing data")
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        if (jobStatus) {
+            updatedEstimate.estimateStatus = jobStatus;
+        }
 
+        if (editedPrice) {
+            updatedEstimate.price = editedPrice;
+        }
         
+        if (paidStatus) {
+            updatedEstimate.paid = paidStatus;
+        }
+        
+        if (deposit) {
+            updatedEstimate.deposit = deposit;
+        }
+
+		fetch("/api/estimatesmodify", {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(updatedEstimate),
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				if (response.status === 200) {
+					window.location.reload();
+				} else {
+					console.log("error changing data");
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 	};
 
 	const handleDiscard = () => {
-		setJobStatus({});
+		setJobStatus(page);
 		setEditedPrice("");
 		setDeposit("");
 		setPaidStatus(null);
@@ -100,7 +107,7 @@ const BusinessJobs = () => {
 	const handleEdit = (jobId, userId) => {
 		setEditing(true);
 		setJobId(jobId);
-        setUserId(userId)
+		setUserId(userId);
 	};
 
 	useEffect(() => {
@@ -122,84 +129,93 @@ const BusinessJobs = () => {
 		return <Loader />;
 	}
 
+	console.log(jobId);
+
 	return (
 		<>
 			<Title>Your Jobs</Title>
-            <ChoicesDiv>
-                <Choices onClick={() => setPage("pending")}>Pending</Choices>
-                <Choices onClick={() => setPage("estimate-given")}>Estimate Given</Choices>
-                <Choices onClick={() => setPage("accepted")}>Accepted</Choices>
-                <Choices onClick={() => setPage("completed")}>Completed</Choices>
-                <Choices onClick={() => setPage("cancelled")}>Cancelled</Choices>
-            </ChoicesDiv>
+			<ChoicesDiv>
+				<Choices active={page === 'pending'} onClick={() => setPage("pending")}>Pending</Choices>
+				<Choices active={page === 'estimate-given'} onClick={() => setPage("estimate-given")}>Estimate Given</Choices>
+				<Choices active={page === 'accepted'} onClick={() => setPage("accepted")}>Accepted</Choices>
+				<Choices active={page === 'completed'} onClick={() => setPage("completed")}>Completed</Choices>
+				<Choices active={page === 'cancelled'} onClick={() => setPage("cancelled")}>Cancelled</Choices>
+			</ChoicesDiv>
 			<JobDiv>
-				{estimates.filter((user) => user.estimateStatus === page).map((user) => (
+				{estimates
+					.filter((user) => user.estimateStatus === page)
+					.map((user) => (
 						<JobContainer key={user._id}>
 							<CompanyName>Name will go here when it's fixed</CompanyName>
-							<EditButton disabled={editing} onClick={() => handleEdit(user._id, user.userId)}>
+							<EditButton disabled={editing && jobId === user._id} onClick={() => handleEdit(user._id, user.userId)}>
 								Edit
 							</EditButton>
 							<EstimateTime>{user.estimateTime}</EstimateTime>
 							<Status>
 								<StatusButton
-									disabled={!editing}
-									selected={user.estimateStatus === "pending"}
+									disabled={!editing || jobId !== user._id}
+									selected={(jobStatus === "pending" && jobId === user._id) || (page === "pending" && !(jobStatus && jobId === user._id))}
 									onClick={() => {
-										user.estimateStatus = "pending";
 										setJobStatus("pending");
 									}}
 								>
 									Pending
 								</StatusButton>
 								<StatusButton
-									disabled={!editing}
-									selected={user.estimateStatus === "estimate-given"}
+									disabled={!editing || jobId !== user._id}
+									selected={(jobStatus === "estimate-given" && jobId === user._id) || (page === "estimate-given" && !(jobStatus && jobId === user._id))}
 									onClick={() => {
-										user.estimateStatus = "estimate-given";
 										setJobStatus("estimate-given");
 									}}
 								>
 									Estimate Given
 								</StatusButton>
 								<StatusButton
-									disabled={!editing}
-									selected={user.estimateStatus === "accepted"}
+									disabled={!editing || jobId !== user._id}
+									selected={(jobStatus === "accepted" && jobId === user._id) || (page === "accepted" && !(jobStatus && jobId === user._id))}
 									onClick={() => {
-										user.estimateStatus = "accepted";
 										setJobStatus("accepted");
 									}}
 								>
 									Accepted
 								</StatusButton>
 								<StatusButton
-									disabled={!editing}
-									selected={user.estimateStatus === "completed"}
+									disabled={!editing || jobId !== user._id}
+									selected={(jobStatus === "completed" && jobId === user._id) || (page === "completed" && !(jobStatus && jobId === user._id))}
 									onClick={() => {
-										user.estimateStatus = "completed";
 										setJobStatus("completed");
 									}}
 								>
 									Completed
 								</StatusButton>
-                                <StatusButton
-									disabled={!editing}
-									selected={user.estimateStatus === "cancelled"}
+								<StatusButton
+									disabled={!editing || jobId !== user._id}
+									selected={(jobStatus === "cancelled" && jobId === user._id) || (page === "cancelled" && !(jobStatus && jobId === user._id))}
 									onClick={() => {
-										user.estimateStatus = "cancelled";
 										setJobStatus("cancelled");
 									}}
 								>
-									Completed
+									Cancelled
 								</StatusButton>
 							</Status>
 							<JobDetails>
 								{user.price ? (
-									<JobDetail>{user.price}</JobDetail>
+									<PriceContainer>
+                                    <PriceLabel>Price:</PriceLabel>
+                                    <PriceInput
+                                        disabled={!editing || jobId !== user._id}
+                                        type="text"
+                                        placeholder={user.price}
+                                        value={editedPrice}
+                                        onChange={(e) => setEditedPrice(e.target.value)}
+                                    />
+                                    <PriceLabel>Currently: {user.price}</PriceLabel>
+                                </PriceContainer>
 								) : (
 									<PriceContainer>
 										<PriceLabel>Price:</PriceLabel>
 										<PriceInput
-											disabled={!editing}
+											disabled={!editing || jobId !== user._id}
 											type="text"
 											placeholder="XXX.XX"
 											value={editedPrice}
@@ -211,12 +227,22 @@ const BusinessJobs = () => {
 									Estimate Date: {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at {user.estimateDate.time}
 								</JobDetail>
 								{user.deposit ? (
-									<JobDetail>Deposit: {user.deposit}</JobDetail>
+									<PriceContainer>
+                                    <PriceLabel>Deposit:</PriceLabel>
+                                    <PriceInput
+                                        disabled={!editing || jobId !== user._id}
+                                        type="text"
+                                        placeholder={user.price}
+                                        value={deposit}
+                                        onChange={(e) => setDeposit(e.target.value)}
+                                    />
+                                    <PriceLabel>Currently:{user.deposit}</PriceLabel>
+                                </PriceContainer>
 								) : (
 									<PriceContainer>
 										<PriceLabel>Deposit:</PriceLabel>
 										<PriceInput
-											disabled={!editing}
+											disabled={!editing || jobId !== user._id}
 											type="text"
 											placeholder="XXX.XX"
 											value={deposit}
@@ -227,7 +253,7 @@ const BusinessJobs = () => {
 								<PaidStatusContainer>
 									<PaidStatusLabel>Paid:</PaidStatusLabel>
 									<PaidStatusButton
-										disabled={!editing}
+										disabled={!editing || jobId !== user._id}
 										selected={user.paid === "Yes"}
 										onClick={() => {
 											user.paid = "Yes";
@@ -237,7 +263,7 @@ const BusinessJobs = () => {
 										Yes
 									</PaidStatusButton>
 									<PaidStatusButton
-										disabled={!editing}
+										disabled={!editing || jobId !== user._id}
 										selected={user.paid === "No"}
 										onClick={() => {
 											user.paid = "No";
@@ -248,14 +274,14 @@ const BusinessJobs = () => {
 									</PaidStatusButton>
 								</PaidStatusContainer>
 							</JobDetails>
-							<CancelButton disabled={!editing} onClick={handleCancel}>
+							<CancelButton disabled={!editing || jobId !== user._id} onClick={handleCancel}>
 								Cancel Job
 							</CancelButton>
 							<ButtonContainer>
-								<SaveButton disabled={!editing} onClick={handleSave}>
+								<SaveButton disabled={!editing || jobId !== user._id} onClick={handleSave}>
 									Save changes
 								</SaveButton>
-								<DiscardButton disabled={!editing} onClick={handleDiscard}>
+								<DiscardButton disabled={!editing || jobId !== user._id} onClick={handleDiscard}>
 									Discard changes
 								</DiscardButton>
 							</ButtonContainer>
@@ -271,19 +297,20 @@ const Title = styled.h1`
 `;
 
 const ChoicesDiv = styled.div`
-    display: flex;
-    position: relative;
-    left: 50%;
-    //fix the centering later
-    transform: translate(-16%);
-    
-`
+	display: flex;
+	position: relative;
+	left: 50%;
+	//fix the centering later
+	transform: translate(-18%);
+`;
 
 const Choices = styled.p`
-    margin-right:20px;
-    margin-left:20px;
-
-`
+    font-size:1.2em;
+	margin-right: 20px;
+	margin-left: 20px;
+    cursor: pointer;
+    text-decoration: ${(props) => (props.active ? 'underline' : 'none')};
+`;
 
 const EditButton = styled.button`
 	background-color: ${({ disabled }) => (disabled ? "gray" : "green")};
@@ -415,4 +442,4 @@ const PaidStatusButton = styled.button`
 	cursor: pointer;
 `;
 
-export default BusinessJobs
+export default BusinessJobs;

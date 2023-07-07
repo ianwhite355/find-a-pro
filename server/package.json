@@ -4,7 +4,7 @@
     "description": "This is our first Node Workshop!",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js",
+        "start": "nodemon server.js",
         "start:server": "nodemon server.js"
     },
     "author": "Scott Morin <scott@journeyedu.co>",
