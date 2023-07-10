@@ -96,6 +96,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 			estimateDate: formattedDate,
 		};
 
+		
 		Promise.all([
 			fetch("/api/estimate", {
 				method: "POST",
@@ -272,12 +273,6 @@ const CompanyPage = ({ setConfirmationData }) => {
 						{/* {sameTimeValue && <p>please choose an available day</p>} */}
 					</DropdownContainer>
 				</BookingSelection>
-
-				{/* <form ref={form} onSubmit={sendEmail}>
-                <input type="hidden" name="calendar" value={formattedDate || 'date was not selected'} />
-                <input type="hidden" name="data_email" value={data.email} />
-                <SubmitBook  type="submit">Book it!</SubmitBook>
-            </form> */}
 				<SubmitBook onClick={storedUserId ? sendEmail : () => navigate("/usersignin")}>Book it!</SubmitBook>
 
 				<SuccessContainer>

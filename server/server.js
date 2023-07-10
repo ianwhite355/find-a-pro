@@ -11,6 +11,7 @@ const { createEstimate } = require("./handlers/createestimate");
 const { exclusionsPost } = require("./handlers/exclusions");
 const { deleteJob } = require("./handlers/canceljob");
 const { modifyEstimate } = require("./handlers/editestimate");
+const { changeSchedule } = require("./handlers/modifyschedule");
 
 const app = express();
 const PORT = 8000;
@@ -45,5 +46,7 @@ app.get("/api/getestimatescompany/:companyId", getEstimatesByCompany)
 app.get("/api/timeslots/:_id", timeSlotsGet)
 
 app.post("/api/deletejob", deleteJob)
+
+app.post("/api/schedulechanges", changeSchedule)
 
 app.listen(PORT, () => {console.log(`Server listening on port ${PORT}`);});

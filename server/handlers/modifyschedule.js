@@ -13,7 +13,7 @@ const options = {
 const changeSchedule = async (request, response) => {
 
     //this will change a good amount really just it will change
-    const { companyId } = request.body;
+    const { companyId, schedule } = request.body;
 
 	const client = new MongoClient(MONGO_URI, options);
 
@@ -21,8 +21,13 @@ const changeSchedule = async (request, response) => {
 		await client.connect();
 		const db = client.db("findyourpro");
 
-        const modifySchedule = await db.collection("times").updateOne({ _id: companyId})
+        const modifySchedule = await db.collection("times").updateOne({ _id: companyId}, { $set: { available: schedule } })
 
+		if (modifySchedule.matchedCount === 0) {
+			response.status(404).json({ status: 404, message: "error modifying schedule"})
+		} else {
+			response.status(200).json({ status: 200, message:"schedule modified succesfully" });
+		}
 		
 	} catch (err) {
 		(err) => console.log(err);
