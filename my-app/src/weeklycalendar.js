@@ -7,7 +7,6 @@ import "react-calendar/dist/Calendar.css";
 import { useParams } from "react-router-dom";
 //This was a good project learn alot its very practical, but working with a Calendar was the biggest pain, worth it tho
 
-
 const theTimeSlots = Array.from({ length: 35 }, (_, index) => {
 	const hours = Math.floor(index / 2) + 5; // Start from 5 AM
 	const minutes = (index % 2) * 30;
@@ -70,7 +69,9 @@ const Schedule = () => {
 	const handleUp = (day, timeSlot) => {
 		setTimeSlots((prevTimeSlots) => {
 			const updatedTimeSlots = { ...prevTimeSlots };
-			updatedTimeSlots[day] = [...prevTimeSlots[day], timeSlot];
+			if (updatedTimeSlots[day]) {
+				updatedTimeSlots[day] = [...prevTimeSlots[day], timeSlot];
+			}
 			return updatedTimeSlots;
 		});
 	};
@@ -78,8 +79,13 @@ const Schedule = () => {
 	const handleDown = (day, timeSlot) => {
 		setTimeSlots((prevTimeSlots) => {
 			const updatedTimeSlots = { ...prevTimeSlots };
-			const timeSlotIndex = updatedTimeSlots[day].indexOf(timeSlot);
-			updatedTimeSlots[day].splice(timeSlotIndex, 1);
+			if (updatedTimeSlots[day]) {
+				const value = updatedTimeSlots[day].indexOf(timeSlot);
+
+				if (value >= 0 && day) {
+					updatedTimeSlots[day].splice(value, 1);
+				}
+			}
 
 			return updatedTimeSlots;
 		});
@@ -113,7 +119,7 @@ const Schedule = () => {
 		setSelectedTime(timeSlot.time);
 	};
 
-    let updatedExlusions = [];
+	let updatedExlusions = [];
 
 	const handleExclusionSave = (event) => {
 		const formattedDate = {
@@ -126,19 +132,19 @@ const Schedule = () => {
 		for (let i = 0; i < adding; i++) {
 			updatedExlusions.push(formattedDate);
 		}
-		console.log(updatedExlusions)
+		console.log(updatedExlusions);
 
-		console.log(exclusions)
+		console.log(exclusions);
 
 		const exclusionData = {
 			companyId: nonStringUserId,
-			exclusion: updatedExlusions
-		} 
+			exclusion: updatedExlusions,
+		};
 
-		console.log(exclusionData)
-        //not hooked up on server but this is just for the sake of having something
+		console.log(exclusionData);
+		//not hooked up on server but this is just for the sake of having something
 
-        fetch("/api/addexclusion", {
+		fetch("/api/addexclusion", {
 			method: "Post",
 			headers: {
 				"Content-Type": "application/json",
@@ -156,20 +162,17 @@ const Schedule = () => {
 			.catch((error) => {
 				console.error(error);
 			});
-
 	};
 
-    const handleCancel = (exclusion) => {
+	const handleCancel = (exclusion) => {
+		const postData = {
+			companyId: nonStringUserId,
+			exclusion: exclusion,
+		};
 
+		//this is not hooked up, just to get it done
 
-        const postData = {
-            companyId:nonStringUserId,
-            exclusion: exclusion
-        }
-
-        //this is not hooked up, just to get it done
-
-        fetch("/api/deleteexclusion", {
+		fetch("/api/deleteexclusion", {
 			method: "Post",
 			headers: {
 				"Content-Type": "application/json",
@@ -187,7 +190,7 @@ const Schedule = () => {
 			.catch((error) => {
 				console.error(error);
 			});
-    }
+	};
 
 	useEffect(() => {
 		Promise.all([
@@ -315,7 +318,7 @@ const Schedule = () => {
 				</Choices>
 			</ChoicesDiv>
 			{page === "calendar" && (
-				<>
+				<CalendarDiv>
 					<WeekList>
 						<Title>Calendar</Title>
 						{daysOfWeek.map((day) => (
@@ -350,7 +353,7 @@ const Schedule = () => {
 					</WeekList>
 
 					<Submit onClick={handleSave}>Save schedule changes</Submit>
-				</>
+				</CalendarDiv>
 			)}
 			{page === "exclusions" && (
 				<Exclusions>
@@ -360,10 +363,7 @@ const Schedule = () => {
 							<p>
 								Current exlusions: {exclusion.year}/{exclusion.month}/{exclusion.day} at {exclusion.time}
 							</p>
-                            <CancelButton onClick={() => handleCancel(exclusion)}>
-								Cancel exlusion
-							</CancelButton>
-                            
+							<CancelButton onClick={() => handleCancel(exclusion)}>Cancel exlusion</CancelButton>
 						</CurrentExlusions>
 					))}
 					<AddExlusion>
@@ -395,10 +395,11 @@ const CalendarContainer = styled.div`
 
 const ChoicesDiv = styled.div`
 	display: flex;
-	position: relative;
-	left: 50%;
-	//fix the centering later
-	transform: translate(-18%);
+	margin: auto;
+`;
+
+const CalendarDiv = styled.div`
+	margin: auto;
 `;
 
 const Choices = styled.p`
@@ -431,7 +432,7 @@ const WeekListItem = styled.li`
 const Day = styled.div`
 	flex: 0 0 100px;
 	font-weight: bold;
-    /* can decide if i want it this way or the other */
+	/* can decide if i want it this way or the other */
 	/* text-transform: uppercase; */
 `;
 
@@ -465,12 +466,12 @@ const TimeSlots = styled.ul`
 
 const TimeSlotDiv = styled.div`
 	display: flex;
-    width: 200px;
+	width: 200px;
 `;
 
 const TimeSlotinput = styled.input`
 	width: 40px;
-    height: 40px;
+	height: 40px;
 `;
 
 const TimeSlotButton = styled.button`
@@ -499,7 +500,6 @@ const TimeSlot = styled.p`
 	background-color: #f8f8f8;
 	border: none;
 	border-radius: 4px;
-
 `;
 
 const StyledCalendar = styled(Calendar)`
@@ -642,7 +642,7 @@ const DropdownMenu = styled.div`
 const Exclusions = styled.div``;
 
 const CurrentExlusions = styled.div`
-    margin:10px;
+	margin: 10px;
 	display: flex;
 	width: 300px;
 `;
