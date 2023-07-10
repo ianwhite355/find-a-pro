@@ -157,8 +157,7 @@ const companyPost = async (request, response) => {
                 description: description
 			};
 			timeData = {
-				// _id: randomId,
-                companyId: newId,
+                _id: newId,
 				available: { monday: ["9:00 AM", "10:00 AM"], tuesday: ["9:00 AM", "11:00 AM"] },
 				exclusions: [{ day: 10, month: 7, year: 2023, time: "9:00 AM" }],
 			};

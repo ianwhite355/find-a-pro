@@ -11,7 +11,7 @@ const { createEstimate } = require("./handlers/createestimate");
 const { exclusionsPost } = require("./handlers/exclusions");
 const { deleteJob } = require("./handlers/canceljob");
 const { modifyEstimate } = require("./handlers/editestimate");
-const { changeSchedule } = require("./handlers/modifyschedule");
+const { changeSchedule, cancelExclusion, changeExclusions } = require("./handlers/modifyschedule");
 
 const app = express();
 const PORT = 8000;
@@ -48,5 +48,9 @@ app.get("/api/timeslots/:_id", timeSlotsGet)
 app.post("/api/deletejob", deleteJob)
 
 app.post("/api/schedulechanges", changeSchedule)
+
+app.post("/api/addexclusion", changeExclusions)
+
+app.post("/api/deleteexclusion", cancelExclusion)
 
 app.listen(PORT, () => {console.log(`Server listening on port ${PORT}`);});

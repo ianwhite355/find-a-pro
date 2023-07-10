@@ -126,27 +126,36 @@ const Schedule = () => {
 		for (let i = 0; i < adding; i++) {
 			updatedExlusions.push(formattedDate);
 		}
+		console.log(updatedExlusions)
 
+		console.log(exclusions)
+
+		const exclusionData = {
+			companyId: nonStringUserId,
+			exclusion: updatedExlusions
+		} 
+
+		console.log(exclusionData)
         //not hooked up on server but this is just for the sake of having something
 
-        // fetch("/api/addxclusion", {
-		// 	method: "Post",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// 	body: JSON.stringify(updatedExlusions),
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((response) => {
-		// 		if (response.status === 200) {
-		// 			window.location.reload();
-		// 		} else {
-		// 			console.log("error cancelling exclusion");
-		// 		}
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error(error);
-		// 	});
+        fetch("/api/addexclusion", {
+			method: "Post",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(exclusionData),
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				if (response.status === 200) {
+					window.location.reload();
+				} else {
+					console.log("error cancelling exclusion");
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 
 	};
 
@@ -160,24 +169,24 @@ const Schedule = () => {
 
         //this is not hooked up, just to get it done
 
-        // fetch("/api/deleteexclusion", {
-		// 	method: "Post",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// 	body: JSON.stringify(postData),
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((response) => {
-		// 		if (response.status === 200) {
-		// 			window.location.reload();
-		// 		} else {
-		// 			console.log("error cancelling exclusion");
-		// 		}
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error(error);
-		// 	});
+        fetch("/api/deleteexclusion", {
+			method: "Post",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(postData),
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				if (response.status === 200) {
+					window.location.reload();
+				} else {
+					console.log("error cancelling exclusion");
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+			});
     }
 
 	useEffect(() => {
@@ -218,8 +227,6 @@ const Schedule = () => {
 	};
 
 	let selectedTimeSlots = [];
-
-	//dont even ask about the following mess, It works, not sure how but it works and thats the important part, a mess to say the least
 
 	if (dayOfWeek) {
 		const timeAnotherSlot = Object.entries(timeSlots).find(([day]) => {
@@ -265,10 +272,7 @@ const Schedule = () => {
 				}
 			});
 
-			const noAddingMergedTimeSlots = mergedTimeSlots.map(({ adding, ...rest }) => ({
-				...rest,
-				adding,
-			}));
+			const noAddingMergedTimeSlots = mergedTimeSlots.map(({ adding, ...rest }) => rest);
 
 			selectedTimeSlots = noAddingMergedTimeSlots.filter((timeSlot, index) => {
 				let matchedCount = 0;
@@ -289,7 +293,7 @@ const Schedule = () => {
 		timeSlotButtons = selectedTimeSlots.map((timeSlot, index) => (
 			<TimeSlotDiv key={index}>
 				<TimeSlot>{timeSlot.time}</TimeSlot>
-				<TimeSlotinput placeholder={timeSlot.adding} type="number" min="0" onChange={(event) => handleAddingChange(event.target.value, timeSlot)} />
+				<TimeSlotinput placeholder="0" type="number" min="0" onChange={(event) => handleAddingChange(event.target.value, timeSlot)} />
 			</TimeSlotDiv>
 		));
 	} else {
