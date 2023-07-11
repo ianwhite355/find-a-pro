@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Loader from "./Loader";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { useParams } from "react-router-dom";
 //This was a good project learn alot its very practical, but working with a Calendar was the biggest pain, worth it tho
 
 const theTimeSlots = Array.from({ length: 35 }, (_, index) => {
@@ -76,6 +74,8 @@ const Schedule = () => {
 		});
 	};
 
+	console.log(exclusions);
+
 	const handleDown = (day, timeSlot) => {
 		setTimeSlots((prevTimeSlots) => {
 			const updatedTimeSlots = { ...prevTimeSlots };
@@ -92,9 +92,20 @@ const Schedule = () => {
 	};
 
 	const handleSave = () => {
+
+		//got this solution online its so it sorts it out to make 9:00 AM or the earliest time slot always be first in the array and be in order
+		const sortedTimeSlots = Object.keys(timeSlots).reduce((acc, day) => {
+			acc[day] = timeSlots[day].sort((a, b) => {
+				const timeA = new Date(`1970/01/01 ${a}`).getTime();
+				const timeB = new Date(`1970/01/01 ${b}`).getTime();
+				return timeA - timeB;
+			});
+			return acc;
+		}, {});
+
 		const changes = {
 			companyId: nonStringUserId,
-			schedule: timeSlots,
+			schedule: sortedTimeSlots,
 		};
 
 		fetch("/api/schedulechanges", {
@@ -113,6 +124,8 @@ const Schedule = () => {
 				console.error("Error:", error);
 			});
 	};
+
+	console.log(timeSlots);
 
 	const handleAddingChange = (event, timeSlot) => {
 		setAdding(event);
@@ -221,13 +234,13 @@ const Schedule = () => {
 		setSameTimeValue(true);
 	}
 
-	const getTileContent = ({ date, view }) => {
-		if (view === "month") {
-			// const selectedDayOfWeek = date.getDay();
-		}
+	// const getTileContent = ({ date, view }) => {
+	// 	if (view === "month") {
+	// 		// const selectedDayOfWeek = date.getDay();
+	// 	}
 
-		return null;
-	};
+	// 	return null;
+	// };
 
 	let selectedTimeSlots = [];
 
@@ -389,7 +402,7 @@ const CalendarContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	/* max-width: 1200px; */
-	margin: 0 auto;
+	margin: auto;
 	font-family: Arial, sans-serif;
 `;
 
@@ -430,10 +443,10 @@ const WeekListItem = styled.li`
 `;
 
 const Day = styled.div`
-	flex: 0 0 100px;
+	/* flex: 0 0 100px; */
 	font-weight: bold;
 	/* can decide if i want it this way or the other */
-	/* text-transform: uppercase; */
+	text-transform: uppercase;
 `;
 
 const TimesDiv = styled.div`
@@ -480,6 +493,7 @@ const TimeSlotButton = styled.button`
 	padding: 5px;
 	text-align: center;
 	background-color: ${(props) => (props.isSelected ? "green" : "white")};
+	color: ${(props) => (props.isSelected ? "white" : "black")};
 	border: none;
 	border-radius: 4px;
 	border: 1px solid black;
@@ -639,7 +653,9 @@ const DropdownMenu = styled.div`
 	display: ${({ open }) => (open ? "block" : "none")};
 `;
 
-const Exclusions = styled.div``;
+const Exclusions = styled.div`
+	margin: auto;
+`;
 
 const CurrentExlusions = styled.div`
 	margin: 10px;
@@ -649,11 +665,6 @@ const CurrentExlusions = styled.div`
 
 const AddExlusion = styled.div`
 	display: flex;
-`;
-
-const ExclusionForm = styled.form`
-	margin-top: 15px;
-	margin-left: 10px;
 `;
 
 const CancelButton = styled.button`
@@ -666,10 +677,18 @@ const CancelButton = styled.button`
 `;
 
 const Submit = styled.button`
-	width: 150px;
+	position: relative;
+	left: 50%;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	background-color: #007bff;
+	transform: translate(-50%);
+	width: 300px;
 	padding: 10px;
 	margin: 10px;
 	height: 50px;
+	font-size:1.5em;
 `;
 
 export default Schedule;

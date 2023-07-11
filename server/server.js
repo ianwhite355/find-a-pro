@@ -3,7 +3,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const { companyGet, companyPost, timeSlotsGet, companyGetNoPass } = require("./handlers/companies");
-const { addUser } = require("./handlers/addUser")
+const { addUser, getUser, getUserNoPass } = require("./handlers/addUser")
 const { allDataGet } = require("./handlers/alldata");
 const { loginForUser, loginForBusiness } = require("./handlers/login");
 const { getEstimatesByUser, getEstimatesByCompany } = require("./handlers/getestimates");
@@ -28,6 +28,8 @@ app.post("/api/companyposting", companyPost)
 app.get("/api/alldata", allDataGet)
 
 app.post("/api/add-user", addUser)
+
+app.get("/api/getuser/:userId", getUserNoPass )
 
 app.post('/login/user', loginForUser);
 

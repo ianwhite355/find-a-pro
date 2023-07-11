@@ -14,6 +14,7 @@ const progressBarAnimation = keyframes`
 
 const CompanyPage = ({ setConfirmationData }) => {
 	//every single useState, useParams that sort of stuff
+	const [userData, setUserData] = useState(null);
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [calendar, setCalendar] = useState(new Date());
@@ -41,7 +42,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 		year: calendar.getFullYear(),
 		time: selectedTime,
 	};
-
+	console.log(exclusions)
 	//all the following is on clicks and stuff
 
 	const stringFormattedDay = JSON.stringify(formattedDate.day);
@@ -49,6 +50,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 	const stringFormattedMonth = calendar.toLocaleString(undefined, { month: "long" });
 
 	const stringFormattedYear = JSON.stringify(formattedDate.year);
+	const stringTime = JSON.stringify(selectedTime);
 
 	const handleDropdownToggle = () => {
 		setDropdownOpen(!dropdownOpen);
@@ -64,6 +66,8 @@ const CompanyPage = ({ setConfirmationData }) => {
 		const selectedDayOfWeek = date.toLocaleDateString(undefined, { weekday: "long" });
 		setDayOfWeek(selectedDayOfWeek);
 	};
+
+	const jsonUserId = JSON.parse(storedUserId);
 
 	const sendEmail = (e) => {
 		e.preventDefault();
@@ -85,10 +89,13 @@ const CompanyPage = ({ setConfirmationData }) => {
 			day: stringFormattedDay || "day was not selected",
 			month: stringFormattedMonth || "month was not selected",
 			year: stringFormattedYear || "Years was not selected",
+			time: stringTime || "Time was not selected" ,
 			data_email: data.email,
+			firstName:userData.firstName,
+			lastName:userData.lastName,
+			userEmail:userData.email,
+			userNumber:userData.phoneNumber
 		};
-
-		const jsonUserId = JSON.parse(storedUserId);
 
 		const postData = {
 			companyId: companyId,
@@ -96,7 +103,6 @@ const CompanyPage = ({ setConfirmationData }) => {
 			estimateDate: formattedDate,
 		};
 
-		
 		Promise.all([
 			fetch("/api/estimate", {
 				method: "POST",
@@ -148,6 +154,19 @@ const CompanyPage = ({ setConfirmationData }) => {
 				console.error("Error fetching data:", error);
 			});
 	}, [companyId]);
+
+	useEffect(() => {
+		if (jsonUserId) {
+			fetch(`/api/getuser/${jsonUserId}`)
+				.then((response) => response.json())
+				.then((parse) => {
+					setUserData(parse.data);
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				});
+		}
+	}, [jsonUserId]);
 
 	if (
 		exclusions.some(
@@ -228,10 +247,8 @@ const CompanyPage = ({ setConfirmationData }) => {
 					}
 				});
 
-				console.log(mergedTimeSlots[index].adding)
-				return matchedCount <= mergedTimeSlots[index].adding;
+				return matchedCount < mergedTimeSlots[index].adding;
 			});
-
 		}
 	}
 
@@ -254,36 +271,41 @@ const CompanyPage = ({ setConfirmationData }) => {
 	return (
 		<Container>
 			<BackgroundImage src={data.image} />
-			<ContentWrapper>
-				<MainHeader>
-					<Logo src={data.logo} />
-					<div>
-						<Name>{data.name}</Name>
-						<p>reviews here later, on 5 stars</p>
-					</div>
-				</MainHeader>
-				<Description>{data.description}</Description>
-				<BookingSelection>
-					<StyledCalendar onChange={handleCalendarChange} value={calendar} tileContent={getTileContent} />
+			<ContentContainer>
+				<ContentWrapper>
+					<MainHeader>
+						<Logo src={data.logo} />
+						<div>
+							<Name>{data.name}</Name>
+							<p>reviews here later, on 5 stars</p>
+						</div>
+					</MainHeader>
+					<Description>{data.description}</Description>
+				</ContentWrapper>
+				<SeperateDiv>
+					<BookTitle>Book a day!</BookTitle>
+					<BookingSelection>
+						<StyledCalendar onChange={handleCalendarChange} value={calendar} tileContent={getTileContent} />
 
-					<DropdownContainer>
-						<DropdownButton onClick={handleDropdownToggle}>Select a Time</DropdownButton>
-						<DropdownMenu open={dropdownOpen}>{timeSlotButtons}</DropdownMenu>
-						{selectedTime && <p>Selected Time: {selectedTime}</p>}
-						{/* {sameTimeValue && <p>please choose an available day</p>} */}
-					</DropdownContainer>
-				</BookingSelection>
-				<SubmitBook onClick={storedUserId ? sendEmail : () => navigate("/usersignin")}>Book it!</SubmitBook>
+						<DropdownContainer>
+							<DropdownButton onClick={handleDropdownToggle}>Select a Time</DropdownButton>
+							<DropdownMenu open={dropdownOpen}>{timeSlotButtons}</DropdownMenu>
+							{selectedTime && <p>Selected Time: {selectedTime}</p>}
+							{/* {sameTimeValue && <p>please choose an available day</p>} */}
+						</DropdownContainer>
+					</BookingSelection>
+					<SubmitBook onClick={storedUserId ? sendEmail : () => navigate("/usersignin")}>Book it!</SubmitBook>
 
-				<SuccessContainer>
-					{showSuccessMessage && (
-						<SuccessWrapper>
-							<SuccessMessage>{successMessage}</SuccessMessage>
-							<ProgressBar />
-						</SuccessWrapper>
-					)}
-				</SuccessContainer>
-			</ContentWrapper>
+					<SuccessContainer>
+						{showSuccessMessage && (
+							<SuccessWrapper>
+								<SuccessMessage>{successMessage}</SuccessMessage>
+								<ProgressBar />
+							</SuccessWrapper>
+						)}
+					</SuccessContainer>
+				</SeperateDiv>
+			</ContentContainer>
 		</Container>
 	);
 };
@@ -297,10 +319,28 @@ const Container = styled.div`
 	left: 50%;
 	transform: translate(-50%);
 	box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
-
-	width: 80%;
+	width: 87%;
 	min-height: 100vh;
 	overflow: hidden;
+`;
+
+const SeperateDiv = styled.div`
+	position: relative;
+	top: -60px;
+	background-color: #ffffff;
+	/* position: relative;
+	right: 300px; */
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
+	z-index: 1;
+	margin: 20px;
+	height: 600px;
+	min-width: 650px;
+`;
+
+const ContentContainer = styled.div`
+	display: flex;
 `;
 
 const BackgroundImage = styled.img`
@@ -323,7 +363,7 @@ const Logo = styled.img`
 
 const ContentWrapper = styled.div`
 	position: relative;
-	top: -50px;
+	top: -60px;
 	background-color: #ffffff;
 	width: 80%;
 	margin: 0 auto;
@@ -331,7 +371,9 @@ const ContentWrapper = styled.div`
 	border-radius: 8px;
 	box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
 	z-index: 1;
-	min-height: 1000px;
+	margin: 20px;
+	max-height: 500px;
+	width: 800px;
 
 	@media (max-width: 768px) {
 		width: 90%;
@@ -344,17 +386,22 @@ const Name = styled.p`
 `;
 
 const Description = styled.p`
-	padding: 50px;
+	padding: 20px;
 `;
 
 const BookingSelection = styled.div`
 	display: flex;
 `;
 
+const BookTitle = styled.p`
+	text-align: center;
+	font-size: 3em;
+`;
+
 const StyledCalendar = styled(Calendar)`
 	position: relative;
-	top: 100px;
-	min-width: 600px;
+	/* top: 100px; */
+	min-width: 500px;
 	max-width: 100%;
 	background-color: #fff;
 	color: #222;
@@ -362,8 +409,7 @@ const StyledCalendar = styled(Calendar)`
 	font-family: Arial, Helvetica, sans-serif;
 	line-height: 1.125em;
 	padding: 10px;
-	box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-	visibility: visible;
+
 	margin-right: 10px;
 
 	.react-calendar__navigation button {
@@ -466,19 +512,21 @@ const DropdownContainer = styled.div`
 const DropdownButton = styled.button`
 	padding: 8px 16px;
 	font-size: 1em;
-	background-color: #f8f8f8;
+	color: white;
+	background-color: #2196f3;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
+	transition: background-color 0.5s ease-in-out;
 
 	&:hover {
-		background-color: #ebebeb;
+		background-color: darkblue;
 	}
 `;
 
 const DropdownMenu = styled.div`
 	position: absolute;
-	top: 10%;
+	top: 50px;
 	left: 0;
 	width: 100%;
 	background-color: #fff;
@@ -486,9 +534,31 @@ const DropdownMenu = styled.div`
 	border-radius: 4px;
 	padding: 8px;
 	display: ${({ open }) => (open ? "block" : "none")};
+	max-height: 260px;
+	overflow-y: auto;
+
+	/* Scrollbar Styles */
+	::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: #f1f1f1;
+		border-radius: 3px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: #888;
+		border-radius: 3px;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: #555;
+	}
 `;
 
 const TimeSlotButton = styled.button`
+	position: relative;
 	display: block;
 	width: 100%;
 	padding: 8px;
@@ -504,8 +574,22 @@ const TimeSlotButton = styled.button`
 `;
 
 const SubmitBook = styled.button`
+	margin-top: 30px;
+	padding: 10px;
 	position: relative;
-	top: 150px;
+	left: 50%;
+	transform: translate(-50%);
+	font-size: 1.5em;
+	background-color: #17b169;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	transition: background-color 0.3s ease-in-out;
+	cursor: pointer;
+
+	&:hover {
+		background-color: #018749;
+	}
 `;
 
 const SuccessContainer = styled.div`

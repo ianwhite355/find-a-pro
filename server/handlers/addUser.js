@@ -62,4 +62,27 @@ const addUser = async (request, response) => {
 	}
 };
 
-module.exports = { addUser };
+const getUserNoPass = async (request, response) => {
+	const { userId } = request.params;
+
+	const client = new MongoClient(MONGO_URI, options);
+
+	try {
+		await client.connect();
+		const db = client.db("findyourpro");
+
+		const resultGet = await db.collection("users").findOne({ _id: userId }, { projection: { password: 0 } });
+
+
+		resultGet
+			? response.status(201).json({ status: 201, data: resultGet })
+			: response.status(400).json({ status: 400, message: "Bad request" });
+	} catch (err) {
+		(err) => console.log(err);
+	} finally {
+		client.close();
+	}
+
+}
+
+module.exports = { addUser, getUserNoPass };

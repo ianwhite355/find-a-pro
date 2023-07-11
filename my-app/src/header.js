@@ -8,7 +8,7 @@ export const Header = () => {
 	const type = "type";
 
 	const [isBusinessUser, setIsBusinessUser] = useState(false);
-    const [loading, setLoading] = useState(true)
+	const [loading, setLoading] = useState(true);
 
 	const navigate = useNavigate();
 
@@ -20,10 +20,8 @@ export const Header = () => {
 			setIsBusinessUser(true);
 		}
 
-        setLoading(false);
-
+		setLoading(false);
 	}, []);
-    
 
 	const storedUserData = localStorage.getItem("userData");
 	const userData = JSON.parse(storedUserData);
@@ -33,17 +31,17 @@ export const Header = () => {
 		localStorage.removeItem(type);
 		localStorage.removeItem(key);
 		navigate("/");
+		window.location.reload();
 	};
 
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+	if (loading) {
+		return <div>Loading...</div>;
+	}
 
 	return (
 		<Heading>
 			<Hamburger />
-			{isBusinessUser ? <HomeLink to="/businesspage">logo here</HomeLink> : <HomeLink to="/">logo here</HomeLink>}
+			{isBusinessUser ? <HomeLink to="/businesspage">Find Your Pro</HomeLink> : <HomeLink to="/">Find Your Pro</HomeLink>}
 
 			{isLoggedIn ? (
 				<AlreadyIn>
@@ -64,7 +62,7 @@ const Heading = styled.div`
 	display: flex;
 	justify-content: space-between;
 	height: 75px;
-    border-bottom: 3px solid lightgrey;
+	border-bottom: 3px solid lightgrey;
 
 	@media (min-width: 200px) and (max-width: 850px) {
 		height: 60px;
@@ -75,12 +73,12 @@ const Heading = styled.div`
 const HomeLink = styled(Link)`
 	position: relative;
 	left: 50%;
-	transform: translate(-55%);
+	transform: translateX(-50%);
 	padding: 10px;
 	text-decoration: none;
-	font-size: 1.8em;
+	color: black;
+	font-size: 2em;
 	font-weight: bold;
-	position: relative;
 
 	&::before {
 		content: "";
@@ -90,17 +88,13 @@ const HomeLink = styled(Link)`
 		height: 2px;
 		bottom: 20px;
 		left: 0;
-		background-color: white;
+		background-color: #007bff;
 		transform: scaleX(0);
 		transition: transform 0.3s ease;
 	}
 
 	&:hover::before {
 		transform: scaleX(1);
-		cursor: pointer;
-	}
-
-	& + div {
 		cursor: pointer;
 	}
 `;
@@ -124,23 +118,40 @@ const Welcome = styled.div`
 `;
 
 const SignOut = styled.p`
-	text-decoration: underline;
+	position: relative;
+	right: 10px;
+	top: 10px;
+	text-decoration: none;
 	font-size: 2em;
+	background-color: #007bff;
+	color: white;
+	border-radius: 10px;
+	padding-top: 6px;
+	padding-bottom: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
 
-	color: black;
 	@media (min-width: 200px) and (max-width: 850px) {
 		bottom: 10px;
 	}
 `;
 
 const Sign = styled(Link)`
-	/* text-decoration:none; */
-	padding: 20px;
+	border-radius: 10px;
+	text-decoration: none;
+	height: 40px;
+	padding-top: 6px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	/* padding: 10px 20px; */
 	font-size: 2em;
 	position: relative;
+	background-color: #007bff;
+	color: white;
 	right: 10px;
-	bottom: 10px;
-	color: black;
+	top: 10px;
+
 	@media (min-width: 200px) and (max-width: 850px) {
 		bottom: 10px;
 	}

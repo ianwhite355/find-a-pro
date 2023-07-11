@@ -65,20 +65,38 @@ const changeExclusions = async (request, response) => {
 const cancelExclusion = async (request, response) => {
 	const { companyId, exclusion } = request.body;
 
+	console.log(exclusion);
+
 	const client = new MongoClient(MONGO_URI, options);
 
 	try {
 		await client.connect();
 		const db = client.db("findyourpro");
 
-		//fix this so it does not delete the same matching ones
+		//this will delete one and only one exclusion
 
-		const modifySchedule = await db.collection("times").updateOne({ _id: companyId }, { $pull: { exclusions: exclusion } });
+		const schedule = await db.collection("times").findOne({ _id: companyId });
+		if (!schedule) {
+			response.status(404).json({ status: 404, message: "schedule not found" });
+			return;
+		}
+
+		const exclusions = schedule.exclusions;
+
+		const updatedExclusions = exclusions.filter((item, index) => {
+			if (item.day === exclusion.day && item.month === exclusion.month && item.year === exclusion.year && item.time === exclusion.time) {
+				exclusions.splice(index, 1);
+				return false;
+			}
+			return true;
+		});
+
+		const modifySchedule = await db.collection("times").updateOne({ _id: companyId }, { $set: { exclusions: exclusions } });
 
 		if (modifySchedule.matchedCount === 0) {
 			response.status(404).json({ status: 404, message: "error modifying schedule" });
 		} else {
-			response.status(200).json({ status: 200, message: "schedule modified succesfully" });
+			response.status(200).json({ status: 200, message: "schedule modified successfully", exclusions: exclusions });
 		}
 	} catch (err) {
 		(err) => console.log(err);

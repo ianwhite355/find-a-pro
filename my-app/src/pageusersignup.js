@@ -94,17 +94,15 @@ const UserSignUp = () => {
 
                 {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Sign up!</Button>
             </FormContainer>
         </Container>
     )
 };
 
 const Container = styled.div`
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    width: 600px;
+    margin: auto;
+    width: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -112,7 +110,8 @@ const Container = styled.div`
     top:50px;
     padding: 40px;
     box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-    
+    border-radius: 20px;
+
     @media (min-width: 500px) and (max-width:850px){
         width: 50%;
     }
@@ -125,7 +124,6 @@ const Container = styled.div`
 const FormContainer = styled.form`
     display: flex;
     flex-direction: column;
-    max-width: 300px;
     margin: 0 auto;
 `;
 
@@ -162,7 +160,13 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
+    border-radius: 10px;
+    border:none;
+    font-size: 1.2em;
+    margin: 10px;
     padding: 10px 20px;
+    background-color:  #2196f3;
+    color:white;
 `;
 
 
@@ -174,7 +178,6 @@ const PassWordContainer = styled.div`
 `
 
 const PasswordInput = styled.input`
-
     border-radius: 10px;
     font-size: 1.5em;
     width: 300px;

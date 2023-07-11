@@ -313,7 +313,7 @@ const Choices = styled.p`
 `;
 
 const EditButton = styled.button`
-	background-color: ${({ disabled }) => (disabled ? "gray" : "green")};
+	background-color: ${({ disabled }) => (disabled ? "red" : " #17b169")};
 	color: white;
 	border: none;
 	padding: 10px;
@@ -353,7 +353,7 @@ const Status = styled.div`
 `;
 
 const StatusButton = styled.button`
-	background-color: ${({ selected }) => (selected ? "green" : "inherit")};
+	background-color: ${({ selected }) => (selected ? "#17b169" : "inherit")};
 	color: ${({ selected }) => (selected ? "white" : "inherit")};
 	border: none;
 	padding: 5px;
@@ -387,7 +387,7 @@ const ButtonContainer = styled.div`
 `;
 
 const SaveButton = styled.button`
-	background-color: green;
+	background-color: #17b169;
 	color: #fff;
 	padding: 8px 16px;
 	border: none;
@@ -435,7 +435,7 @@ const PaidStatusLabel = styled.span`
 const PaidStatusButton = styled.button`
 	padding: 5px 10px;
 	margin-right: 10px;
-	background-color: ${(props) => (props.selected ? "green" : "red")};
+	background-color: ${(props) => (props.selected ? "#17b169" : "red")};
 	color: #fff;
 	border: none;
 	border-radius: 4px;

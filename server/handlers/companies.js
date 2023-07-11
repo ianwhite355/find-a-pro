@@ -158,8 +158,8 @@ const companyPost = async (request, response) => {
 			};
 			timeData = {
                 _id: newId,
-				available: { monday: ["9:00 AM", "10:00 AM"], tuesday: ["9:00 AM", "11:00 AM"] },
-				exclusions: [{ day: 10, month: 7, year: 2023, time: "9:00 AM" }],
+				available: { monday: [], tuesday: [], wednesday: [], thursday: [], friday: [], saturday: [], sunday: [] },
+				exclusions: [],
 			};
 		} else {
 			response.status(409).json({ status: 409, message: "There is already am account with this email" });
