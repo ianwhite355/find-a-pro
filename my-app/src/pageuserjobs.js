@@ -19,11 +19,14 @@ const UserJobs = () => {
 
 	const jsonUserId = JSON.parse(storedUserId);
 
-	const handleCancel = (companyId, estimateId) => {
+	const handleCancel = (companyId, estimateId, exclusion) => {
+
 		const cancelData = {
 			userId: jsonUserId,
 			companyId: companyId,
 			estimateId: estimateId,
+			exclusion: exclusion
+
 		};
 
 		fetch("/api/deletejob", {
@@ -119,7 +122,7 @@ const UserJobs = () => {
 								<JobDetail>Paid: {user.depositPaid ? "Yes" : "No"}</JobDetail>
 								<JobDetail>Work Complete: {user.workComplete ? "Yes" : "No"}</JobDetail>
 							</JobDetails>
-							<CancelButton onClick={() => handleCancel(user.companyId, user._id)}>Cancel Job</CancelButton>
+							<CancelButton onClick={() => handleCancel(user.companyId, user._id, user.estimateDate)}>Cancel Job</CancelButton>
 						</JobContainer>
 					))}
 			</JobDiv>
@@ -162,6 +165,7 @@ const JobContainer = styled.div`
 
 const CompanyName = styled.h3`
 	text-align: center;
+	text-decoration: underline;
 	font-size: 1.6em;
 	margin: 0;
 	cursor: pointer;

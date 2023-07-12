@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Loader from "./Loader";
 import Calendar from "react-calendar";
+import downArrow from "./images/down-arrow.png";
+import upArrow from "./images/up-arrow.png";
+
 import "react-calendar/dist/Calendar.css";
 //This was a good project learn alot its very practical, but working with a Calendar was the biggest pain, worth it tho
 
@@ -92,7 +95,6 @@ const Schedule = () => {
 	};
 
 	const handleSave = () => {
-
 		//got this solution online its so it sorts it out to make 9:00 AM or the earliest time slot always be first in the array and be in order
 		const sortedTimeSlots = Object.keys(timeSlots).reduce((acc, day) => {
 			acc[day] = timeSlots[day].sort((a, b) => {
@@ -349,13 +351,13 @@ const Schedule = () => {
 												<TimesDiv key={`${timeSlot}-${day}`}>
 													<Count>{count}</Count>
 													<Arrows>
-														<button onClick={() => handleUp(day, timeSlot)}>up</button>
-														<button onClick={() => handleDown(day, timeSlot)}>down</button>
+														<ArrowButton direction="up" onClick={() => handleUp(day, timeSlot)}></ArrowButton>
+														<ArrowButton direction="down" onClick={() => handleDown(day, timeSlot)}></ArrowButton>
 													</Arrows>
 
-													<TimeSlotButton isSelected={isSelected} onClick={() => handleTimeSlotSelection(day, timeSlot)}>
+													<ActualTime isSelected={isSelected} onClick={() => handleTimeSlotSelection(day, timeSlot)}>
 														{timeSlot}
-													</TimeSlotButton>
+													</ActualTime>
 												</TimesDiv>
 											);
 										})}
@@ -369,30 +371,34 @@ const Schedule = () => {
 				</CalendarDiv>
 			)}
 			{page === "exclusions" && (
-				<Exclusions>
+				<>
 					<Title>Exclusions</Title>
-					{exclusions.map((exclusion, index) => (
-						<CurrentExlusions key={`${exclusion.day}-${exclusion.month}-${index}`}>
-							<p>
-								Current exlusions: {exclusion.year}/{exclusion.month}/{exclusion.day} at {exclusion.time}
-							</p>
-							<CancelButton onClick={() => handleCancel(exclusion)}>Cancel exlusion</CancelButton>
-						</CurrentExlusions>
-					))}
-					<AddExlusion>
-						<p>Add exclusion:</p>
-						<BookingSelection>
-							<StyledCalendar onChange={handleCalendarChange} value={calendar} />
+					<Exclusions>
+						<FlexColumn>
+							<AnotherTitle>Live exclusions</AnotherTitle>
+							{exclusions.map((exclusion, index) => (
+								<CurrentExlusions key={`${exclusion.day}-${exclusion.month}-${index}`}>
+									<p>
+										Current exlusions: {exclusion.year}/{exclusion.month}/{exclusion.day} at {exclusion.time}
+									</p>
+									<CancelButton onClick={() => handleCancel(exclusion)}>Cancel exlusion</CancelButton>
+								</CurrentExlusions>
+							))}
+						</FlexColumn>
+						<AddExclusion>
+							<AnotherTitle>Add exclusion</AnotherTitle>
+							<BookingSelection>
+								<StyledCalendar onChange={handleCalendarChange} value={calendar} />
 
-							<DropdownContainer>
-								<DropdownButton onClick={handleDropdownToggle}>Select a Time</DropdownButton>
-								<DropdownMenu open={dropdownOpen}>{timeSlotButtons}</DropdownMenu>
-								{/* {selectedTime && <p>Selected Time: {selectedTime}</p>} */}
-							</DropdownContainer>
-						</BookingSelection>
-						<SubmitExclusion onClick={handleExclusionSave}>Save exclusion changes</SubmitExclusion>
-					</AddExlusion>
-				</Exclusions>
+								<DropdownContainer>
+									<DropdownButton onClick={handleDropdownToggle}>Select a Time</DropdownButton>
+									<DropdownMenu open={dropdownOpen}>{timeSlotButtons}</DropdownMenu>
+								</DropdownContainer>
+							</BookingSelection>
+							<SubmitExclusion onClick={handleExclusionSave}>Save exclusion changes</SubmitExclusion>
+						</AddExclusion>
+					</Exclusions>
+				</>
 			)}
 		</CalendarContainer>
 	);
@@ -450,19 +456,52 @@ const Day = styled.div`
 `;
 
 const TimesDiv = styled.div`
+	width: 150px;
+	height: 50px;
 	display: flex;
 	margin: 10px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+	padding-left: 5px;
+	border-radius: 5px;
 `;
 
 const Count = styled.p`
+	position: relative;
+	left: 5px;
 	width: 20px;
 	height: 20px;
-	margin-right: 5px;
+	margin: auto;
 `;
 
 const Arrows = styled.div`
 	display: flex;
 	flex-direction: column;
+`;
+
+const ArrowButton = styled.button`
+	margin-left: 5px;
+	width: 40px;
+	height: 50%;
+	background-color: white;
+	border: none;
+	background-size: 20px;
+	background-image: url(${(props) => (props.direction === "down" ? downArrow : upArrow)});
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+`;
+
+const ActualTime = styled.p`
+	margin: auto;
+	flex: 1;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	color: ${(props) => (props.isSelected ? "white" : "black")};
+	background-color: ${(props) => (props.isSelected ? "green" : "white")};
 `;
 
 const BookingSelection = styled.div`
@@ -471,20 +510,23 @@ const BookingSelection = styled.div`
 
 const TimeSlots = styled.ul`
 	list-style-type: none;
-	padding: 0;
 	display: flex;
 	flex-wrap: wrap;
-	margin-left: 20px;
+	padding: 0;
+	margin: 0;
 `;
 
-const TimeSlotDiv = styled.div`
+const TimeSlotDiv = styled.li`
 	display: flex;
-	width: 200px;
+	align-items: center;
+	/* margin-right: 20px;
+  margin-bottom: 10px; */
 `;
 
 const TimeSlotinput = styled.input`
 	width: 40px;
-	height: 40px;
+	height: 26px;
+	margin-top: 11px;
 `;
 
 const TimeSlotButton = styled.button`
@@ -517,8 +559,8 @@ const TimeSlot = styled.p`
 `;
 
 const StyledCalendar = styled(Calendar)`
-	position: relative;
-	top: 100px;
+	/* position: relative;
+	top: 100px; */
 	min-width: 600px;
 	max-width: 100%;
 	background-color: #fff;
@@ -527,7 +569,6 @@ const StyledCalendar = styled(Calendar)`
 	font-family: Arial, Helvetica, sans-serif;
 	line-height: 1.125em;
 	padding: 10px;
-	box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 	visibility: visible;
 	margin-right: 10px;
 
@@ -624,48 +665,95 @@ const StyledCalendar = styled(Calendar)`
 `;
 
 const DropdownContainer = styled.div`
-	position: relative;
-	top: 100px;
 	display: inline-block;
 `;
 
 const DropdownButton = styled.button`
-	padding: 8px 16px;
+	padding: 8px 24px;
 	font-size: 1em;
-	background-color: #f8f8f8;
+	color: white;
+	background-color: #2196f3;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
+	transition: background-color 0.5s ease-in-out;
+	width: 167px;
 
 	&:hover {
-		background-color: #ebebeb;
+		background-color: darkblue;
 	}
 `;
 
 const DropdownMenu = styled.div`
-	position: absolute;
-	top: 10%;
-	left: 0;
-	width: 100%;
+	width: 150px;
 	background-color: #fff;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	padding: 8px;
 	display: ${({ open }) => (open ? "block" : "none")};
+	max-height: 260px;
+	overflow-y: auto;
+	overflow-x: hidden;
+
+	/* Scrollbar Styles */
+	::-webkit-scrollbar {
+		width: 6px;
+		height: 6px; /* Add this line to set the height of the scrollbar */
+	}
+
+	::-webkit-scrollbar-track {
+		background: #f1f1f1;
+		border-radius: 3px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: #888;
+		border-radius: 3px;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: #555;
+	}
+`;
+
+const FlexColumn = styled.div`
+	position: relative;
+	right: 25px;
+	display: flex;
+	text-align: center;
+	flex-direction: column;
+	width: 500px;
+	height: 100%;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
+	padding: 30px;
+`;
+
+const AnotherTitle = styled.h3`
+	font-size: 1.5em;
 `;
 
 const Exclusions = styled.div`
+	display: flex;
 	margin: auto;
 `;
 
 const CurrentExlusions = styled.div`
 	margin: 10px;
 	display: flex;
-	width: 300px;
+	width: 500px;
+	justify-content: flex-end;
 `;
 
-const AddExlusion = styled.div`
+const AddExclusion = styled.div`
+	position: relative;
+	left: 25px;
+	padding: 30px;
 	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 500px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
+	text-align: center;
 `;
 
 const CancelButton = styled.button`
@@ -673,7 +761,9 @@ const CancelButton = styled.button`
 	font-size: 1.2em;
 	color: white;
 	border: none;
-	padding: 10px;
+	border-radius: 10px;
+	margin-left: 20px;
+	padding: 8px 20px;
 	cursor: pointer;
 `;
 
@@ -683,29 +773,25 @@ const Submit = styled.button`
 	color: white;
 	border: none;
 	border-radius: 10px;
-	background-color: #3457D5;
+	background-color: #3457d5;
 	transform: translate(-50%);
 	width: 300px;
 	padding: 10px;
 	margin: 10px;
 	height: 50px;
-	font-size:1.5em;
+	font-size: 1.5em;
 `;
 
 const SubmitExclusion = styled.button`
-	position: relative;
-	top: 250px;
-	left: 200px;
+	margin: auto;
 	color: white;
 	border: none;
 	border-radius: 10px;
-	background-color: #3457D5;
-	transform: translate(-50%);
+	background-color: #3457d5;
 	width: 300px;
 	padding: 10px;
-	margin: 10px;
 	height: 50px;
-	font-size:1.5em;
+	font-size: 1.5em;
 `;
 
 export default Schedule;

@@ -129,8 +129,6 @@ const BusinessJobs = () => {
 		return <Loader />;
 	}
 
-	console.log(jobId);
-
 	return (
 		<>
 			<Title>Your Jobs</Title>

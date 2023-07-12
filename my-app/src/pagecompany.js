@@ -42,8 +42,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 		year: calendar.getFullYear(),
 		time: selectedTime,
 	};
-	console.log(exclusions)
-	//all the following is on clicks and stuff
+
 
 	const stringFormattedDay = JSON.stringify(formattedDate.day);
 

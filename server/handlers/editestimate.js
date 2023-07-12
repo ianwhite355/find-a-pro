@@ -11,7 +11,6 @@ const options = {
 };
 
 const modifyEstimate = async (request, response) => {
-	// const { day, month, year, time } = request.body
 	const { estimateId, estimateStatus, price, paid, deposit, depositPaid } = request.body;
 
 	const client = new MongoClient(MONGO_URI, options);
@@ -21,17 +20,7 @@ const modifyEstimate = async (request, response) => {
 		await client.connect();
 		const db = client.db("findyourpro");
 
-		const updateData = {
-			// companyId: companyId,
-			// userId: userId,
-			// estimateDate: estimateDateTime,
-			// workDate: null,
-			// estimateStatus: estimateStatus,
-			// price: price,
-			// paid: paid,
-			// deposit: deposit,
-			// depositPaid: depositPaid,
-		};
+		const updateData = {};
 
         if (estimateStatus) {
             updateData.estimateStatus = estimateStatus;
@@ -54,7 +43,6 @@ const modifyEstimate = async (request, response) => {
         }
 
 		const collection = await db.collection("estimates").updateOne({ _id: estimateId}, { $set: updateData })
-
 
 		if (collection) {
 			response.status(200).json({ status: 200, data: updateData });
