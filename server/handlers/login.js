@@ -23,12 +23,12 @@ const loginForUser = async (req, res) => {
     const user = await collection.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Invalid email' });
     }
 
     // Compare the entered password with the stored password
     if (password !== user.password) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Invalid password' });
     }
 
     // User is authenticated, include user data in the response
@@ -56,12 +56,12 @@ const loginForBusiness = async (req, res) => {
     const user = await collection.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Invalid email' });
     }
 
     // Compare the entered password with the stored password
     if (password !== user.password) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Invalid password' });
     }
 
     // User is authenticated, include user data in the response

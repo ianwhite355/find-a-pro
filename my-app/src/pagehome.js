@@ -6,8 +6,8 @@ import Loader from "./Loader";
 const HomePage = () => {
 	const [query, setQuery] = useState("");
 	const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true)
-    const [isBusinessUser, setIsBusinessUser] = useState(false);
+	const [loading, setLoading] = useState(true);
+	const [isBusinessUser, setIsBusinessUser] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ const HomePage = () => {
 
 	const handleClear = (event) => {
 		event.preventDefault();
-        setQuery("")
+		setQuery("");
 		// Perform search or other actions with searchValue
 	};
 
@@ -26,23 +26,20 @@ const HomePage = () => {
 			.then((response) => response.json())
 			.then((parse) => {
 				setData(parse.data);
-                setLoading(false)
+				setLoading(false);
 			});
 	}, []);
 
-
 	const type = "type";
 
-    useEffect(() => {
+	useEffect(() => {
 		const storedType = localStorage.getItem(type);
 		const parsedType = JSON.parse(storedType);
 
 		if (parsedType === "business") {
 			setIsBusinessUser(true);
 		}
-
 	}, []);
-
 
 	const windowWashingData = data.filter((company) => company.services.includes("windowwashing"));
 
@@ -50,27 +47,30 @@ const HomePage = () => {
 
 	const paintingData = data.filter((company) => company.services.includes("painting"));
 
-    if (loading) {
-        return (
-            <Loader/>
-        )
-    }
+	if (loading) {
+		return <Loader />;
+	}
 
-    if (isBusinessUser) {
-        return (
-            <>
-                <p>this page is restricted to businesses, if you would like to use please make a regular account</p>
-            </>
-        )
-    }
+	if (isBusinessUser) {
+		return (
+			<>
+				<p>this page is restricted to businesses, if you would like to use please make a regular account</p>
+			</>
+		);
+	}
 
 	return (
 		<DisFlex>
 			<MainBar>
 				<SearchBar>
-					<SuggestionDiv>
-                    <SearchInput type="text" placeholder="Search" value={query} onChange={(event) => setQuery(event.target.value)} />
-						{data
+					<FlexDiv>
+						<SearchInput type="text" placeholder="Search" value={query} onChange={(event) => setQuery(event.target.value)} />
+						<SubmitButton type="submit" onClick={handleClear}>
+							Clear
+						</SubmitButton>
+					</FlexDiv>
+					{query &&
+						data
 							.filter((post) => {
 								if (query === "") {
 									return;
@@ -78,20 +78,29 @@ const HomePage = () => {
 									return post;
 								}
 							})
-							.map((post, index) => (
-								<Suggestions key={post.name}>
-                                    <Link to={`/company/${post._id}`}>
-									<p>{post.name}</p>
-									<p>
-										<i>services: {post.services}</i>
-									</p>
-                                    </Link>
-								</Suggestions>
-							))}
-					</SuggestionDiv>
-					<SubmitButton type="submit" onClick={handleClear}>
-						Clear
-					</SubmitButton>
+							.map((post, index) => {
+								//they were printing as in the database so this is my solutio to making the services part better
+								let services = "";
+								if (post.services.includes("windowwashing")) {
+									services = "Window Washing";
+								}
+								if (post.services.includes("painting")) {
+									services = "Painting";
+								}
+								if (post.services.includes("poolcleaning")) {
+									services = "Pool Cleaning";
+								}
+								return (
+									<Suggestions key={post._id}>
+										<StyledLink to={`/company/${post._id}`}>
+											<p>{post.name}</p>
+											<p>
+												<i>services: {services}</i>
+											</p>
+										</StyledLink>
+									</Suggestions>
+								);
+							})}
 				</SearchBar>
 			</MainBar>
 
@@ -137,11 +146,11 @@ const DisFlex = styled.div``;
 
 const MainBar = styled.div`
 	width: 80%;
-	height: 150px;
-	position: absolute;
-	top: 200px;
-	left: 50%;
-	transform: translate(-50%, -50%);
+	height: 170px;
+	margin-top: 50px;
+	/* left: 50%;
+	transform: translate(-50%, -50%); */
+	margin-left: 10%;
 	border-radius: 10px;
 	background: linear-gradient(0.647turn, #101a72cc, #071b4ccc 0.01%, #071b4ccc 51.04%, #071b4c 99.1%);
 	background-image: linear-gradient(0.647turn, rgba(16, 26, 114, 0.8), rgba(7, 27, 76, 0.6) 0.01%, rgba(7, 27, 76, 0.8) 51.04%, rgb(7, 27, 76) 99.1%);
@@ -151,44 +160,46 @@ const MainBar = styled.div`
 	}
 `;
 
-const SearchBar = styled.form`
+const FlexDiv = styled.div`
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: relative;
-	top: 30px;
-
+	margin-top: 20px;
 `;
 
-const SuggestionDiv = styled.div`
-    display: inline-block;
-`
+const SearchBar = styled.form`
+	display: flex;
+	flex-direction: column;
+
+	align-items: center;
+	justify-content: center;
+`;
 
 const Suggestions = styled.div`
 	text-align: left;
-    width:200px;
-	border: black ridge 1px;
-	border-radius: 10px;
-	margin: 3px;
-	width: 20rem;
+	width: 269px;
+	border: gray 1px;
+	/* width: 20rem; */
 	padding-left: 10px;
 	background-color: white;
+	z-index: 10;
+`;
+
+const StyledLink = styled(Link)`
+	text-decoration: none;
 `;
 
 const SearchInput = styled.input`
-    width:200px;
+	width: 200px;
 	padding: 8px;
 	border: 1px solid #ccc;
-	border-radius: 4px;
-	margin-right: 8px;
+	/* margin-right: 8px; */
 `;
 
 const SubmitButton = styled.button`
-	padding: 8px 16px;
+	padding: 8px 15px;
 	background-color: #4caf50;
 	color: white;
 	border: none;
-	border-radius: 4px;
+
 	cursor: pointer;
 
 	&:hover {
@@ -202,10 +213,6 @@ const ServicesDiv = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	position: relative;
-	top: 200px;
-	left: 50%;
-	transform: translate(-50%);
 `;
 
 const ServiceTitle = styled.p`
@@ -268,8 +275,9 @@ const ADiv = styled.div`
 	border-radius: 11px;
 	overflow: hidden;
 	margin: 15px;
-	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-	min-width: 275px;
+
+	min-width: 260px;
+	max-width: 260px;
 	cursor: pointer;
 
 	@media (min-width: 200px) and (max-width: 850px) {
@@ -283,7 +291,7 @@ const ADiv = styled.div`
 const AnotherOne = styled.div``;
 
 const ProjectImg = styled.img`
-	width: 275px;
+	width: 260px;
 	height: 150px;
 	object-fit: cover;
 	opacity: 1;
@@ -320,6 +328,8 @@ const ProjectName = styled.p`
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	max-width: 265px;
+	overflow-wrap: break-word;
 
 	@media (min-width: 200px) and (max-width: 850px) {
 		font-size: 1em;

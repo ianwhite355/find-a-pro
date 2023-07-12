@@ -58,10 +58,9 @@ const Heading = styled.div`
 	position: relative;
 	top: 0%;
 	color: white;
-	font-size: 1em;
 	display: flex;
 	justify-content: space-between;
-	height: 75px;
+	height: 68px;
 	border-bottom: 3px solid lightgrey;
 
 	@media (min-width: 200px) and (max-width: 850px) {
@@ -74,10 +73,10 @@ const HomeLink = styled(Link)`
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);
-	padding: 10px;
+	margin-top: 10px;
 	text-decoration: none;
 	color: black;
-	font-size: 2em;
+	font-size: 2.6em;
 	font-weight: bold;
 
 	&::before {
@@ -85,10 +84,10 @@ const HomeLink = styled(Link)`
 		position: absolute;
 		display: block;
 		width: 100%;
-		height: 2px;
-		bottom: 20px;
+		height: 3px;
+		bottom: 12px;
 		left: 0;
-		background-color: #007bff;
+		background-color: #3457D5;
 		transform: scaleX(0);
 		transition: transform 0.3s ease;
 	}
@@ -123,13 +122,13 @@ const SignOut = styled.p`
 	top: 10px;
 	text-decoration: none;
 	font-size: 2em;
-	background-color: #007bff;
+	background-color: #3457D5;
 	color: white;
 	border-radius: 10px;
-	padding-top: 6px;
-	padding-bottom: 10px;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-top: 8px;
+	padding-bottom: 12px;
+	padding-left: 20px;
+	padding-right: 20px;
 
 	@media (min-width: 200px) and (max-width: 850px) {
 		bottom: 10px;
@@ -139,18 +138,18 @@ const SignOut = styled.p`
 const Sign = styled(Link)`
 	border-radius: 10px;
 	text-decoration: none;
-	height: 40px;
-	padding-top: 6px;
-	padding-bottom: 10px;
+	max-height: 33px;
+	padding-top: 8px;
+	padding-bottom: 12px;
 	padding-left: 20px;
 	padding-right: 20px;
 	/* padding: 10px 20px; */
 	font-size: 2em;
 	position: relative;
-	background-color: #007bff;
+	background-color: #3457D5;
 	color: white;
 	right: 10px;
-	top: 10px;
+	top: 8px;
 
 	@media (min-width: 200px) and (max-width: 850px) {
 		bottom: 10px;

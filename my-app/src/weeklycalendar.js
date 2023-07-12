@@ -390,7 +390,7 @@ const Schedule = () => {
 								{/* {selectedTime && <p>Selected Time: {selectedTime}</p>} */}
 							</DropdownContainer>
 						</BookingSelection>
-						<Submit onClick={handleExclusionSave}>Save exclusion changes</Submit>
+						<SubmitExclusion onClick={handleExclusionSave}>Save exclusion changes</SubmitExclusion>
 					</AddExlusion>
 				</Exclusions>
 			)}
@@ -625,6 +625,7 @@ const StyledCalendar = styled(Calendar)`
 
 const DropdownContainer = styled.div`
 	position: relative;
+	top: 100px;
 	display: inline-block;
 `;
 
@@ -682,7 +683,23 @@ const Submit = styled.button`
 	color: white;
 	border: none;
 	border-radius: 10px;
-	background-color: #007bff;
+	background-color: #3457D5;
+	transform: translate(-50%);
+	width: 300px;
+	padding: 10px;
+	margin: 10px;
+	height: 50px;
+	font-size:1.5em;
+`;
+
+const SubmitExclusion = styled.button`
+	position: relative;
+	top: 250px;
+	left: 200px;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	background-color: #3457D5;
 	transform: translate(-50%);
 	width: 300px;
 	padding: 10px;

@@ -81,9 +81,13 @@ const CompanyPage = ({ setConfirmationData }) => {
 			return;
 		}
 
+		
+
 		if (alreadySent) {
 			return;
 		}
+
+		const userName = userData.firstName + " " + userData.lastName
 
 		const emailData = {
 			day: stringFormattedDay || "day was not selected",
@@ -97,10 +101,15 @@ const CompanyPage = ({ setConfirmationData }) => {
 			userNumber:userData.phoneNumber
 		};
 
+		
 		const postData = {
 			companyId: companyId,
 			userId: jsonUserId,
 			estimateDate: formattedDate,
+			companyName: data.name,
+			userName:userName,
+			userEmail:userData.email,
+			userNumber: userData.phoneNumber
 		};
 
 		Promise.all([

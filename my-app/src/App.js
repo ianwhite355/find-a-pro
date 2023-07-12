@@ -13,7 +13,7 @@ import BusinessPage from "./pagebusiness";
 import Confirmation from "./confirmation";
 import BusinessJobs from "./businessjobs";
 import Schedule from "./weeklycalendar";
-
+import { GlobalStyles } from "./globalstyles";
 const App = () => {
 	const key = "userData";
 	const type = "type";
@@ -56,6 +56,7 @@ const App = () => {
 
 	return (
 		<BrowserRouter>
+		<GlobalStyles />
             <Header/>
 			<Routes>
 				<Route path="" element={<HomePage />} />

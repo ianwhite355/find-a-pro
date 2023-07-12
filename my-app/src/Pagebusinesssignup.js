@@ -42,7 +42,7 @@ const BusinessSignUp  = () => {
         <Container>
             <Title>Want to sign up for Find-Your-Pro</Title>
             <Form ref={form} onSubmit={sendEmail}>
-                <DifferentNames>
+                
                     <Label>
                         Business Name:
                         <Input type="text" name="user_businessname"/>
@@ -51,8 +51,7 @@ const BusinessSignUp  = () => {
                         Owner's Name:
                         <Input type="text" name="user_ownername"/>
                     </Label>
-                </DifferentNames>
-                <DifferentNames>
+                
                     <Label>
                         Email:
                         <Input type="email" name="user_email"/>
@@ -61,7 +60,7 @@ const BusinessSignUp  = () => {
                         Phone Number:
                         <Input type="number" name="user_phoneNumber"/>
                     </Label>
-                </DifferentNames>
+                
                 <Services>What services Do you offer?</Services>
                 <ThereServices>
                 <label>
@@ -93,11 +92,15 @@ const BusinessSignUp  = () => {
 }
 
 const Container = styled.div`
-    position: relative;
+    margin-top:20px;
+    margin-left: auto;
+    margin-right:auto;
+    padding: 10px;
+    /* position: relative;
     padding: 10px;
     left:50%;
-    transform: translate(-50%);
-    width: 800px;
+    transform: translate(-50%); */
+    width: 650px;
     box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     
     @media (min-width: 200px) and (max-width: 850px) {
@@ -116,10 +119,6 @@ const Form = styled.form`
     flex-direction: column;
     align-items: center;
 `;
-
-const DifferentNames = styled.div`
-    display: flex;
-`
 
 const Label = styled.label`
     display: flex;
@@ -153,8 +152,8 @@ const Services = styled.p`
 const Button = styled.button`
     padding: 10px 20px;
     margin-top: 10px;
-    background-color: #000;
-    color: #fff;
+    background-color: #3457D5;
+    color: white;
     border: none;
     cursor: pointer;
 `;

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import hideImage from "./images/hide.png"
 import viewImage from "./images/view.png"
-import passwordIcon from "./images/passwordicon.png"
+
 
 
 const UserSignUp = () => {
@@ -180,13 +180,10 @@ const PassWordContainer = styled.div`
 const PasswordInput = styled.input`
     border-radius: 10px;
     font-size: 1.5em;
-    width: 300px;
+    width: 350px;
     height: 40px;
-    padding-left: 60px;
-    background-image: url(${passwordIcon});
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    background-size: 30px;
+    padding-left: 10px;
+
 
     @media (min-width: 501px) and (max-width:850px){
         top:200px;
@@ -199,7 +196,6 @@ const PasswordInput = styled.input`
         height: 30px;
         width:200px;
         font-size: 1em;
-        background-size: 20px;
         padding-left:35px;
     }
 
@@ -208,7 +204,6 @@ const PasswordInput = styled.input`
         height: 30px;
         width:125px;
         font-size: 1em;
-        background-size: 20px;
         padding-left:35px;
     }
 `

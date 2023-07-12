@@ -14,7 +14,7 @@ const BusinessJobs = () => {
 	const [userId, setUserId] = useState(null);
 	const [editing, setEditing] = useState(false);
 	const [page, setPage] = useState("pending");
-    const [jobStatus, setJobStatus] = useState(false);
+	const [jobStatus, setJobStatus] = useState(false);
 
 	const storedUserId = localStorage.getItem("userData");
 
@@ -54,26 +54,26 @@ const BusinessJobs = () => {
 			estimateId: jobId,
 			// estimateStatus: jobStatus,
 			// price: editedPrice,
-            // paid: paidStatus,
-            // deposit: deposit
+			// paid: paidStatus,
+			// deposit: deposit
 			// depositPaid: true
 		};
 
-        if (jobStatus) {
-            updatedEstimate.estimateStatus = jobStatus;
-        }
+		if (jobStatus) {
+			updatedEstimate.estimateStatus = jobStatus;
+		}
 
-        if (editedPrice) {
-            updatedEstimate.price = editedPrice;
-        }
-        
-        if (paidStatus) {
-            updatedEstimate.paid = paidStatus;
-        }
-        
-        if (deposit) {
-            updatedEstimate.deposit = deposit;
-        }
+		if (editedPrice) {
+			updatedEstimate.price = editedPrice;
+		}
+
+		if (paidStatus) {
+			updatedEstimate.paid = paidStatus;
+		}
+
+		if (deposit) {
+			updatedEstimate.deposit = deposit;
+		}
 
 		fetch("/api/estimatesmodify", {
 			method: "PUT",
@@ -135,18 +135,29 @@ const BusinessJobs = () => {
 		<>
 			<Title>Your Jobs</Title>
 			<ChoicesDiv>
-				<Choices active={page === 'pending'} onClick={() => setPage("pending")}>Pending</Choices>
-				<Choices active={page === 'estimate-given'} onClick={() => setPage("estimate-given")}>Estimate Given</Choices>
-				<Choices active={page === 'accepted'} onClick={() => setPage("accepted")}>Accepted</Choices>
-				<Choices active={page === 'completed'} onClick={() => setPage("completed")}>Completed</Choices>
-				<Choices active={page === 'cancelled'} onClick={() => setPage("cancelled")}>Cancelled</Choices>
+				<Choices active={page === "pending"} onClick={() => setPage("pending")}>
+					Pending
+				</Choices>
+				<Choices active={page === "estimate-given"} onClick={() => setPage("estimate-given")}>
+					Estimate Given
+				</Choices>
+				<Choices active={page === "accepted"} onClick={() => setPage("accepted")}>
+					Accepted
+				</Choices>
+				<Choices active={page === "completed"} onClick={() => setPage("completed")}>
+					Completed
+				</Choices>
+				<Choices active={page === "cancelled"} onClick={() => setPage("cancelled")}>
+					Cancelled
+				</Choices>
 			</ChoicesDiv>
 			<JobDiv>
 				{estimates
 					.filter((user) => user.estimateStatus === page)
 					.map((user) => (
 						<JobContainer key={user._id}>
-							<CompanyName>Name will go here when it's fixed</CompanyName>
+							<CompanyName>{user.userName}</CompanyName>
+							<CompanyName>Contact at {user.userEmail} or {user.userNumber}</CompanyName>
 							<EditButton disabled={editing && jobId === user._id} onClick={() => handleEdit(user._id, user.userId)}>
 								Edit
 							</EditButton>
@@ -163,7 +174,10 @@ const BusinessJobs = () => {
 								</StatusButton>
 								<StatusButton
 									disabled={!editing || jobId !== user._id}
-									selected={(jobStatus === "estimate-given" && jobId === user._id) || (page === "estimate-given" && !(jobStatus && jobId === user._id))}
+									selected={
+										(jobStatus === "estimate-given" && jobId === user._id) ||
+										(page === "estimate-given" && !(jobStatus && jobId === user._id))
+									}
 									onClick={() => {
 										setJobStatus("estimate-given");
 									}}
@@ -201,16 +215,16 @@ const BusinessJobs = () => {
 							<JobDetails>
 								{user.price ? (
 									<PriceContainer>
-                                    <PriceLabel>Price:</PriceLabel>
-                                    <PriceInput
-                                        disabled={!editing || jobId !== user._id}
-                                        type="text"
-                                        placeholder={user.price}
-                                        value={editedPrice}
-                                        onChange={(e) => setEditedPrice(e.target.value)}
-                                    />
-                                    <PriceLabel>Currently: {user.price}</PriceLabel>
-                                </PriceContainer>
+										<PriceLabel>Price:</PriceLabel>
+										<PriceInput
+											disabled={!editing || jobId !== user._id}
+											type="text"
+											placeholder={user.price}
+											value={editedPrice}
+											onChange={(e) => setEditedPrice(e.target.value)}
+										/>
+										<PriceLabel>Currently: {user.price}</PriceLabel>
+									</PriceContainer>
 								) : (
 									<PriceContainer>
 										<PriceLabel>Price:</PriceLabel>
@@ -228,16 +242,16 @@ const BusinessJobs = () => {
 								</JobDetail>
 								{user.deposit ? (
 									<PriceContainer>
-                                    <PriceLabel>Deposit:</PriceLabel>
-                                    <PriceInput
-                                        disabled={!editing || jobId !== user._id}
-                                        type="text"
-                                        placeholder={user.price}
-                                        value={deposit}
-                                        onChange={(e) => setDeposit(e.target.value)}
-                                    />
-                                    <PriceLabel>Currently:{user.deposit}</PriceLabel>
-                                </PriceContainer>
+										<PriceLabel>Deposit:</PriceLabel>
+										<PriceInput
+											disabled={!editing || jobId !== user._id}
+											type="text"
+											placeholder={user.price}
+											value={deposit}
+											onChange={(e) => setDeposit(e.target.value)}
+										/>
+										<PriceLabel>Currently:{user.deposit}</PriceLabel>
+									</PriceContainer>
 								) : (
 									<PriceContainer>
 										<PriceLabel>Deposit:</PriceLabel>
@@ -305,11 +319,11 @@ const ChoicesDiv = styled.div`
 `;
 
 const Choices = styled.p`
-    font-size:1.2em;
+	font-size: 1.2em;
 	margin-right: 20px;
 	margin-left: 20px;
-    cursor: pointer;
-    text-decoration: ${(props) => (props.active ? 'underline' : 'none')};
+	cursor: pointer;
+	text-decoration: ${(props) => (props.active ? "underline" : "none")};
 `;
 
 const EditButton = styled.button`
@@ -336,8 +350,8 @@ const JobContainer = styled.div`
 
 const CompanyName = styled.h3`
 	text-align: center;
-	font-size: 16px;
 	margin: 0;
+	font-size: 1.6em;
 `;
 
 const EstimateTime = styled.p`

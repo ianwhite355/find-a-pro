@@ -145,7 +145,7 @@ const Menu = styled.div`
 	place-items: center;
 	width: 400px;
 	height: 100%;
-	background: #07030a;
+	background: #3457D5;
 	transform: ${({ isOpen }) => (isOpen ? "translate(0)" : "translate(-100%, 0)")};
 	opacity: ${({ isOpen }) => (isOpen ? "1" : "0")};
 	visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
@@ -175,7 +175,6 @@ const NavLink = styled(Link)`
 	position: relative;
 	color: #f9f9f9;
 	font-size: 32px;
-	font-family: "Euclid Circular A";
 	padding: 20px 0;
 	width: 300px;
 	text-decoration: none;

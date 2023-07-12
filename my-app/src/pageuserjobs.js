@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Loader from "./Loader";
+import { useNavigate } from "react-router-dom";
 
 const UserJobs = () => {
 	const [loading, setLoading] = useState(true);
@@ -9,6 +10,8 @@ const UserJobs = () => {
 	const [companyIds, setCompanyIds] = useState([]);
 	const [companyId, setCompanyId] = useState(null);
 	const [page, setPage] = useState("pending");
+
+	const navigate = useNavigate()
 
 	const storedUserId = localStorage.getItem("userData");
 
@@ -101,7 +104,7 @@ const UserJobs = () => {
 					.filter((user) => user.estimateStatus === page)
 					.map((user) => (
 						<JobContainer key={user._id}>
-							<CompanyName>Name will go here when it's fixed</CompanyName>
+							<CompanyName onClick={() => navigate(`/company/${user.companyId}`)}>{user.companyName}</CompanyName>
 							<EstimateTime>{user.estimateTime}</EstimateTime>
 							<Status>Status: {user.estimateStatus}</Status>
 							{user.price ? <Price>{user.price}</Price> : <NoPrice>Price not available</NoPrice>}
@@ -159,8 +162,9 @@ const JobContainer = styled.div`
 
 const CompanyName = styled.h3`
 	text-align: center;
-	font-size: 16px;
+	font-size: 1.6em;
 	margin: 0;
+	cursor: pointer;
 `;
 
 const EstimateTime = styled.p`

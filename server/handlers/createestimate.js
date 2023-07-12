@@ -12,7 +12,7 @@ const options = {
 
 const createEstimate = async (request, response) => {
 	// const { day, month, year, time } = request.body
-	const { companyId, userId, estimateDate } = request.body;
+	const { companyId, userId, companyName, userName, userEmail, userNumber, estimateDate } = request.body;
 
 	const client = new MongoClient(MONGO_URI, options);
 
@@ -36,6 +36,10 @@ const createEstimate = async (request, response) => {
 			_id: newId,
 			companyId: companyId,
 			userId: userId,
+			companyName: companyName,
+			userName: userName,
+			userEmail: userEmail,
+			userNumber: userNumber,
 			estimateDate: estimateDateTime,
 			workDate: null,
 			estimateStatus: "pending",

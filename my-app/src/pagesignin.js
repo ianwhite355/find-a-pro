@@ -2,20 +2,14 @@ import { useState } from "react"
 import styled from "styled-components"
 import hideImage from "./images/hide.png"
 import viewImage from "./images/view.png"
-import emailIcon from "./images/emailicon.png"
-import passwordIcon from "./images/passwordicon.png"
 import { Link, useNavigate } from "react-router-dom"
 
 const UserSignIn = () => {
     const [signIn, setSignIn] = useState({ email: '', password: '' })
     const [showPassword, setShowPassword] = useState(false)
-    const [staySignedIn, setStaySignedIn] = useState(false);
+    const [wrongMessage, setWrongMessage] = useState(null)
 
     const navigate = useNavigate()
-
-    const handleStaySignedInChange = (event) => {
-        setStaySignedIn(event.target.checked);
-    };
 
     const handleChange = (key,value) => {
         setSignIn({ ...signIn, [key]: value })
@@ -38,14 +32,15 @@ const UserSignIn = () => {
         .then(data => {
             if (data.message === 'Login successful') {
                 const userData = data.userData;
-                userData.staySignedIn = staySignedIn;
                 localStorage.setItem('userData', JSON.stringify(userData._id));
                 localStorage.setItem('type', JSON.stringify('user'))
                 navigate("/")
                 window.location.reload()
                 
-            } else {
-                console.log('Login failed');
+            } else if (data.message === 'Invalid email') {
+                setWrongMessage("Wrong email")
+            } else if (data.message === 'Invalid password') {
+                setWrongMessage("Wrong password")
             }
         })
         .catch(error => {
@@ -68,11 +63,10 @@ const UserSignIn = () => {
                     <ToggleIcon src={showPassword ? hideImage : viewImage} alt={showPassword ? "Hide" : "Show"}/>
                 </TogglePasswordButton>
             </PassWordContainer>
+            {wrongMessage && (
+                <p>{wrongMessage}</p>
+            )}
 
-            <form>
-                <input type="checkbox" checked={staySignedIn} onChange={handleStaySignedInChange} />
-                Stay logged in
-            </form>
             <SignInButton onClick={handleSignIn}>Sign in!</SignInButton>
             <SignUp to="/usersignup">Don't have an account yet, sign up!</SignUp>
         </Container>
@@ -108,14 +102,11 @@ const EmailContainer = styled.div`
 const EmailInput = styled.input`
     border-radius: 10px;
     font-size: 1.5em;
-    width: 300px;
+    width: 350px;
     height: 40px;
     top:300px;
-    padding-left: 60px;
-    background-image: url(${emailIcon});
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    background-size: 30px;
+    padding-left: 10px;
+
     @media (min-width: 200px) and (max-width:850px){
         top:200px;
         height: 30px;
@@ -140,13 +131,9 @@ const PasswordInput = styled.input`
 
     border-radius: 10px;
     font-size: 1.5em;
-    width: 300px;
+    width: 350px;
     height: 40px;
-    padding-left: 60px;
-    background-image: url(${passwordIcon});
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    background-size: 30px;
+    padding-left: 10px;
 
     @media (min-width: 321px) and (max-width:850px){
         top:200px;
@@ -185,7 +172,7 @@ const ToggleIcon = styled.img`
 `;
 
 const SignInButton = styled.button`
-    background-color: #007bff;
+    background-color: #3457D5;
     color: white;
     border: none;
     border-radius: 10px;
