@@ -34,7 +34,7 @@ const BusinessSignIn = () => {
                 const userData = data.userData;
                 localStorage.setItem('userData', JSON.stringify(userData._id));
                 localStorage.setItem('type', JSON.stringify("business") )
-                navigate("/businesspage")
+                navigate("/businessjobs")
                 window.location.reload()
             }  else if (data.message === 'Invalid email') {
                 setWrongMessage("Wrong email")

@@ -376,7 +376,7 @@ const Schedule = () => {
 					<Exclusions>
 						<FlexColumn>
 							<AnotherTitle>Live exclusions</AnotherTitle>
-							{exclusions.map((exclusion, index) => (
+							{exclusions.filter(exclusion => exclusion.type !== "jobs").map((exclusion, index) => (
 								<CurrentExlusions key={`${exclusion.day}-${exclusion.month}-${index}`}>
 									<p>
 										Current exlusions: {exclusion.year}/{exclusion.month}/{exclusion.day} at {exclusion.time}
@@ -425,8 +425,11 @@ const Choices = styled.p`
 	font-size: 1.2em;
 	margin-right: 20px;
 	margin-left: 20px;
+	padding: 5px 10px;
+	border-radius: 5px;
 	cursor: pointer;
-	text-decoration: ${(props) => (props.active ? "underline" : "none")};
+	background-color: ${(props) => (props.active ? "#9400D3" : "none")};
+	color: ${(props) => (props.active ? "white" : "black")};
 `;
 
 const WeekList = styled.ul`

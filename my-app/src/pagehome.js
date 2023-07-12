@@ -51,12 +51,10 @@ const HomePage = () => {
 		return <Loader />;
 	}
 
+	//this is to not allow a business to go to the home page, so they cant book jobs and do all that unless they make another account as a normal user
+
 	if (isBusinessUser) {
-		return (
-			<>
-				<p>this page is restricted to businesses, if you would like to use please make a regular account</p>
-			</>
-		);
+		navigate("/businessjobs")
 	}
 
 	return (
@@ -233,7 +231,7 @@ const Service = styled.div`
 	color: white;
 	width: 75%;
 	border-radius: 15px;
-	height: 375px;
+	height: 325px;
 	overflow-x: scroll;
 	overflow-y: hidden;
 
@@ -276,8 +274,8 @@ const ADiv = styled.div`
 	overflow: hidden;
 	margin: 15px;
 
-	min-width: 260px;
-	max-width: 260px;
+	min-width: 240px;
+	max-width: 240px;
 	cursor: pointer;
 
 	@media (min-width: 200px) and (max-width: 850px) {
@@ -318,6 +316,7 @@ const ProjectImg = styled.img`
 const ProjectName = styled.p`
 	padding: 0px;
 	font-weight: bold;
+	text-align: center;
 	position: relative;
 	bottom: 15px;
 	transition: opacity 0.3s ease;
@@ -340,6 +339,7 @@ const ProjectBook = styled.p`
 	font-size: 1.3em;
 	padding: 10px;
 	font-weight: bold;
+	text-align: center;
 
 	z-index: 1;
 	opacity: 1;

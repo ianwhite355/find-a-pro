@@ -100,7 +100,9 @@ const CompanyPage = ({ setConfirmationData }) => {
 			userNumber:userData.phoneNumber
 		};
 
-		
+		formattedDate.type = "jobs";
+		console.log(formattedDate)
+
 		const postData = {
 			companyId: companyId,
 			userId: jsonUserId,
@@ -149,7 +151,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 
 	useEffect(() => {
 		Promise.all([
-			fetch(`/api/company/${companyId}`).then((response) => response.json()),
+			fetch(`/api/companygetnopass/${companyId}`).then((response) => response.json()),
 			fetch(`/api/timeslots/${companyId}`).then((response) => response.json()),
 		])
 			.then(([companyData, timeslotData]) => {
@@ -276,6 +278,8 @@ const CompanyPage = ({ setConfirmationData }) => {
 		return <Loader />;
 	}
 
+	console.log(data)
+
 	return (
 		<Container>
 			<BackgroundImage src={data.image} />
@@ -285,7 +289,9 @@ const CompanyPage = ({ setConfirmationData }) => {
 						<Logo src={data.logo} />
 						<div>
 							<Name>{data.name}</Name>
-							<p>reviews here later, on 5 stars</p>
+							<p>{data.number}</p>
+							<p>{data.email}</p>
+							{/* <p>reviews here later, on 5 stars</p> */}
 						</div>
 					</MainHeader>
 					<Description>{data.description}</Description>
@@ -391,6 +397,7 @@ const ContentWrapper = styled.div`
 
 const Name = styled.p`
 	font-size: 3em;
+	margin-bottom: 30px;
 `;
 
 const Description = styled.p`

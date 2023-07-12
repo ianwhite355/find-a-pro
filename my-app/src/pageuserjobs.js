@@ -11,7 +11,7 @@ const UserJobs = () => {
 	const [companyId, setCompanyId] = useState(null);
 	const [page, setPage] = useState("pending");
 
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 
 	const storedUserId = localStorage.getItem("userData");
 
@@ -20,13 +20,11 @@ const UserJobs = () => {
 	const jsonUserId = JSON.parse(storedUserId);
 
 	const handleCancel = (companyId, estimateId, exclusion) => {
-
 		const cancelData = {
 			userId: jsonUserId,
 			companyId: companyId,
 			estimateId: estimateId,
-			exclusion: exclusion
-
+			exclusion: exclusion,
 		};
 
 		fetch("/api/deletejob", {
@@ -113,14 +111,22 @@ const UserJobs = () => {
 							{user.price ? <Price>{user.price}</Price> : <NoPrice>Price not available</NoPrice>}
 							<JobDetails>
 								<JobDetail>
-									Estimate Date: {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at {user.estimateTime}
+									<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+									{user.estimateTime}
 								</JobDetail>
 								<JobDetail>
-									Booked Date: {user.workDate ? `${user.workDate.month}/${user.workDate.day}/${user.workDate.year}` : "Not booked yet"}
+									<PriceLabel>Booked Date: </PriceLabel>
+									{user.workDate ? `${user.workDate.month}/${user.workDate.day}/${user.workDate.year}` : "Not booked yet"}
 								</JobDetail>
-								<JobDetail>Deposit: {user.deposit ? `${user.deposit}` : "No deposit yet"}</JobDetail>
-								<JobDetail>Paid: {user.depositPaid ? "Yes" : "No"}</JobDetail>
-								<JobDetail>Work Complete: {user.workComplete ? "Yes" : "No"}</JobDetail>
+								<JobDetail>
+									<PriceLabel>Deposit:</PriceLabel> {user.deposit ? `${user.deposit}` : "No deposit yet"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Paid:</PriceLabel> {user.depositPaid ? "Yes" : "No"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Work Complete:</PriceLabel> {user.workComplete ? "Yes" : "No"}
+								</JobDetail>
 							</JobDetails>
 							<CancelButton onClick={() => handleCancel(user.companyId, user._id, user.estimateDate)}>Cancel Job</CancelButton>
 						</JobContainer>
@@ -146,8 +152,11 @@ const Choices = styled.p`
 	font-size: 1.2em;
 	margin-right: 20px;
 	margin-left: 20px;
+	padding: 5px 10px;
+	border-radius: 5px;
 	cursor: pointer;
-	text-decoration: ${(props) => (props.active ? "underline" : "none")};
+	background-color: ${(props) => (props.active ? "#9400D3" : "none")};
+	color: ${(props) => (props.active ? "white" : "black")};
 `;
 
 const JobDiv = styled.div`
@@ -201,6 +210,7 @@ const JobDetails = styled.div`
 
 const CancelButton = styled.button`
 	background-color: red;
+	border-radius: 5px;
 	font-size: 1.2em;
 	color: white;
 	border: none;
@@ -211,6 +221,11 @@ const CancelButton = styled.button`
 const JobDetail = styled.p`
 	margin: 0;
 	padding: 5px;
+`;
+
+const PriceLabel = styled.span`
+	margin-right: 5px;
+	font-weight: bold;
 `;
 
 export default UserJobs;

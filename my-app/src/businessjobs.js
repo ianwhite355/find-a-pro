@@ -155,7 +155,9 @@ const BusinessJobs = () => {
 					.map((user) => (
 						<JobContainer key={user._id}>
 							<CompanyName>{user.userName}</CompanyName>
-							<CompanyName>Contact at {user.userEmail} or {user.userNumber}</CompanyName>
+							<Contact>
+								Contact at {user.userEmail} or {user.userNumber}
+							</Contact>
 							<EditButton disabled={editing && jobId === user._id} onClick={() => handleEdit(user._id, user.userId)}>
 								Edit
 							</EditButton>
@@ -236,7 +238,8 @@ const BusinessJobs = () => {
 									</PriceContainer>
 								)}
 								<JobDetail>
-									Estimate Date: {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at {user.estimateDate.time}
+									<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+									{user.estimateDate.time}
 								</JobDetail>
 								{user.deposit ? (
 									<PriceContainer>
@@ -320,12 +323,16 @@ const Choices = styled.p`
 	font-size: 1.2em;
 	margin-right: 20px;
 	margin-left: 20px;
+	padding: 5px 10px;
+	border-radius: 5px;
 	cursor: pointer;
-	text-decoration: ${(props) => (props.active ? "underline" : "none")};
+	background-color: ${(props) => (props.active ? "#9400D3" : "none")};
+	color: ${(props) => (props.active ? "white" : "black")};
 `;
 
 const EditButton = styled.button`
-	background-color: ${({ disabled }) => (disabled ? "red" : " #17b169")};
+	background-color: ${({ disabled }) => (disabled ? "red" : "#008000")};
+	border-radius: 5px;
 	color: white;
 	border: none;
 	padding: 10px;
@@ -352,6 +359,13 @@ const CompanyName = styled.h3`
 	font-size: 1.6em;
 `;
 
+const Contact = styled.h3`
+	text-align: center;
+	margin: 0;
+	margin-top: 5px;
+	font-size: 1.2em;
+`;
+
 const EstimateTime = styled.p`
 	margin: 0;
 	padding: 10px;
@@ -365,8 +379,9 @@ const Status = styled.div`
 `;
 
 const StatusButton = styled.button`
-	background-color: ${({ selected }) => (selected ? "#17b169" : "inherit")};
+	background-color: ${({ selected }) => (selected ? "#008000" : "inherit")};
 	color: ${({ selected }) => (selected ? "white" : "inherit")};
+	border-radius: 5px;
 	border: none;
 	padding: 5px;
 	margin-right: 10px;
@@ -379,12 +394,15 @@ const JobDetails = styled.div`
 `;
 
 const JobDetail = styled.p`
+	position: relative;
+	right: 5px;
 	margin: 0;
 	padding: 5px;
 `;
 
 const CancelButton = styled.button`
 	background-color: red;
+	border-radius: 5px;
 	font-size: 1.2em;
 	color: white;
 	border: none;
@@ -399,7 +417,7 @@ const ButtonContainer = styled.div`
 `;
 
 const SaveButton = styled.button`
-	background-color: #17b169;
+	background-color: #008000;
 	color: #fff;
 	padding: 8px 16px;
 	border: none;
@@ -447,7 +465,7 @@ const PaidStatusLabel = styled.span`
 const PaidStatusButton = styled.button`
 	padding: 5px 10px;
 	margin-right: 10px;
-	background-color: ${(props) => (props.selected ? "#17b169" : "red")};
+	background-color: ${(props) => (props.selected ? "#008000" : "red")};
 	color: #fff;
 	border: none;
 	border-radius: 4px;

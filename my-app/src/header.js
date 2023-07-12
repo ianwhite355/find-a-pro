@@ -41,7 +41,7 @@ export const Header = () => {
 	return (
 		<Heading>
 			<Hamburger />
-			{isBusinessUser ? <HomeLink to="/businesspage">Find Your Pro</HomeLink> : <HomeLink to="/">Find Your Pro</HomeLink>}
+			{isBusinessUser ? <HomeLink to="/businessjobs">Find Your Pro</HomeLink> : <HomeLink to="/">Find Your Pro</HomeLink>}
 
 			{isLoggedIn ? (
 				<AlreadyIn>

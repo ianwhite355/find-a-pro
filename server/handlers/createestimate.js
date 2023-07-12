@@ -30,6 +30,7 @@ const createEstimate = async (request, response) => {
 			month: estimateDate.month,
 			year: estimateDate.year,
 			time: estimateDate.time,
+			type: estimateDate.type
 		};
 
 		const data = {
