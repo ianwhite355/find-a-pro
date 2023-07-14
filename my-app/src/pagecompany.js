@@ -278,7 +278,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 		return <Loader />;
 	}
 
-	console.log(data)
+	console.log(userData)
 
 	return (
 		<Container>

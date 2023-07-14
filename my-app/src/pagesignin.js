@@ -100,7 +100,7 @@ const EmailContainer = styled.div`
 `
 
 const EmailInput = styled.input`
-    border-radius: 10px;
+    border: solid 2px #CDCDCD;
     font-size: 1.5em;
     width: 350px;
     height: 40px;
@@ -128,8 +128,7 @@ const PassWordContainer = styled.div`
 `
 
 const PasswordInput = styled.input`
-
-    border-radius: 10px;
+    border: solid 2px #CDCDCD;
     font-size: 1.5em;
     width: 350px;
     height: 40px;

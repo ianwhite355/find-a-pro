@@ -160,13 +160,13 @@ const MainBar = styled.div`
 
 const FlexDiv = styled.div`
 	display: flex;
-	margin-top: 20px;
+	margin-top: 40px;
 `;
 
 const SearchBar = styled.form`
+
 	display: flex;
 	flex-direction: column;
-
 	align-items: center;
 	justify-content: center;
 `;

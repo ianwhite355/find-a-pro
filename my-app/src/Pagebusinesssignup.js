@@ -58,7 +58,7 @@ const BusinessSignUp  = () => {
                     </Label>
                     <Label>
                         Phone Number:
-                        <Input type="number" name="user_phoneNumber"/>
+                        <Input type="tel" name="user_phoneNumber"/>
                     </Label>
                 
                 <Services>What services Do you offer?</Services>
@@ -133,6 +133,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
+    border: solid 2px #CDCDCD;
     padding: 5px;
     margin-top: 5px;
 `;
@@ -150,12 +151,18 @@ const Services = styled.p`
 `;
 
 const Button = styled.button`
-    padding: 10px 20px;
-    margin-top: 10px;
-    background-color: #3457D5;
-    color: white;
-    border: none;
-    cursor: pointer;
+    background-color: #3457d5;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	padding: 10px 20px;
+	margin: 20px;
+	font-size: 1.2em;
+	cursor: pointer;
+
+	&:hover {
+		background-color: #0056b3;
+	}
 `;
 
 const ContactShortly = styled.p`
