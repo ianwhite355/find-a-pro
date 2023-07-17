@@ -6,6 +6,9 @@ import "react-calendar/dist/Calendar.css";
 // import 'react-clock/dist/Clock.css';
 import emailjs from "@emailjs/browser";
 import Loader from "./Loader";
+import FullStar from "./images/fullstar.png"
+import HalfStar from "./images/halfstar.png"
+
 
 const progressBarAnimation = keyframes`
     0% { transform: scaleX(1); }
@@ -28,6 +31,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 	const [dayOfWeek, setDayOfWeek] = useState(null);
 	const [sameTimeValue, setSameTimeValue] = useState(false);
 	const [alreadySent, setAlreadySent] = useState(false);
+	
 
 	const navigate = useNavigate();
 
@@ -42,7 +46,6 @@ const CompanyPage = ({ setConfirmationData }) => {
 		year: calendar.getFullYear(),
 		time: selectedTime,
 	};
-
 
 	const stringFormattedDay = JSON.stringify(formattedDate.day);
 
@@ -80,37 +83,35 @@ const CompanyPage = ({ setConfirmationData }) => {
 			return;
 		}
 
-		
-
 		if (alreadySent) {
 			return;
 		}
 
-		const userName = userData.firstName + " " + userData.lastName
+		const userName = userData.firstName + " " + userData.lastName;
 
 		const emailData = {
 			day: stringFormattedDay || "day was not selected",
 			month: stringFormattedMonth || "month was not selected",
 			year: stringFormattedYear || "Years was not selected",
-			time: stringTime || "Time was not selected" ,
+			time: stringTime || "Time was not selected",
 			data_email: data.email,
-			firstName:userData.firstName,
-			lastName:userData.lastName,
-			userEmail:userData.email,
-			userNumber:userData.phoneNumber
+			firstName: userData.firstName,
+			lastName: userData.lastName,
+			userEmail: userData.email,
+			userNumber: userData.phoneNumber,
 		};
 
 		formattedDate.type = "jobs";
-		console.log(formattedDate)
+		console.log(formattedDate);
 
 		const postData = {
 			companyId: companyId,
 			userId: jsonUserId,
 			estimateDate: formattedDate,
 			companyName: data.name,
-			userName:userName,
-			userEmail:userData.email,
-			userNumber: userData.phoneNumber
+			userName: userName,
+			userEmail: userData.email,
+			userNumber: userData.phoneNumber,
 		};
 
 		Promise.all([
@@ -278,7 +279,19 @@ const CompanyPage = ({ setConfirmationData }) => {
 		return <Loader />;
 	}
 
-	console.log(userData)
+	let ratingTotal = 0;
+
+	const reviews = data.reviews.map((review) => {
+		ratingTotal += review.rating;
+		return (
+			<div key={review._id}>
+				<p>{review.rating}</p>
+				<p>{review.description}</p>
+			</div>
+		);
+	});
+	const averageRating = (ratingTotal / data.reviews.length).toFixed(1);
+	const roundedRating = Math.round(averageRating * 2) / 2;
 
 	return (
 		<Container>
@@ -289,12 +302,15 @@ const CompanyPage = ({ setConfirmationData }) => {
 						<Logo src={data.logo} />
 						<div>
 							<Name>{data.name}</Name>
+							<p>
+								{averageRating}/5 out of {data.reviews.length} reviews
+							</p>
 							<p>{data.number}</p>
 							<p>{data.email}</p>
-							{/* <p>reviews here later, on 5 stars</p> */}
 						</div>
 					</MainHeader>
 					<Description>{data.description}</Description>
+					<div>{reviews}</div>
 				</ContentWrapper>
 				<SeperateDiv>
 					<BookTitle>Book a day!</BookTitle>
