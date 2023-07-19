@@ -34,58 +34,29 @@ const companyGet = async (request, response) => {
 	}
 };
 
-
 const companyGetNoPass = async (request, response) => {
 	const { companyIds } = request.params;
-  
+
 	const client = new MongoClient(MONGO_URI, options);
-  
+
 	try {
-	  await client.connect();
-	  const db = client.db("findyourpro");
-  
-	  const company = await db
-		.collection("companies")
-		.findOne({ _id: companyIds }, { projection: { password: 0 } });
-  
-	  if (company) {
-		response.status(200).json({ status: 200, data: company });
-	  } else {
-		response.status(404).json({ status: 404, message: "Company not found" });
-	  }
+		await client.connect();
+		const db = client.db("findyourpro");
+
+		const company = await db.collection("companies").findOne({ _id: companyIds }, { projection: { password: 0 } });
+
+		if (company) {
+			response.status(200).json({ status: 200, data: company });
+		} else {
+			response.status(404).json({ status: 404, message: "Company not found" });
+		}
 	} catch (error) {
-	  console.error(`Internal error: ${error.stack}`);
-	  response.status(500).json({ status: 500, error: error.message });
+		console.error(`Internal error: ${error.stack}`);
+		response.status(500).json({ status: 500, error: error.message });
 	} finally {
-	  client.close();
+		client.close();
 	}
-  };
-  
-  
-
-// const companyGetNoPass = async (request, response) => {
-// 	const _id = request.params._id;
-
-// 	const client = new MongoClient(MONGO_URI, options);
-
-// 	try {
-// 		await client.connect();
-// 		const db = client.db("findyourpro");
-
-// 		const company = await db.collection("companies").findOne({ _id }, { projection: { password: 0 } });
-
-// 		if (company) {
-// 			response.status(200).json({ status: 200, data: company });
-// 		} else {
-// 			response.status(404).json({ status: 404, message: "Company not found" });
-// 		}
-// 	} catch (error) {
-// 		console.error(`Internal error: ${error.stack}`);
-// 		response.status(500).json({ status: 500, error: error.message });
-// 	} finally {
-// 		client.close();
-// 	}
-// };
+};
 
 const timeSlotsGet = async (request, response) => {
 	const _id = request.params._id;
@@ -155,6 +126,7 @@ const companyPost = async (request, response) => {
 				image: image,
 				logo: logo,
 				description: description,
+				reviews: []
 			};
 			timeData = {
 				_id: newId,

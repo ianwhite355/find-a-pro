@@ -2,6 +2,31 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "./Loader";
+import star0 from "./images/0stars.png";
+import star05 from "./images/0.5stars.png";
+import star1 from "./images/1stars.png";
+import star15 from "./images/1.5stars.png";
+import star2 from "./images/2stars.png";
+import star25 from "./images/2.5stars.png";
+import star3 from "./images/3stars.png";
+import star35 from "./images/3.5stars.png";
+import star4 from "./images/4stars.png";
+import star45 from "./images/4.5stars.png";
+import star5 from "./images/5stars.png";
+
+const starImages = {
+	0: star0,
+	0.5: star05,
+	1: star1,
+	1.5: star15,
+	2: star2,
+	2.5: star25,
+	3: star3,
+	3.5: star35,
+	4: star4,
+	4.5: star45,
+	5: star5,
+};
 
 const HomePage = () => {
 	const [query, setQuery] = useState("");
@@ -54,7 +79,7 @@ const HomePage = () => {
 	//this is to not allow a business to go to the home page, so they cant book jobs and do all that unless they make another account as a normal user
 
 	if (isBusinessUser) {
-		navigate("/businessjobs")
+		navigate("/businessjobs");
 	}
 
 	return (
@@ -105,35 +130,96 @@ const HomePage = () => {
 			<ServicesDiv>
 				<ServiceTitle>Window Washing</ServiceTitle>
 				<Service>
-					{windowWashingData.map((user) => (
-						<ADiv key={user._id} onClick={() => navigate(`/company/${user._id}`)}>
-							<ProjectImg src={user.image} />
-							<ProjectName>{user.name}</ProjectName>
-							<ProjectBook>Book Now!</ProjectBook>
-						</ADiv>
-					))}
+					{windowWashingData.map((user) => {
+						let ratingTotal = 0;
+						let reviews;
+						let averageRating;
+						let starPath;
+					
+						if (user.reviews.length === 0) {
+							starPath = starImages[ratingTotal.toString()];
+						} else if (user.reviews.length > 0) {
+							reviews = user.reviews.map((review) => {
+								ratingTotal += review.overallRating;
+							});
+							averageRating = (ratingTotal / user.reviews.length).toFixed(1);
+							const roundedRating = Math.round(averageRating * 2) / 2;
+							starPath = starImages[roundedRating.toString()];
+						}
+
+						return (
+							<ADiv key={user._id} onClick={() => navigate(`/company/${user._id}`)}>
+								<ProjectImg src={user.image} />
+								<ProjectName>{user.name}</ProjectName>
+								<RatingDiv>
+									<ProjectStarImage src={starPath}/>
+									<RatingCount>{user.reviews.length} reviews</RatingCount> 
+								</RatingDiv>
+							</ADiv>
+						);
+					})}
 				</Service>
 
 				<ServiceTitle>Pool Cleaning</ServiceTitle>
 				<Service>
-					{poolCleaningData.map((user) => (
-						<ADiv key={user._id} onClick={() => navigate(`/company/${user._id}`)}>
-							<ProjectImg src={user.image} />
-							<ProjectName>{user.name}</ProjectName>
-							<ProjectBook>Book Now!</ProjectBook>
-						</ADiv>
-					))}
+					{poolCleaningData.map((user) => {
+						let ratingTotal = 0;
+						let reviews;
+						let averageRating;
+						let starPath;
+					
+						if (user.reviews.length === 0) {
+							starPath = starImages[ratingTotal.toString()];
+						} else if (user.reviews.length > 0) {
+							reviews = user.reviews.map((review) => {
+								ratingTotal += review.overallRating;
+							});
+							averageRating = (ratingTotal / user.reviews.length).toFixed(1);
+							const roundedRating = Math.round(averageRating * 2) / 2;
+							starPath = starImages[roundedRating.toString()];
+						}
+						return (
+							<ADiv key={user._id} onClick={() => navigate(`/company/${user._id}`)}>
+								<ProjectImg src={user.image} />
+								<ProjectName>{user.name}</ProjectName>
+								<RatingDiv>
+									<ProjectStarImage src={starPath}/>
+									<RatingCount>{user.reviews.length} reviews</RatingCount> 
+								</RatingDiv>
+							</ADiv>
+						);
+					})}
 				</Service>
 
 				<ServiceTitle>Painting</ServiceTitle>
 				<Service>
-					{paintingData.map((user) => (
-						<ADiv key={user._id} onClick={() => navigate(`/company/${user._id}`)}>
-							<ProjectImg src={user.image} />
-							<ProjectName>{user.name}</ProjectName>
-							<ProjectBook>Book Now!</ProjectBook>
-						</ADiv>
-					))}
+					{paintingData.map((user) => {
+						let ratingTotal = 0;
+						let reviews;
+						let averageRating;
+						let starPath;
+					
+						if (user.reviews.length === 0) {
+							starPath = starImages[ratingTotal.toString()];
+						} else if (user.reviews.length > 0) {
+							reviews = user.reviews.map((review) => {
+								ratingTotal += review.rating;
+							});
+							averageRating = (ratingTotal / user.reviews.length).toFixed(1);
+							const roundedRating = Math.round(averageRating * 2) / 2;
+							starPath = starImages[roundedRating.toString()];
+						}
+						return (
+							<ADiv key={user._id} onClick={() => navigate(`/company/${user._id}`)}>
+								<ProjectImg src={user.image} />
+								<ProjectName>{user.name}</ProjectName>
+								<RatingDiv>
+									<ProjectStarImage src={starPath}/>
+									<RatingCount>{user.reviews.length} reviews</RatingCount> 
+								</RatingDiv>
+							</ADiv>
+						);
+					})}
 				</Service>
 			</ServicesDiv>
 		</DisFlex>
@@ -164,7 +250,6 @@ const FlexDiv = styled.div`
 `;
 
 const SearchBar = styled.form`
-
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -286,8 +371,6 @@ const ADiv = styled.div`
 	}
 `;
 
-const AnotherOne = styled.div``;
-
 const ProjectImg = styled.img`
 	width: 260px;
 	height: 150px;
@@ -313,10 +396,26 @@ const ProjectImg = styled.img`
 	}
 `;
 
+const RatingDiv = styled.div`
+	display: flex;
+	align-items: center;
+	
+`
+
+const ProjectStarImage = styled.img`
+	width: 100px;
+	height: 18px;
+`
+
+const RatingCount = styled.p`
+	margin-left: 5px;
+	color: black;
+`;
+
+
 const ProjectName = styled.p`
 	padding: 0px;
 	font-weight: bold;
-	text-align: center;
 	position: relative;
 	bottom: 15px;
 	transition: opacity 0.3s ease;
@@ -335,21 +434,21 @@ const ProjectName = styled.p`
 	}
 `;
 
-const ProjectBook = styled.p`
-	font-size: 1.3em;
-	padding: 10px;
-	font-weight: bold;
-	text-align: center;
+// const ProjectBook = styled.p`
+// 	font-size: 1.3em;
+// 	padding: 10px;
+// 	font-weight: bold;
+// 	text-align: center;
 
-	z-index: 1;
-	opacity: 1;
-	color: black;
-	@media (min-width: 200px) and (max-width: 850px) {
-		top: 80%;
-		width: 85px;
-		font-size: 0.8em;
-		margin-left: 37.5px;
-	}
-`;
+// 	z-index: 1;
+// 	opacity: 1;
+// 	color: black;
+// 	@media (min-width: 200px) and (max-width: 850px) {
+// 		top: 80%;
+// 		width: 85px;
+// 		font-size: 0.8em;
+// 		margin-left: 37.5px;
+// 	}
+// `;
 
 export default HomePage;

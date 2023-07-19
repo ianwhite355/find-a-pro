@@ -6,9 +6,37 @@ import "react-calendar/dist/Calendar.css";
 // import 'react-clock/dist/Clock.css';
 import emailjs from "@emailjs/browser";
 import Loader from "./Loader";
-import FullStar from "./images/fullstar.png"
-import HalfStar from "./images/halfstar.png"
+import star0 from "./images/0stars.png";
+import star05 from "./images/0.5stars.png";
+import star1 from "./images/1stars.png";
+import star15 from "./images/1.5stars.png";
+import star2 from "./images/2stars.png";
+import star25 from "./images/2.5stars.png";
+import star3 from "./images/3stars.png";
+import star35 from "./images/3.5stars.png";
+import star4 from "./images/4stars.png";
+import star45 from "./images/4.5stars.png";
+import star5 from "./images/5stars.png";
 
+const starImages = {
+	0: star0,
+	0.5: star05,
+	1: star1,
+	1.5: star15,
+	2: star2,
+	2.5: star25,
+	3: star3,
+	3.5: star35,
+	4: star4,
+	4.5: star45,
+	5: star5,
+};
+
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+const getMonthName = (monthNumber) => {
+	return months[monthNumber - 1] || ""; // Adjust monthNumber index if necessary
+};
 
 const progressBarAnimation = keyframes`
     0% { transform: scaleX(1); }
@@ -31,7 +59,6 @@ const CompanyPage = ({ setConfirmationData }) => {
 	const [dayOfWeek, setDayOfWeek] = useState(null);
 	const [sameTimeValue, setSameTimeValue] = useState(false);
 	const [alreadySent, setAlreadySent] = useState(false);
-	
 
 	const navigate = useNavigate();
 
@@ -280,18 +307,41 @@ const CompanyPage = ({ setConfirmationData }) => {
 	}
 
 	let ratingTotal = 0;
+	let reviews;
+	let averageRating;
+	let starPath;
 
-	const reviews = data.reviews.map((review) => {
-		ratingTotal += review.rating;
-		return (
-			<div key={review._id}>
-				<p>{review.rating}</p>
-				<p>{review.description}</p>
-			</div>
-		);
-	});
-	const averageRating = (ratingTotal / data.reviews.length).toFixed(1);
-	const roundedRating = Math.round(averageRating * 2) / 2;
+	if (data.reviews.length === 0) {
+		starPath = starImages[ratingTotal];
+	} else if (data.reviews.length > 0) {
+		reviews = data.reviews.map((review) => {
+			ratingTotal += review.overallRating;
+			
+			return (
+				<IndividualReview key={review._id}>
+					<ReviewName>{review.userName}</ReviewName>
+					<PartOfReview>
+						<ReviewDataWrapper>
+							<ReviewStarImage src={starImages[review.overallRating]} />
+							<ReviewDate>
+								Written in {getMonthName(review.date.month)} {review.date.year}
+							</ReviewDate>
+						</ReviewDataWrapper>
+						<ReviewDataWrapper>
+							<ReviewLabel>Overall <Red>{review.overallRating}</Red> &#8226;</ReviewLabel>
+							<ReviewLabel>Service <Red>{review.serviceRating}</Red> &#8226;</ReviewLabel>
+							<ReviewLabel>Quality <Red>{review.qualityRating}</Red></ReviewLabel>
+						</ReviewDataWrapper>
+						<p>{review.description}</p>
+					</PartOfReview>
+					
+				</IndividualReview>
+			);
+		});
+		averageRating = (ratingTotal / data.reviews.length).toFixed(1);
+		const roundedRating = Math.round(averageRating * 2) / 2;
+		starPath = starImages[roundedRating.toString()];
+	}
 
 	return (
 		<Container>
@@ -302,14 +352,30 @@ const CompanyPage = ({ setConfirmationData }) => {
 						<Logo src={data.logo} />
 						<div>
 							<Name>{data.name}</Name>
-							<p>
-								{averageRating}/5 out of {data.reviews.length} reviews
-							</p>
+							{data.reviews.length === 0 ? (
+								<>
+									<StarImage src={starPath} alt="Rating" />
+									<p>No reviews yet</p>
+								</>
+							) : (
+								<>
+									<StarImage src={starPath} alt="Rating" />
+									<p>
+										{averageRating}/5 out of {data.reviews.length} reviews
+									</p>
+								</>
+							)}
 							<p>{data.number}</p>
 							<p>{data.email}</p>
 						</div>
 					</MainHeader>
 					<Description>{data.description}</Description>
+					{data.reviews.length === 1 ? (
+						<ReviewTitle>What {data.reviews.length} person is saying</ReviewTitle>
+					) : (
+						<ReviewTitle>What {data.reviews.length} people are saying</ReviewTitle>
+					)}
+					{/* <ReviewTotal> reviews</ReviewTotal> */}
 					<div>{reviews}</div>
 				</ContentWrapper>
 				<SeperateDiv>
@@ -402,7 +468,7 @@ const ContentWrapper = styled.div`
 	box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
 	z-index: 1;
 	margin: 20px;
-	max-height: 500px;
+	min-height: 100%;
 	width: 800px;
 
 	@media (max-width: 768px) {
@@ -416,8 +482,66 @@ const Name = styled.p`
 	margin-bottom: 30px;
 `;
 
+const StarImage = styled.img`
+	width: 110px;
+	height: 19px;
+`;
+
 const Description = styled.p`
 	padding: 20px;
+`;
+
+const ReviewTitle = styled.p`
+	text-align: center;
+	font-size: 2em;
+`
+
+const IndividualReview = styled.div`
+	display: flex;
+	border-bottom: 0.0625rem solid #d8d9db;
+	align-items: center;
+`;
+
+const ReviewName = styled.p`
+	padding: 20px;
+	border-right: 0.0625rem solid #d8d9db;
+	height: 60px;
+`
+
+const ReviewTotal = styled.p`
+	font-size: .875rem;
+    font-weight: 700;
+    line-height: 1.25rem;
+`
+
+const PartOfReview = styled.div`
+	display: flex;
+	flex-direction: column;
+	margin-left: 20px;
+`;
+
+const ReviewStarImage = styled.img`
+	width: 110px;
+	height: 19px;
+	margin-top:	13px ;
+	margin-right: 5px;
+`;
+
+const ReviewDate = styled.p`
+	margin-bottom: 5px;
+`
+
+const ReviewDataWrapper = styled.div`
+	display: flex;
+`;
+
+const Red = styled.span`
+	color: red;
+`
+
+const ReviewLabel = styled.p`
+	font-weight: bold;
+	margin-right: 10px;
 `;
 
 const BookingSelection = styled.div`
