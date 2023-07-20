@@ -3,10 +3,7 @@ backend:
   phases:
     build:
       commands:
-        - cd server
-        - yarn cache clean
-        - yarn install
-        - yarn start
+        - amplifyPush --simple
 
 frontend:
   phases:
