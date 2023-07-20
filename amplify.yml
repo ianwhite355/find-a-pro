@@ -5,7 +5,6 @@ backend:
     build:
       commands:
         - cd server
-        - amplifyPush --simple
         - yarn install
         - yarn start
 
