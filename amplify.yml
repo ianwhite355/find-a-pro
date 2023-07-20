@@ -7,7 +7,6 @@ frontend:
         - yarn install
     build:
       commands:
-        - cd my-app
         - yarn build
   artifacts:
     baseDirectory: my-app/build
