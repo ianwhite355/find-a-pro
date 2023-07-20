@@ -2,11 +2,16 @@ version: 1
 env:
   variables:
     key: value
+
 backend:
   phases:
     build:
       commands:
         - amplifyPush --simple
+        - cd server # Assuming your backend code is in the 'server' directory, adjust this path accordingly
+        - yarn install # Install dependencies (ensure they are listed in package.json)
+        - yarn start # Start the backend server
+
 
 frontend:
   phases:
