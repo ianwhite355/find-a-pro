@@ -7,11 +7,10 @@ backend:
   phases:
     build:
       commands:
+        - cd server
         - amplifyPush --simple
-        - cd server # Assuming your backend code is in the 'server' directory, adjust this path accordingly
-        - yarn install # Install dependencies (ensure they are listed in package.json)
-        - yarn start # Start the backend server
-
+        - yarn install
+        - yarn start
 
 frontend:
   phases:
