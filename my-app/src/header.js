@@ -152,6 +152,7 @@ const Sign = styled(Link)`
 	top: 8px;
 
 	@media (min-width: 200px) and (max-width: 850px) {
+		height: 25px;
 		bottom: 10px;
 	}
 `;
