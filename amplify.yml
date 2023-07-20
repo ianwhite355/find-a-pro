@@ -1,4 +1,12 @@
 version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - cd server
+        - yarn install
+        - yarn start
+
 frontend:
   phases:
     preBuild:
