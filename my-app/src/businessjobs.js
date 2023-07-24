@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Loader from "./Loader";
@@ -58,6 +59,10 @@ const BusinessJobs = () => {
 			// deposit: deposit
 			// depositPaid: true
 		};
+
+		if (jobStatus !== "pending" && !editedPrice && !deposit) {
+			return;
+		}
 
 		if (jobStatus) {
 			updatedEstimate.estimateStatus = jobStatus;
@@ -150,6 +155,806 @@ const BusinessJobs = () => {
 				</Choices>
 			</ChoicesDiv>
 			<JobDiv>
+				{page === "pending" &&
+					estimates
+						.filter((user) => user.estimateStatus === "pending")
+						.map((user) => (
+							<JobContainer key={user._id}>
+								<CompanyName>{user.userName}</CompanyName>
+								<Contact>
+									Contact at {user.userEmail} or {user.userNumber}
+								</Contact>
+								<EditButton disabled={editing && jobId === user._id} onClick={() => handleEdit(user._id, user.userId)}>
+									Edit
+								</EditButton>
+								<EstimateTime>{user.estimateTime}</EstimateTime>
+								<Status>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={(jobStatus === "pending" && jobId === user._id) || (page === "pending" && !(jobStatus && jobId === user._id))}
+										onClick={() => {
+											setJobStatus("pending");
+										}}
+									>
+										Pending
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "estimate-given" && jobId === user._id) ||
+											(page === "estimate-given" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("estimate-given");
+										}}
+									>
+										Estimate Given
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "accepted" && jobId === user._id) || (page === "accepted" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("accepted");
+										}}
+									>
+										Accepted
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "completed" && jobId === user._id) || (page === "completed" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("completed");
+										}}
+									>
+										Completed
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "cancelled" && jobId === user._id) || (page === "cancelled" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("cancelled");
+										}}
+									>
+										Cancelled
+									</StatusButton>
+								</Status>
+								<JobDetails>
+									{user.price ? (
+										<PriceContainer>
+											<PriceLabel>Price:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder={user.price}
+												value={editedPrice}
+												onChange={(e) => setEditedPrice(e.target.value)}
+											/>
+											<PriceLabel>Currently: {user.price}</PriceLabel>
+										</PriceContainer>
+									) : (
+										<PriceContainer>
+											<PriceLabel>Price:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder="XXX.XX"
+												value={editedPrice}
+												onChange={(e) => setEditedPrice(e.target.value)}
+											/>
+										</PriceContainer>
+									)}
+									<JobDetail>
+										<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+										{user.estimateDate.time}
+									</JobDetail>
+									{user.deposit ? (
+										<PriceContainer>
+											<PriceLabel>Deposit:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder={user.price}
+												value={deposit}
+												onChange={(e) => setDeposit(e.target.value)}
+											/>
+											<PriceLabel>Currently:{user.deposit}</PriceLabel>
+										</PriceContainer>
+									) : (
+										<PriceContainer>
+											<PriceLabel>Deposit:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder="XXX.XX"
+												value={deposit}
+												onChange={(e) => setDeposit(e.target.value)}
+											/>
+										</PriceContainer>
+									)}
+									<PaidStatusContainer>
+										<PaidStatusLabel>Paid:</PaidStatusLabel>
+										<PaidStatusButton
+											disabled={!editing || jobId !== user._id}
+											selected={user.paid === "Yes"}
+											onClick={() => {
+												user.paid = "Yes";
+												setPaidStatus("Yes");
+											}}
+										>
+											Yes
+										</PaidStatusButton>
+										<PaidStatusButton
+											disabled={!editing || jobId !== user._id}
+											selected={user.paid === "No"}
+											onClick={() => {
+												user.paid = "No";
+												setPaidStatus("No");
+											}}
+										>
+											No
+										</PaidStatusButton>
+									</PaidStatusContainer>
+								</JobDetails>
+								<CancelButton disabled={!editing || jobId !== user._id} onClick={handleCancel}>
+									Cancel Job
+								</CancelButton>
+								<ButtonContainer>
+									<SaveButton disabled={!editing || jobId !== user._id} onClick={handleSave}>
+										Save changes
+									</SaveButton>
+									<DiscardButton disabled={!editing || jobId !== user._id} onClick={handleDiscard}>
+										Discard changes
+									</DiscardButton>
+								</ButtonContainer>
+							</JobContainer>
+						))}
+
+				{page === "estimate-given" &&
+					estimates
+						.filter((user) => user.estimateStatus === "estimate-given")
+						.map((user) => (
+							<JobContainer key={user._id}>
+								<CompanyName>{user.userName}</CompanyName>
+								<Contact>
+									Contact at {user.userEmail} or {user.userNumber}
+								</Contact>
+								<EditButton disabled={editing && jobId === user._id} onClick={() => handleEdit(user._id, user.userId)}>
+									Edit
+								</EditButton>
+								<EstimateTime>{user.estimateTime}</EstimateTime>
+								<Status>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={(jobStatus === "pending" && jobId === user._id) || (page === "pending" && !(jobStatus && jobId === user._id))}
+										onClick={() => {
+											setJobStatus("pending");
+										}}
+									>
+										Pending
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "estimate-given" && jobId === user._id) ||
+											(page === "estimate-given" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("estimate-given");
+										}}
+									>
+										Estimate Given
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "accepted" && jobId === user._id) || (page === "accepted" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("accepted");
+										}}
+									>
+										Accepted
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "completed" && jobId === user._id) || (page === "completed" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("completed");
+										}}
+									>
+										Completed
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "cancelled" && jobId === user._id) || (page === "cancelled" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("cancelled");
+										}}
+									>
+										Cancelled
+									</StatusButton>
+								</Status>
+								<JobDetails>
+									{user.price ? (
+										<PriceContainer>
+											<PriceLabel>Price:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder={user.price}
+												value={editedPrice}
+												onChange={(e) => setEditedPrice(e.target.value)}
+											/>
+											<PriceLabel>Currently: {user.price}</PriceLabel>
+										</PriceContainer>
+									) : (
+										<PriceContainer>
+											<PriceLabel>Price:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder="XXX.XX"
+												value={editedPrice}
+												onChange={(e) => setEditedPrice(e.target.value)}
+											/>
+										</PriceContainer>
+									)}
+									<JobDetail>
+										<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+										{user.estimateDate.time}
+									</JobDetail>
+									{user.deposit ? (
+										<PriceContainer>
+											<PriceLabel>Deposit:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder={user.price}
+												value={deposit}
+												onChange={(e) => setDeposit(e.target.value)}
+											/>
+											<PriceLabel>Currently:{user.deposit}</PriceLabel>
+										</PriceContainer>
+									) : (
+										<PriceContainer>
+											<PriceLabel>Deposit:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder="XXX.XX"
+												value={deposit}
+												onChange={(e) => setDeposit(e.target.value)}
+											/>
+										</PriceContainer>
+									)}
+									<PaidStatusContainer>
+										<PaidStatusLabel>Paid:</PaidStatusLabel>
+										<PaidStatusButton
+											disabled={!editing || jobId !== user._id}
+											selected={user.paid === "Yes"}
+											onClick={() => {
+												user.paid = "Yes";
+												setPaidStatus("Yes");
+											}}
+										>
+											Yes
+										</PaidStatusButton>
+										<PaidStatusButton
+											disabled={!editing || jobId !== user._id}
+											selected={user.paid === "No"}
+											onClick={() => {
+												user.paid = "No";
+												setPaidStatus("No");
+											}}
+										>
+											No
+										</PaidStatusButton>
+									</PaidStatusContainer>
+								</JobDetails>
+								<CancelButton disabled={!editing || jobId !== user._id} onClick={handleCancel}>
+									Cancel Job
+								</CancelButton>
+								<ButtonContainer>
+									<SaveButton disabled={!editing || jobId !== user._id} onClick={handleSave}>
+										Save changes
+									</SaveButton>
+									<DiscardButton disabled={!editing || jobId !== user._id} onClick={handleDiscard}>
+										Discard changes
+									</DiscardButton>
+								</ButtonContainer>
+							</JobContainer>
+						))}
+
+				{page === "accepted" &&
+					estimates
+						.filter((user) => user.estimateStatus === "accepted")
+						.map((user) => (
+							<JobContainer key={user._id}>
+								<CompanyName>{user.userName}</CompanyName>
+								<Contact>
+									Contact at {user.userEmail} or {user.userNumber}
+								</Contact>
+								<EditButton disabled={editing && jobId === user._id} onClick={() => handleEdit(user._id, user.userId)}>
+									Edit
+								</EditButton>
+								<EstimateTime>{user.estimateTime}</EstimateTime>
+								<Status>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={(jobStatus === "pending" && jobId === user._id) || (page === "pending" && !(jobStatus && jobId === user._id))}
+										onClick={() => {
+											setJobStatus("pending");
+										}}
+									>
+										Pending
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "estimate-given" && jobId === user._id) ||
+											(page === "estimate-given" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("estimate-given");
+										}}
+									>
+										Estimate Given
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "accepted" && jobId === user._id) || (page === "accepted" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("accepted");
+										}}
+									>
+										Accepted
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "completed" && jobId === user._id) || (page === "completed" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("completed");
+										}}
+									>
+										Completed
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "cancelled" && jobId === user._id) || (page === "cancelled" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("cancelled");
+										}}
+									>
+										Cancelled
+									</StatusButton>
+								</Status>
+								<JobDetails>
+									{user.price ? (
+										<PriceContainer>
+											<PriceLabel>Price:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder={user.price}
+												value={editedPrice}
+												onChange={(e) => setEditedPrice(e.target.value)}
+											/>
+											<PriceLabel>Currently: {user.price}</PriceLabel>
+										</PriceContainer>
+									) : (
+										<PriceContainer>
+											<PriceLabel>Price:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder="XXX.XX"
+												value={editedPrice}
+												onChange={(e) => setEditedPrice(e.target.value)}
+											/>
+										</PriceContainer>
+									)}
+									<JobDetail>
+										<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+										{user.estimateDate.time}
+									</JobDetail>
+									{user.deposit ? (
+										<PriceContainer>
+											<PriceLabel>Deposit:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder={user.price}
+												value={deposit}
+												onChange={(e) => setDeposit(e.target.value)}
+											/>
+											<PriceLabel>Currently:{user.deposit}</PriceLabel>
+										</PriceContainer>
+									) : (
+										<PriceContainer>
+											<PriceLabel>Deposit:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder="XXX.XX"
+												value={deposit}
+												onChange={(e) => setDeposit(e.target.value)}
+											/>
+										</PriceContainer>
+									)}
+									<PaidStatusContainer>
+										<PaidStatusLabel>Paid:</PaidStatusLabel>
+										<PaidStatusButton
+											disabled={!editing || jobId !== user._id}
+											selected={user.paid === "Yes"}
+											onClick={() => {
+												user.paid = "Yes";
+												setPaidStatus("Yes");
+											}}
+										>
+											Yes
+										</PaidStatusButton>
+										<PaidStatusButton
+											disabled={!editing || jobId !== user._id}
+											selected={user.paid === "No"}
+											onClick={() => {
+												user.paid = "No";
+												setPaidStatus("No");
+											}}
+										>
+											No
+										</PaidStatusButton>
+									</PaidStatusContainer>
+								</JobDetails>
+								<CancelButton disabled={!editing || jobId !== user._id} onClick={handleCancel}>
+									Cancel Job
+								</CancelButton>
+								<ButtonContainer>
+									<SaveButton disabled={!editing || jobId !== user._id} onClick={handleSave}>
+										Save changes
+									</SaveButton>
+									<DiscardButton disabled={!editing || jobId !== user._id} onClick={handleDiscard}>
+										Discard changes
+									</DiscardButton>
+								</ButtonContainer>
+							</JobContainer>
+						))}
+
+				{page === "completed" &&
+					estimates
+						.filter((user) => user.estimateStatus === "completed")
+						.map((user) => (
+							<JobContainer key={user._id}>
+								<CompanyName>{user.userName}</CompanyName>
+								<Contact>
+									Contact at {user.userEmail} or {user.userNumber}
+								</Contact>
+								<EditButton disabled={editing && jobId === user._id} onClick={() => handleEdit(user._id, user.userId)}>
+									Edit
+								</EditButton>
+								<EstimateTime>{user.estimateTime}</EstimateTime>
+								<Status>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={(jobStatus === "pending" && jobId === user._id) || (page === "pending" && !(jobStatus && jobId === user._id))}
+										onClick={() => {
+											setJobStatus("pending");
+										}}
+									>
+										Pending
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "estimate-given" && jobId === user._id) ||
+											(page === "estimate-given" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("estimate-given");
+										}}
+									>
+										Estimate Given
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "accepted" && jobId === user._id) || (page === "accepted" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("accepted");
+										}}
+									>
+										Accepted
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "completed" && jobId === user._id) || (page === "completed" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("completed");
+										}}
+									>
+										Completed
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "cancelled" && jobId === user._id) || (page === "cancelled" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("cancelled");
+										}}
+									>
+										Cancelled
+									</StatusButton>
+								</Status>
+								<JobDetails>
+									{user.price ? (
+										<PriceContainer>
+											<PriceLabel>Price:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder={user.price}
+												value={editedPrice}
+												onChange={(e) => setEditedPrice(e.target.value)}
+											/>
+											<PriceLabel>Currently: {user.price}</PriceLabel>
+										</PriceContainer>
+									) : (
+										<PriceContainer>
+											<PriceLabel>Price:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder="XXX.XX"
+												value={editedPrice}
+												onChange={(e) => setEditedPrice(e.target.value)}
+											/>
+										</PriceContainer>
+									)}
+									<JobDetail>
+										<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+										{user.estimateDate.time}
+									</JobDetail>
+									{user.deposit ? (
+										<PriceContainer>
+											<PriceLabel>Deposit:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder={user.price}
+												value={deposit}
+												onChange={(e) => setDeposit(e.target.value)}
+											/>
+											<PriceLabel>Currently:{user.deposit}</PriceLabel>
+										</PriceContainer>
+									) : (
+										<PriceContainer>
+											<PriceLabel>Deposit:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder="XXX.XX"
+												value={deposit}
+												onChange={(e) => setDeposit(e.target.value)}
+											/>
+										</PriceContainer>
+									)}
+									<PaidStatusContainer>
+										<PaidStatusLabel>Paid:</PaidStatusLabel>
+										<PaidStatusButton
+											disabled={!editing || jobId !== user._id}
+											selected={user.paid === "Yes"}
+											onClick={() => {
+												user.paid = "Yes";
+												setPaidStatus("Yes");
+											}}
+										>
+											Yes
+										</PaidStatusButton>
+										<PaidStatusButton
+											disabled={!editing || jobId !== user._id}
+											selected={user.paid === "No"}
+											onClick={() => {
+												user.paid = "No";
+												setPaidStatus("No");
+											}}
+										>
+											No
+										</PaidStatusButton>
+									</PaidStatusContainer>
+								</JobDetails>
+								<CancelButton disabled={!editing || jobId !== user._id} onClick={handleCancel}>
+									Cancel Job
+								</CancelButton>
+								<ButtonContainer>
+									<SaveButton disabled={!editing || jobId !== user._id} onClick={handleSave}>
+										Save changes
+									</SaveButton>
+									<DiscardButton disabled={!editing || jobId !== user._id} onClick={handleDiscard}>
+										Discard changes
+									</DiscardButton>
+								</ButtonContainer>
+							</JobContainer>
+						))}
+
+				{page === "cancelled" &&
+					estimates
+						.filter((user) => user.estimateStatus === "cancelled")
+						.map((user) => (
+							<JobContainer key={user._id}>
+								<CompanyName>{user.userName}</CompanyName>
+								<Contact>
+									Contact at {user.userEmail} or {user.userNumber}
+								</Contact>
+								<EditButton disabled={editing && jobId === user._id} onClick={() => handleEdit(user._id, user.userId)}>
+									Edit
+								</EditButton>
+								<EstimateTime>{user.estimateTime}</EstimateTime>
+								<Status>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={(jobStatus === "pending" && jobId === user._id) || (page === "pending" && !(jobStatus && jobId === user._id))}
+										onClick={() => {
+											setJobStatus("pending");
+										}}
+									>
+										Pending
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "estimate-given" && jobId === user._id) ||
+											(page === "estimate-given" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("estimate-given");
+										}}
+									>
+										Estimate Given
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "accepted" && jobId === user._id) || (page === "accepted" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("accepted");
+										}}
+									>
+										Accepted
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "completed" && jobId === user._id) || (page === "completed" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("completed");
+										}}
+									>
+										Completed
+									</StatusButton>
+									<StatusButton
+										disabled={!editing || jobId !== user._id}
+										selected={
+											(jobStatus === "cancelled" && jobId === user._id) || (page === "cancelled" && !(jobStatus && jobId === user._id))
+										}
+										onClick={() => {
+											setJobStatus("cancelled");
+										}}
+									>
+										Cancelled
+									</StatusButton>
+								</Status>
+								<JobDetails>
+									{user.price ? (
+										<PriceContainer>
+											<PriceLabel>Price:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder={user.price}
+												value={editedPrice}
+												onChange={(e) => setEditedPrice(e.target.value)}
+											/>
+											<PriceLabel>Currently: {user.price}</PriceLabel>
+										</PriceContainer>
+									) : (
+										<PriceContainer>
+											<PriceLabel>Price:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder="XXX.XX"
+												value={editedPrice}
+												onChange={(e) => setEditedPrice(e.target.value)}
+											/>
+										</PriceContainer>
+									)}
+									<JobDetail>
+										<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+										{user.estimateDate.time}
+									</JobDetail>
+									{user.deposit ? (
+										<PriceContainer>
+											<PriceLabel>Deposit:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder={user.price}
+												value={deposit}
+												onChange={(e) => setDeposit(e.target.value)}
+											/>
+											<PriceLabel>Currently:{user.deposit}</PriceLabel>
+										</PriceContainer>
+									) : (
+										<PriceContainer>
+											<PriceLabel>Deposit:</PriceLabel>
+											<PriceInput
+												disabled={!editing || jobId !== user._id}
+												type="text"
+												placeholder="XXX.XX"
+												value={deposit}
+												onChange={(e) => setDeposit(e.target.value)}
+											/>
+										</PriceContainer>
+									)}
+									<PaidStatusContainer>
+										<PaidStatusLabel>Paid:</PaidStatusLabel>
+										<PaidStatusButton
+											disabled={!editing || jobId !== user._id}
+											selected={user.paid === "Yes"}
+											onClick={() => {
+												user.paid = "Yes";
+												setPaidStatus("Yes");
+											}}
+										>
+											Yes
+										</PaidStatusButton>
+										<PaidStatusButton
+											disabled={!editing || jobId !== user._id}
+											selected={user.paid === "No"}
+											onClick={() => {
+												user.paid = "No";
+												setPaidStatus("No");
+											}}
+										>
+											No
+										</PaidStatusButton>
+									</PaidStatusContainer>
+								</JobDetails>
+								<CancelButton disabled={!editing || jobId !== user._id} onClick={handleCancel}>
+									Cancel Job
+								</CancelButton>
+								<ButtonContainer>
+									<SaveButton disabled={!editing || jobId !== user._id} onClick={handleSave}>
+										Save changes
+									</SaveButton>
+									<DiscardButton disabled={!editing || jobId !== user._id} onClick={handleDiscard}>
+										Discard changes
+									</DiscardButton>
+								</ButtonContainer>
+							</JobContainer>
+						))}
+				{/* 				
 				{estimates
 					.filter((user) => user.estimateStatus === page)
 					.map((user) => (
@@ -301,7 +1106,7 @@ const BusinessJobs = () => {
 								</DiscardButton>
 							</ButtonContainer>
 						</JobContainer>
-					))}
+					))} */}
 			</JobDiv>
 		</>
 	);
