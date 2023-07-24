@@ -2,18 +2,18 @@
 
 ## Technologies used
 
--Languages
-    -React.js
-    -Javascript
-    -HTML
-    -Css
-    -Node.js
--API's
-    -EmailJS
--Amazon Web Services
-    -AWS Amplify
-    -AWS EC2 ubuntu terminal
--GoDaddy
+- Languages
+    - React.js
+    - Javascript
+    - HTML
+    - Css
+    - Node.js
+- API's
+    - EmailJS
+- Amazon Web Services
+    - AWS Amplify
+    - AWS EC2 ubuntu terminal
+- GoDaddy
 
 ## Summary
 
