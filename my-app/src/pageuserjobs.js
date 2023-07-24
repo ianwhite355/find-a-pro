@@ -101,15 +101,16 @@ const UserJobs = () => {
 				</Choices>
 			</ChoicesDiv>
 			<JobDiv>
-				{estimates
-					.filter((user) => user.estimateStatus === page)
-					.map((user) => (
-						<JobContainer key={user._id}>
+				{page === "pending" &&
+					estimates
+						.filter((user) => user.estimateStatus === "pending")
+						.map((user) => (
+							<JobContainer key={user._id}>
 							<CompanyName onClick={() => navigate(`/company/${user.companyId}`)}>{user.companyName}</CompanyName>
 							<EstimateTime>{user.estimateTime}</EstimateTime>
-							<Status>Status: {user.estimateStatus}</Status>
-							{user.price ? <Price>{user.price}</Price> : <NoPrice>Price not available</NoPrice>}
+							{/* <Status>Status: {user.estimateStatus}</Status> */}
 							<JobDetails>
+								{user.price ? <JobDetail><PriceLabel>Price:</PriceLabel> {user.price}</JobDetail> : <NoPrice>Price not available</NoPrice>}
 								<JobDetail>
 									<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
 									{user.estimateTime}
@@ -130,7 +131,132 @@ const UserJobs = () => {
 							</JobDetails>
 							<CancelButton onClick={() => handleCancel(user.companyId, user._id, user.estimateDate)}>Cancel Job</CancelButton>
 						</JobContainer>
-					))}
+						))}
+
+				{page === "estimate-given" &&
+					estimates
+						.filter((user) => user.estimateStatus === "estimate-given")
+						.map((user) => (
+							<JobContainer key={user._id}>
+							<CompanyName onClick={() => navigate(`/company/${user.companyId}`)}>{user.companyName}</CompanyName>
+							<EstimateTime>{user.estimateTime}</EstimateTime>
+							{/* <Status>Status: {user.estimateStatus}</Status> */}
+							<JobDetails>
+								{user.price ? <JobDetail><PriceLabel>Price:</PriceLabel> {user.price}</JobDetail> : <NoPrice>Price not available</NoPrice>}
+								<JobDetail>
+									<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+									{user.estimateTime}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Booked Date: </PriceLabel>
+									{user.workDate ? `${user.workDate.month}/${user.workDate.day}/${user.workDate.year}` : "Not booked yet"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Deposit:</PriceLabel> {user.deposit ? `${user.deposit}` : "No deposit yet"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Paid:</PriceLabel> {user.depositPaid ? "Yes" : "No"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Work Complete:</PriceLabel> {user.workComplete ? "Yes" : "No"}
+								</JobDetail>
+							</JobDetails>
+							<CancelButton onClick={() => handleCancel(user.companyId, user._id, user.estimateDate)}>Cancel Job</CancelButton>
+						</JobContainer>
+						))}
+
+				{page === "accepted" &&
+					estimates
+						.filter((user) => user.estimateStatus === "accepted")
+						.map((user) => (
+							<JobContainer key={user._id}>
+							<CompanyName onClick={() => navigate(`/company/${user.companyId}`)}>{user.companyName}</CompanyName>
+							<EstimateTime>{user.estimateTime}</EstimateTime>
+							{/* <Status>Status: {user.estimateStatus}</Status> */}
+							<JobDetails>
+								{user.price ? <JobDetail><PriceLabel>Price:</PriceLabel> {user.price}</JobDetail> : <NoPrice>Price not available</NoPrice>}
+								<JobDetail>
+									<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+									{user.estimateTime}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Booked Date: </PriceLabel>
+									{user.workDate ? `${user.workDate.month}/${user.workDate.day}/${user.workDate.year}` : "Not booked yet"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Deposit:</PriceLabel> {user.deposit ? `${user.deposit}` : "No deposit yet"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Paid:</PriceLabel> {user.depositPaid ? "Yes" : "No"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Work Complete:</PriceLabel> {user.workComplete ? "Yes" : "No"}
+								</JobDetail>
+							</JobDetails>
+							<CancelButton onClick={() => handleCancel(user.companyId, user._id, user.estimateDate)}>Cancel Job</CancelButton>
+						</JobContainer>
+						))}
+
+				{page === "completed" &&
+					estimates
+						.filter((user) => user.estimateStatus === "completed")
+						.map((user) => (
+							<JobContainer key={user._id}>
+							<CompanyName onClick={() => navigate(`/company/${user.companyId}`)}>{user.companyName}</CompanyName>
+							<EstimateTime>{user.estimateTime}</EstimateTime>
+							{/* <Status>Status: {user.estimateStatus}</Status> */}
+							<JobDetails>
+								{user.price ? <JobDetail><PriceLabel>Price:</PriceLabel> {user.price}</JobDetail> : <NoPrice>Price not available</NoPrice>}
+								<JobDetail>
+									<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+									{user.estimateTime}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Booked Date: </PriceLabel>
+									{user.workDate ? `${user.workDate.month}/${user.workDate.day}/${user.workDate.year}` : "Not booked yet"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Deposit:</PriceLabel> {user.deposit ? `${user.deposit}` : "No deposit yet"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Paid:</PriceLabel> {user.depositPaid ? "Yes" : "No"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Work Complete:</PriceLabel> {user.workComplete ? "Yes" : "No"}
+									<button></button>
+								</JobDetail>
+							</JobDetails>
+						</JobContainer>
+						))}
+
+				{page === "cancelled" &&
+					estimates
+						.filter((user) => user.estimateStatus === "cancelled")
+						.map((user) => (
+							<JobContainer key={user._id}>
+							<CompanyName onClick={() => navigate(`/company/${user.companyId}`)}>{user.companyName}</CompanyName>
+							<EstimateTime>{user.estimateTime}</EstimateTime>
+							{/* <Status>Status: {user.estimateStatus}</Status> */}
+							<JobDetails>
+								{user.price ? <JobDetail> <PriceLabel>Price:</PriceLabel> {user.price}</JobDetail> : <NoPrice>Price not available</NoPrice>}
+								<JobDetail>
+									<PriceLabel>Estimate Date:</PriceLabel> {user.estimateDate.month}/{user.estimateDate.day}/{user.estimateDate.year} at{" "}
+									{user.estimateTime}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Booked Date: </PriceLabel>
+									{user.workDate ? `${user.workDate.month}/${user.workDate.day}/${user.workDate.year}` : "Not booked yet"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Deposit:</PriceLabel> {user.deposit ? `${user.deposit}` : "No deposit yet"}
+								</JobDetail>
+								<JobDetail>
+									<PriceLabel>Paid:</PriceLabel> {user.depositPaid ? "Yes" : "No"}
+								</JobDetail>
+								
+							</JobDetails>
+						</JobContainer>
+						))}
 			</JobDiv>
 		</>
 	);
@@ -193,7 +319,6 @@ const Status = styled.p`
 
 const Price = styled.p`
 	margin: 0;
-	color: green;
 	padding: 5px;
 `;
 
