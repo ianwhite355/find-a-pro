@@ -59,6 +59,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 	const [dayOfWeek, setDayOfWeek] = useState(null);
 	const [sameTimeValue, setSameTimeValue] = useState(false);
 	const [alreadySent, setAlreadySent] = useState(false);
+	const [notSelected, setNotSelected] = useState("")
 
 	const navigate = useNavigate();
 
@@ -106,9 +107,18 @@ const CompanyPage = ({ setConfirmationData }) => {
 		});
 
 		if (!calendar) {
-			console.log("A date was not selected.");
+			setNotSelected("A date was not selected.");
+			setShowSuccessMessage(true);
 			return;
 		}
+
+		if (!selectedTime) {
+			setNotSelected("A time was not selected.");
+			setShowSuccessMessage(true);
+			return;
+		}
+
+
 
 		if (alreadySent) {
 			return;
@@ -154,8 +164,6 @@ const CompanyPage = ({ setConfirmationData }) => {
 			.then(([estimateResponse, emailResponse]) => {
 				if (estimateResponse.status === 200 && emailResponse.status === 200) {
 					setAlreadySent(true);
-					setSuccessMessage("Thank you!");
-					setShowSuccessMessage(true);
 					navigate("/confirmation");
 				} else {
 					console.log("Post or email sending failed");
@@ -395,7 +403,7 @@ const CompanyPage = ({ setConfirmationData }) => {
 					<SuccessContainer>
 						{showSuccessMessage && (
 							<SuccessWrapper>
-								<SuccessMessage>{successMessage}</SuccessMessage>
+								<SuccessMessage>{notSelected}</SuccessMessage>
 								<ProgressBar />
 							</SuccessWrapper>
 						)}
@@ -771,7 +779,7 @@ const SuccessMessage = styled.div`
 const ProgressBar = styled.div`
 	position: relative;
 	bottom: 0px;
-	width: 200px;
+	width: 100%;
 	height: 10px;
 	background-color: #2e1a47;
 	animation: ${progressBarAnimation} 5s linear forwards;
