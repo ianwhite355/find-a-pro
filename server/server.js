@@ -3,7 +3,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const { companyGet, companyPost, timeSlotsGet, companyGetNoPass } = require("./handlers/companies");
-const { addUser, getUser, getUserNoPass } = require("./handlers/addUser")
+const { addUser, getUser, getUserNoPass } = require("./handlers/addUser");
 const { allDataGet } = require("./handlers/alldata");
 const { loginForUser, loginForBusiness } = require("./handlers/login");
 const { getEstimatesByUser, getEstimatesByCompany } = require("./handlers/getestimates");
@@ -20,42 +20,48 @@ const PORT = 8000;
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.get("/api/company/:_id", companyGet)
+app.get("/", (req, res) => {
+	res.send("Thanks for joining!");
+});
 
-app.get("/api/companygetnopass/:companyIds", companyGetNoPass)
+app.get("/api/company/:_id", companyGet);
 
-app.post("/api/companyposting", companyPost)
+app.get("/api/companygetnopass/:companyIds", companyGetNoPass);
 
-app.get("/api/alldata", allDataGet)
+app.post("/api/companyposting", companyPost);
 
-app.post("/api/add-user", addUser)
+app.get("/api/alldata", allDataGet);
 
-app.get("/api/getuser/:userId", getUserNoPass )
+app.post("/api/add-user", addUser);
 
-app.post('/login/user', loginForUser);
+app.get("/api/getuser/:userId", getUserNoPass);
 
-app.post("/login/business", loginForBusiness)
+app.post("/login/user", loginForUser);
 
-app.post("/api/estimate", createEstimate)
+app.post("/login/business", loginForBusiness);
 
-app.put("/api/estimatesmodify", modifyEstimate)
+app.post("/api/estimate", createEstimate);
 
-app.post("/api/exclusions/:_id", exclusionsPost)
+app.put("/api/estimatesmodify", modifyEstimate);
 
-app.get("/api/getestimatesbyuser/:userId", getEstimatesByUser)
+app.post("/api/exclusions/:_id", exclusionsPost);
 
-app.get("/api/getestimatescompany/:companyId", getEstimatesByCompany)
+app.get("/api/getestimatesbyuser/:userId", getEstimatesByUser);
 
-app.get("/api/timeslots/:_id", timeSlotsGet)
+app.get("/api/getestimatescompany/:companyId", getEstimatesByCompany);
 
-app.post("/api/deletejob", deleteJob)
+app.get("/api/timeslots/:_id", timeSlotsGet);
 
-app.post("/api/schedulechanges", changeSchedule)
+app.post("/api/deletejob", deleteJob);
 
-app.post("/api/addexclusion", changeExclusions)
+app.post("/api/schedulechanges", changeSchedule);
 
-app.post("/api/deleteexclusion", cancelExclusion)
+app.post("/api/addexclusion", changeExclusions);
 
-app.post("/api/addreview", addReview)
+app.post("/api/deleteexclusion", cancelExclusion);
 
-app.listen(PORT, () => {console.log(`Server listening on port ${PORT}`);});
+app.post("/api/addreview", addReview);
+
+app.listen(PORT, () => {
+	console.log(`Server listening on port ${PORT}`);
+});
