@@ -12,6 +12,7 @@
     - EmailJS
 - Amazon Web Services
     - AWS Amplify
+    - AWS Lightsail
     - AWS EC2 ubuntu terminal
 - GoDaddy
 
@@ -23,7 +24,7 @@ With Find Your Pro, customers can easily search for businesses in their area tha
 
 ## Website Link
 
-To access Find Your Pro and explore a wide range of services available in your area, visit [findYourPro.ca](https://findyourpro.ca).
+To access Find Your Pro visit [findYourPro.ca](https://findyourpro.ca). (Almost deployed, just some fixes)
 
 ## Features
 
