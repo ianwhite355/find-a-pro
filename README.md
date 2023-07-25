@@ -28,7 +28,7 @@ With Find Your Pro, customers can easily search for businesses in their area tha
 
 ## Website Link
 
-To access Find Your Pro visit [findYourPro.ca](https://findyourpro.ca). (Almost deployed, just some fixes)
+To access Find Your Pro visit [findyourpro.ca](https://findyourpro.ca). (Almost deployed, just some fixes)
 
 ## Features
 
