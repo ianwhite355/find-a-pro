@@ -196,9 +196,11 @@ const HomePage = () => {
 										<ProjectStarImage src={starPath} />
 										<RatingCount>{user.reviews.length} reviews</RatingCount>
 									</RatingDiv>
-									{user.services.map((user) => (
-										<ServiceLittleOne>{user}</ServiceLittleOne>
-									))}
+									<LittleServiceDiv>
+										{user.services.map((user) => (
+											<ServiceLittleOne>{user}</ServiceLittleOne>
+										))}
+									</LittleServiceDiv>
 								</NonImage>
 							</ADiv>
 						);
@@ -232,9 +234,11 @@ const HomePage = () => {
 										<ProjectStarImage src={starPath} />
 										<RatingCount>{user.reviews.length} reviews</RatingCount>
 									</RatingDiv>
-									{user.services.map((user) => (
-										<ServiceLittleOne>{user}</ServiceLittleOne>
-									))}
+									<LittleServiceDiv>
+										{user.services.map((user) => (
+											<ServiceLittleOne>{user}</ServiceLittleOne>
+										))}
+									</LittleServiceDiv>
 								</NonImage>
 							</ADiv>
 						);
@@ -429,6 +433,8 @@ const LittleServiceDiv = styled.div`
 	white-space: nowrap;
 	position: relative;
 	bottom: 12px;
+	max-width: 265px;
+	
 `;
 
 const ProjectStarImage = styled.img`
