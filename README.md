@@ -2,7 +2,7 @@
 
 ## Side Note
 
-Please do keep in mind that this is a project that is not finished, there are a lot of features I would like to implement and overall a lot of changes will be made as I go, for example, the UI and the UX will be completely overhauled and improved, so please do ignore try to overlook the flaws like I mentioned it is a working project. 
+Please do keep in mind that this is a project that is not finished, there are a lot of features I would like to implement and overall a lot of changes will be made as I go, for example, the UI and the UX will be completely overhauled and improved, so please do ignore try to overlook the flaws like I mentioned it is a working project. Due to this if you ever want a demo please contact me my email is below :)
 
 ## Technologies used
 
