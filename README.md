@@ -1,5 +1,9 @@
 # Find-Your-Pro
 
+## Side Note
+
+Please do keep in mind that this is a project that is not finished, there are a lot of features I would like to implement and overall a lot of changes will be made as I go, for example, the UI and the UX will be completely overhauled and improved, so please do ignore try to overlook the flaws like I mentioned it is a working project. 
+
 ## Technologies used
 
 - Languages
@@ -12,6 +16,7 @@
     - EmailJS
 - Amazon Web Services
     - AWS Amplify
+    - AWS Lightsail
     - AWS EC2 ubuntu terminal
 - GoDaddy
 
@@ -23,7 +28,7 @@ With Find Your Pro, customers can easily search for businesses in their area tha
 
 ## Website Link
 
-To access Find Your Pro and explore a wide range of services available in your area, visit [findYourPro.ca](https://findyourpro.ca).
+To access Find Your Pro visit [findyourpro.ca](https://findyourpro.ca). (Almost deployed, just some fixes)
 
 ## Features
 
