@@ -14,6 +14,8 @@ import star4 from "./images/4stars.png";
 import star45 from "./images/4.5stars.png";
 import star5 from "./images/5stars.png";
 
+//alot of the css on this page is not really "clean" code but its all temporary so please do ignore that
+
 const starImages = {
 	0: star0,
 	0.5: star05,
@@ -66,11 +68,11 @@ const HomePage = () => {
 		}
 	}, []);
 
-	const windowWashingData = data.filter((company) => company.services.includes("windowwashing"));
+	const windowWashingData = data.filter((company) => company.services.includes("Window Washing"));
 
-	const poolCleaningData = data.filter((company) => company.services.includes("poolcleaning"));
+	const poolCleaningData = data.filter((company) => company.services.includes("Pool Cleaning"));
 
-	const paintingData = data.filter((company) => company.services.includes("painting"));
+	const paintingData = data.filter((company) => company.services.includes("Painting"));
 
 	if (loading) {
 		return <Loader />;
@@ -135,7 +137,7 @@ const HomePage = () => {
 						let reviews;
 						let averageRating;
 						let starPath;
-					
+
 						if (user.reviews.length === 0) {
 							starPath = starImages[ratingTotal.toString()];
 						} else if (user.reviews.length > 0) {
@@ -146,15 +148,22 @@ const HomePage = () => {
 							const roundedRating = Math.round(averageRating * 2) / 2;
 							starPath = starImages[roundedRating.toString()];
 						}
-
+						console.log(user.services);
 						return (
 							<ADiv key={user._id} onClick={() => navigate(`/company/${user._id}`)}>
 								<ProjectImg src={user.image} />
-								<ProjectName>{user.name}</ProjectName>
-								<RatingDiv>
-									<ProjectStarImage src={starPath}/>
-									<RatingCount>{user.reviews.length} reviews</RatingCount> 
-								</RatingDiv>
+								<NonImage>
+									<ProjectName>{user.name}</ProjectName>
+									<RatingDiv>
+										<ProjectStarImage src={starPath} />
+										<RatingCount>{user.reviews.length} reviews</RatingCount>
+									</RatingDiv>
+									<LittleServiceDiv>
+										{user.services.map((user) => (
+											<ServiceLittleOne>{user}</ServiceLittleOne>
+										))}
+									</LittleServiceDiv>
+								</NonImage>
 							</ADiv>
 						);
 					})}
@@ -167,7 +176,7 @@ const HomePage = () => {
 						let reviews;
 						let averageRating;
 						let starPath;
-					
+
 						if (user.reviews.length === 0) {
 							starPath = starImages[ratingTotal.toString()];
 						} else if (user.reviews.length > 0) {
@@ -181,11 +190,16 @@ const HomePage = () => {
 						return (
 							<ADiv key={user._id} onClick={() => navigate(`/company/${user._id}`)}>
 								<ProjectImg src={user.image} />
-								<ProjectName>{user.name}</ProjectName>
-								<RatingDiv>
-									<ProjectStarImage src={starPath}/>
-									<RatingCount>{user.reviews.length} reviews</RatingCount> 
-								</RatingDiv>
+								<NonImage>
+									<ProjectName>{user.name}</ProjectName>
+									<RatingDiv>
+										<ProjectStarImage src={starPath} />
+										<RatingCount>{user.reviews.length} reviews</RatingCount>
+									</RatingDiv>
+									{user.services.map((user) => (
+										<ServiceLittleOne>{user}</ServiceLittleOne>
+									))}
+								</NonImage>
 							</ADiv>
 						);
 					})}
@@ -198,7 +212,7 @@ const HomePage = () => {
 						let reviews;
 						let averageRating;
 						let starPath;
-					
+
 						if (user.reviews.length === 0) {
 							starPath = starImages[ratingTotal.toString()];
 						} else if (user.reviews.length > 0) {
@@ -212,11 +226,16 @@ const HomePage = () => {
 						return (
 							<ADiv key={user._id} onClick={() => navigate(`/company/${user._id}`)}>
 								<ProjectImg src={user.image} />
-								<ProjectName>{user.name}</ProjectName>
-								<RatingDiv>
-									<ProjectStarImage src={starPath}/>
-									<RatingCount>{user.reviews.length} reviews</RatingCount> 
-								</RatingDiv>
+								<NonImage>
+									<ProjectName>{user.name}</ProjectName>
+									<RatingDiv>
+										<ProjectStarImage src={starPath} />
+										<RatingCount>{user.reviews.length} reviews</RatingCount>
+									</RatingDiv>
+									{user.services.map((user) => (
+										<ServiceLittleOne>{user}</ServiceLittleOne>
+									))}
+								</NonImage>
 							</ADiv>
 						);
 					})}
@@ -290,8 +309,6 @@ const SubmitButton = styled.button`
 	}
 `;
 
-const Background = styled.div``;
-
 const ServicesDiv = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -313,7 +330,7 @@ const ServiceTitle = styled.p`
 const Service = styled.div`
 	display: flex;
 	flex-wrap: nowrap;
-	color: white;
+	/* color: white; */
 	width: 75%;
 	border-radius: 15px;
 	height: 325px;
@@ -396,30 +413,55 @@ const ProjectImg = styled.img`
 	}
 `;
 
+const NonImage = styled.div`
+	margin-left: 10px;
+`;
+
 const RatingDiv = styled.div`
 	display: flex;
 	align-items: center;
-	
-`
+	max-height: 20px;
+	margin: 20px 0px;
+`;
+
+const LittleServiceDiv = styled.div`
+	display: flex;
+	white-space: nowrap;
+	position: relative;
+	bottom: 12px;
+`;
 
 const ProjectStarImage = styled.img`
 	width: 100px;
 	height: 18px;
-`
+`;
 
 const RatingCount = styled.p`
 	margin-left: 5px;
 	color: black;
 `;
 
+const ServiceLittleOne = styled.p`
+	color: grey;
+	display: flex;
+	align-items: center;
 
+	&::after {
+		content: "·";
+		margin: 0 5px;
+		color: black;
+	}
+
+	&:last-child::after {
+		content: "";
+		margin: 0;
+	}
+`;
 const ProjectName = styled.p`
 	padding: 0px;
 	font-weight: bold;
-	position: relative;
-	bottom: 15px;
+	margin: 5px 0px;
 	transition: opacity 0.3s ease;
-	margin-left: 10px;
 	z-index: 1;
 	color: black;
 	font-size: 1.3em;
@@ -434,21 +476,5 @@ const ProjectName = styled.p`
 	}
 `;
 
-// const ProjectBook = styled.p`
-// 	font-size: 1.3em;
-// 	padding: 10px;
-// 	font-weight: bold;
-// 	text-align: center;
-
-// 	z-index: 1;
-// 	opacity: 1;
-// 	color: black;
-// 	@media (min-width: 200px) and (max-width: 850px) {
-// 		top: 80%;
-// 		width: 85px;
-// 		font-size: 0.8em;
-// 		margin-left: 37.5px;
-// 	}
-// `;
 
 export default HomePage;

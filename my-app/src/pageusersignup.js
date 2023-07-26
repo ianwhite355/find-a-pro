@@ -70,21 +70,22 @@ const UserSignUp = () => {
     return (
         <Container>
             <FormContainer onSubmit={handleSubmit}>
-                <Label>Email:</Label>
+                <Label>Email</Label>
                 <Input type="email" name="email" value={formData.email} onChange={handleChange} required/>
 
-                <Label>First Name:</Label>
+                <Label>First Name</Label>
                 <Input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required/>
 
-                <Label>Last Name:</Label>
+                <Label>Last Name</Label>
                 <Input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
 
-                <Label>Address:</Label>
+                <Label>Address</Label>
                 <Input type="text" name="address" value={formData.address} onChange={handleChange} required/>
 
-                <Label>Phone Number:</Label>
+                <Label>Phone Number</Label>
                 <Input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required/>
 
+                <Label>Password</Label>
                 <PassWordContainer>
                     <PasswordInput type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} required/>
                     <TogglePasswordButton onClick={handleTogglePassword}>
@@ -110,7 +111,6 @@ const Container = styled.div`
     top:50px;
     padding: 40px;
     box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-    border-radius: 20px;
 
     @media (min-width: 500px) and (max-width:850px){
         width: 50%;
@@ -128,28 +128,22 @@ const FormContainer = styled.form`
 `;
 
 const Label = styled.label`
-    margin-bottom: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
 `;
 
 const Input = styled.input`
-    border-radius: 10px;
+    border: solid 2px #CDCDCD;
     font-size: 1.5em;
     width: 350px;
     height: 40px;
     top:300px;
     padding-left: 10px;
-
-    @media (min-width: 501px) and (max-width:850px){
+    @media (min-width: 200px) and (max-width:850px){
         top:200px;
         height: 30px;
         width:250px;
-    }
-
-    @media (min-width: 321px) and (max-width:500px){
-        top:200px;
-        height: 30px;
-        width:225px;
-        font-size: 1em;
     }
     @media (min-width: 200px) and (max-width:320px){
         top:200px;
@@ -173,38 +167,27 @@ const Button = styled.button`
 
 const PassWordContainer = styled.div`
     position: relative;
-    margin-top: 25px;
+    /* margin-top: 25px; */
     
 `
 
 const PasswordInput = styled.input`
-    border-radius: 10px;
+    border: solid 2px #CDCDCD;
     font-size: 1.5em;
     width: 350px;
     height: 40px;
+    top:300px;
     padding-left: 10px;
-
-
-    @media (min-width: 501px) and (max-width:850px){
+    @media (min-width: 200px) and (max-width:850px){
         top:200px;
         height: 30px;
         width:250px;
     }
-
-    @media (min-width: 321px) and (max-width:500px){
-        top:200px;
-        height: 30px;
-        width:200px;
-        font-size: 1em;
-        padding-left:35px;
-    }
-
     @media (min-width: 200px) and (max-width:320px){
         top:200px;
         height: 30px;
-        width:125px;
+        width:150px;
         font-size: 1em;
-        padding-left:35px;
     }
 `
 

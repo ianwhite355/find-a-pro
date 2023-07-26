@@ -400,16 +400,17 @@ const CompanyPage = ({ setConfirmationData }) => {
 					</BookingSelection>
 					<SubmitBook onClick={storedUserId ? sendEmail : () => navigate("/usersignin")}>Book it!</SubmitBook>
 
-					<SuccessContainer>
+					
+				</SeperateDiv>
+			</ContentContainer>
+			<SuccessContainer>
 						{showSuccessMessage && (
 							<SuccessWrapper>
 								<SuccessMessage>{notSelected}</SuccessMessage>
 								<ProgressBar />
 							</SuccessWrapper>
 						)}
-					</SuccessContainer>
-				</SeperateDiv>
-			</ContentContainer>
+			</SuccessContainer>
 		</Container>
 	);
 };
