@@ -9,7 +9,6 @@ frontend:
     build:
       commands:
         - yarn build
-        - yarn start
   artifacts:
     baseDirectory: my-app/build
     files:

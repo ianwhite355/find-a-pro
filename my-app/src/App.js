@@ -14,6 +14,9 @@ import Confirmation from "./confirmation";
 import BusinessJobs from "./businessjobs";
 import Schedule from "./weeklycalendar";
 import { GlobalStyles } from "./globalstyles";
+import "./styles/styles.css";
+
+
 const App = () => {
 	const key = "userData";
 	const type = "type";
